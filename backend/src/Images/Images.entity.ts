@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { PostEntity } from 'src/Posts/posts.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'Image' })
 export class ImageEntity extends BaseEntity {
@@ -9,4 +17,9 @@ export class ImageEntity extends BaseEntity {
   imgUrl: string;
 
   //*   Relation    */
+
+  //*   Image | M : 1 | Post
+  @ManyToOne(() => PostEntity, (post) => post.image)
+  @JoinColumn({ name: 'postId' })
+  post: PostEntity;
 }
