@@ -2,6 +2,7 @@ import { HashTagEntity } from 'src/HashTags/hashTags.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import {
   BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -12,6 +13,12 @@ import {
 export class PostHashTagEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column({ type: 'int' })
+  postId: number;
+
+  @Column({ type: 'int' })
+  hashTagId: number;
 
   //*   Relation    */
 

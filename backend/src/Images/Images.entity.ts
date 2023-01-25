@@ -16,6 +16,9 @@ export class ImageEntity extends BaseEntity {
   @Column({ type: 'text' })
   imgUrl: string;
 
+  @Column({ type: 'int' })
+  postId: number;
+
   //*   Relation    */
 
   //*   Image | M : 1 | Post

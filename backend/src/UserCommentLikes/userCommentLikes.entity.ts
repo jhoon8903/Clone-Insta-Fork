@@ -2,6 +2,7 @@ import { CommentEntity } from 'src/Comments/comments.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
   BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -12,6 +13,12 @@ import {
 export class UserCommentLikeEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column({ type: 'int' })
+  userId: number;
+
+  @Column({ type: 'int' })
+  commentId: number;
 
   //*   Relation    */
 

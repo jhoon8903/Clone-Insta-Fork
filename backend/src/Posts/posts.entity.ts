@@ -22,6 +22,9 @@ export class PostEntity extends BaseEntity {
   @Column({ type: 'text' })
   content: string;
 
+  @Column({ type: 'int' })
+  userId: number;
+
   //*   Relation    */
 
   //*   Post | 1 : M | Comment
