@@ -13,6 +13,9 @@ import { ImageEntity } from './Images/Images.entity';
 import { HashTagEntity } from './HashTags/hashTags.entity';
 import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
+import { UsersService } from './users/users.service';
+import { UsersController } from './users/users.controller';
+import { UsersModule } from './users/users.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -52,8 +55,9 @@ const typeOrmModuleOptions = {
     }),
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    UsersModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [UsersController],
+  providers: [UsersService],
 })
 export class AppModule {}

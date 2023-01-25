@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { CommentEntity } from 'src/Comments/comments.entity';
 import { FollowEntity } from 'src/Follows/follows.entity';
@@ -16,19 +17,39 @@ import {
 
 @Entity({ name: 'User' })
 export class UserEntity extends BaseEntity {
+  @ApiProperty({
+    description: 'User의 고유한 id',
+    required: true,
+  })
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @ApiProperty({
+    description: 'User의 Email',
+    required: true,
+  })
   @Column({ type: 'varchar', length: 50 })
   email: string;
 
+  @ApiProperty({
+    description: 'User의 Password',
+    required: true,
+  })
   @Exclude()
   @Column({ type: 'varchar', length: 32 })
   password: string;
 
+  @ApiProperty({
+    description: 'User의 Nickname',
+    required: true,
+  })
   @Column({ type: 'varchar', length: 10 })
   nickname: string;
 
+  @ApiProperty({
+    description: 'User의 name',
+    required: true,
+  })
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
