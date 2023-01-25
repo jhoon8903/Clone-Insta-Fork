@@ -30,9 +30,7 @@ Team S.A
 
 ### 🖼️ 와이어 프레임
 <p>
-<img src = 'URL' width = '400'>
-<img src = 'URL' width = '358'>
-<img src = 'URL' width = '400' >
+<img src = 'https://i.imgur.com/RMSBMYQ.jpg'>
 </p>
 ---
 
