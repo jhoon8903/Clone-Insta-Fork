@@ -32,11 +32,12 @@ Team S.A
 <p>
 <img src = 'https://i.imgur.com/RMSBMYQ.jpg'>
 </p>
----
+
+-----
 
 📑ERD 설계
 
----
+-----
 
 #### 🧰 기술 스택
 -   👤 프론트엔드: Bootstrap, React, axios
