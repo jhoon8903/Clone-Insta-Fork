@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { PostHashTagEntity } from 'src/PostHashTag/postHashTag.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'HashTag' })
 export class HashTagEntity extends BaseEntity {
@@ -9,4 +16,10 @@ export class HashTagEntity extends BaseEntity {
   hashTag: string;
 
   //*   Relation    */
+
+  //*   HashTag | 1 : M | PostHashTag
+  @OneToMany(() => PostHashTagEntity, (postHashTag) => postHashTag.hashTag, {
+    cascade: true,
+  })
+  postHashTag: PostHashTagEntity[];
 }

@@ -32,6 +32,9 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
+  @Column({ type: 'text' })
+  profileImg: string;
+
   //*   Relation    */
 
   //*   User | 1 : M | Post
@@ -88,5 +91,4 @@ export class UserEntity extends BaseEntity {
     cascade: true,
   })
   followee: FollowEntity[];
-
 }
