@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import Login from '../pages/Login';
-import Main from '../pages/Main';
 
 
 // 2. Router 라는 함수를 만들고 아래와 같이 작성합니다.
@@ -14,7 +13,6 @@ const Router = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/main" element={<Main />} />
         </Routes>
       </Layout>
     </BrowserRouter>
