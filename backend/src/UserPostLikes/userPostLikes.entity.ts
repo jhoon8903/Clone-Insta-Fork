@@ -2,6 +2,7 @@ import { PostEntity } from 'src/Posts/posts.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
   BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -12,6 +13,12 @@ import {
 export class UserPostLikeEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column({ type: 'int' })
+  userId: number;
+
+  @Column({ type: 'int' })
+  postId: number;
 
   //*   Relation    */
 

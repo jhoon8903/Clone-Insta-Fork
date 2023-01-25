@@ -1,6 +1,7 @@
 import { UserEntity } from 'src/Users/users.entity';
 import {
   BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -11,6 +12,12 @@ import {
 export class FollowEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  // @Column({ type: 'int' })
+  // followingUserId: number;
+
+  // @Column({ type: 'int' })
+  // FollowedUserId: number;
 
   //*   Relation    */
 

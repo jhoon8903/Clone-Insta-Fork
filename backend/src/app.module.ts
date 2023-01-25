@@ -15,9 +15,12 @@ import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
+import { CommentsModule } from './comments/comments.module';
 
 const typeOrmModuleOptions = {
-  useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
+  useFactory: async (
+    configService: ConfigService,
+  ): Promise<TypeOrmModuleOptions> => ({
     type: 'mysql',
     host: configService.get('DB_HOST'),
     port: 3306,
@@ -53,6 +56,7 @@ const typeOrmModuleOptions = {
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],

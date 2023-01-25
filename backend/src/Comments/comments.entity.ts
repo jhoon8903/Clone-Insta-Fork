@@ -23,6 +23,12 @@ export class CommentEntity extends BaseEntity {
   @Column({ type: 'int' })
   parentId: number;
 
+  @Column({ type: 'int' })
+  userId: number;
+
+  @Column({ type: 'int' })
+  postId: number;
+
   //*   Relation    */
 
   //*   Comment | 1 : M | UserCommentLike
