@@ -1,13 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import {
-  TypeOrmModule,
-  TypeOrmModuleAsyncOptions,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserEntity } from './Users/users.entity';
 import { UserPostTagEntity } from './UserPostTags/userPostTags.entity';
 import { UserPostLikeEntity } from './UserPostLikes/userPostLikes.entity';
@@ -59,7 +53,7 @@ const typeOrmModuleOptions = {
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
