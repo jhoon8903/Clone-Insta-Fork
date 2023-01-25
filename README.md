@@ -78,7 +78,7 @@ Team S.A
 	What to do❓ : 
 
 🐻 이정훈
-	What to do❓ : 
+	What to do❓ : 로그인, follow
 
 ---
 
