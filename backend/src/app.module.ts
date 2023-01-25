@@ -14,13 +14,10 @@ import { HashTagEntity } from './HashTags/hashTags.entity';
 import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
 import { UsersService } from './users/users.service';
-import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 
 const typeOrmModuleOptions = {
-  useFactory: async (
-    configService: ConfigService,
-  ): Promise<TypeOrmModuleOptions> => ({
+  useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
     type: 'mysql',
     host: configService.get('DB_HOST'),
     port: 3306,
@@ -57,7 +54,7 @@ const typeOrmModuleOptions = {
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
   ],
-  controllers: [UsersController],
-  providers: [UsersService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
