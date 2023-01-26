@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CommentEntity } from './comments.entity';
 import { CommentDto } from './dtos/comment.dto';
+import { CommentUpdateDto } from './dtos/comment.update.dto';
 
 @Injectable()
 export class CommentsService {
@@ -20,6 +21,8 @@ export class CommentsService {
       .where('c.postId = :id', { id: postId })
       .getMany();
 
+    if (!comments.length) throw new NotFoundException();
+
     return comments;
   }
 
@@ -30,11 +33,16 @@ export class CommentsService {
       postId: postId,
       userId: 1, // FIXME: JWT Strategy 작성후 수정하기.
     });
+    await this.commentsRepository.insert(comment);
 
-    return await this.commentsRepository.insert(comment);
+    return;
   }
 
-  async updateComment() {}
+  async updateComment(data: CommentUpdateDto, commentId: number) {
+    return await this.commentsRepository.update(commentId, {
+      comment: data.comment,
+    });
+  }
 
   async deleteComment() {}
 }

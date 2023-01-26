@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { PostEntity } from 'src/Posts/posts.entity';
 import { UserCommentLikeEntity } from 'src/UserCommentLikes/userCommentLikes.entity';
 import { UserCommentTagEntity } from 'src/UserCommentTags/userCommentTags.entity';
@@ -17,9 +18,19 @@ export class CommentEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @ApiProperty({
+    description: '댓글 내용',
+    required: true,
+    example: 'ㅋㅋ 진짜 웃기네',
+  })
   @Column({ type: 'text' })
   comment: string;
 
+  @ApiProperty({
+    description: 'parentId가 1일 경우 1번 댓글의 대댓글입니다.',
+    required: true,
+    example: '1',
+  })
   @Column({ type: 'int' })
   parentId: number;
 

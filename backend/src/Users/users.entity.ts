@@ -27,6 +27,7 @@ export class UserEntity extends BaseEntity {
   @ApiProperty({
     description: 'User의 Email',
     required: true,
+    example: 'wndhdks4536@gmail.com',
   })
   @Column({ type: 'varchar', length: 50 })
   email: string;
@@ -34,6 +35,7 @@ export class UserEntity extends BaseEntity {
   @ApiProperty({
     description: 'User의 Password',
     required: true,
+    example: 'q1w2e3r4',
   })
   @Exclude()
   @Column({ type: 'varchar', length: 32 })
@@ -42,6 +44,7 @@ export class UserEntity extends BaseEntity {
   @ApiProperty({
     description: 'User의 Nickname',
     required: true,
+    example: '닉넴뭐하지',
   })
   @Column({ type: 'varchar', length: 10 })
   nickname: string;
@@ -49,6 +52,7 @@ export class UserEntity extends BaseEntity {
   @ApiProperty({
     description: 'User의 name',
     required: true,
+    example: '신중완',
   })
   @Column({ type: 'varchar', length: 30 })
   name: string;
