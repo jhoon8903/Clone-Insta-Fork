@@ -19,8 +19,6 @@ export class UsersService {
       ? body.profileImg
       : process.env.DEFAULT_IMG_URL;
 
-    console.log(profileImg);
-
     const isUserExist = await this.usersRepository.findOneBy({ email });
 
     if (isUserExist) throw new ConflictException('이미 존재하는 Email 입니다.');
@@ -35,4 +33,8 @@ export class UsersService {
       profileImg: profileImg,
     });
   }
+
+  /**
+   * auth의 user 로그인서비스
+   */
 }

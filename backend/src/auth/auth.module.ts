@@ -8,6 +8,13 @@ import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, KakaoStrategy, GoogleStrategy, NaverStrategy, LocalStrategy],
+  providers: [
+    AuthService,
+    KakaoStrategy,
+    GoogleStrategy,
+    NaverStrategy,
+    LocalStrategy,
+  ],
+  exports: [],
 })
 export class AuthModule {}

@@ -13,7 +13,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       secretOrKey: process.env.JWT_SECRET,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
   async validate(payload) {

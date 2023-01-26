@@ -54,7 +54,12 @@ const typeOrmModuleOptions = {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    //AuthModule,
+
+    /**
+     * Authmodule, 중복 호출로 인한 error 발생 app.modules에서 비활성화
+     */
+    // AuthModule,
+    
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
     CommentsModule,
