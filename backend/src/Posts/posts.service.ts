@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
-import { UserSignUpDto } from 'src/users/dtos/users.signup.dto';
 
 @Injectable()
 export class PostsService {

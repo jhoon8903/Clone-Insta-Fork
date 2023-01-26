@@ -14,8 +14,8 @@ import { HashTagEntity } from './HashTags/hashTags.entity';
 import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
 import { UsersModule } from './Users/users.module';
-import { CommentsModule } from './comments/comments.module';
-import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './Comments/comments.module';
+import { PostsModule } from './Posts/posts.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -58,7 +58,7 @@ const typeOrmModuleOptions = {
      * Authmodule, 중복 호출로 인한 error 발생 app.modules에서 비활성화
      */
     // AuthModule,
-    
+
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
     CommentsModule,
