@@ -11,13 +11,17 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
     private userRepository: Repository<UserEntity>,
   ) {
     super({
-      clientID: process.env.NAVER_CLIENT_IDD,
+      clientID: process.env.NAVER_CLIENT_ID,
       clientSecret: process.env.NAVER_CLIENT_SECRET,
       callbackURL: process.env.NAVER_CALLBACK_URI,
     });
   }
 
-  async validate(profile: Profile): Promise<{ id: string }> {
+  async validate(
+    accesstoken: string,
+    refereshtoken: string,
+    profile: Profile,
+  ): Promise<{ id: string }> {
     const { id, _json } = profile;
     const { email, profile_image } = _json;
 

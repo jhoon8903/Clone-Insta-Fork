@@ -14,15 +14,18 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async createToken(req: UserEntity, res: Response): Promise<tokenType> {
+  async createToken(req: UserEntity, res: Response) {
     const payload: UserEntity = req;
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: '10m',
       secret: process.env.JWT_SECRET,
     });
-    const refreshToken = this.jwtService.sign(accessToken, { expiresIn: '7d' });
-    res.setHeader('Authorization', accessToken);
-    res.setHeader('refreshToken', refreshToken);
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: '7d',
+      secret: process.env.JWT_SECRET,
+    });
+    res.header('Authorization', accessToken);
+    res.header('refreshToken', refreshToken);
     return { accessToken, refreshToken };
   }
 }

@@ -13,8 +13,7 @@ import { ImageEntity } from './Images/Images.entity';
 import { HashTagEntity } from './HashTags/hashTags.entity';
 import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
-import { UsersService } from './users/users.service';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './Users/users.module';
 import { CommentsModule } from './comments/comments.module';
 import { PostsModule } from './posts/posts.module';
 
@@ -63,6 +62,7 @@ const typeOrmModuleOptions = {
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
     CommentsModule,
+    AuthModule,
     PostsModule,
   ],
   controllers: [],

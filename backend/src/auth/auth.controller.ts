@@ -2,66 +2,75 @@ import { UserEntity } from 'src/Users/users.entity';
 import { getUser } from 'src/common/decorator/user.data.decorator';
 import { tokenType } from './auth.interface';
 import { AuthService } from './auth.service';
-import { Controller, Get, Res, UseGuards, Post } from '@nestjs/common';
+import { Controller, Get, Res, UseGuards, Post, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @Get('google') // 프론트에서 GET 요청으로 google 인증 호출
+  /**
+   * 구글 로그인 호출
+   * 프론트에서 GET 요청으로 google 인증 호출
+   */
+  @Get('google')
   @UseGuards(AuthGuard('google'))
+  async googleAuth() {}
+
+  /**
+   * 구글 콜백 (res : 액세스, 리프레쉬 )
+   * @param id UserEntity id : string
+   * @param res {token, 2 arg}
+   */
   @Get('google/callback') // google 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('google')) // google strategy 인증 과정
-  async googleAuth(
-    @getUser() id: UserEntity,
-    @Res() res: Response,
-  ): Promise<tokenType> {
-    const { accessToken, refreshToken } = await this.authService.createToken(
-      id,
-      res,
-    );
-    return { accessToken, refreshToken };
+  async googleAuthRedirect(@getUser() id: UserEntity, @Res() res: Response) {
+    const token = await this.authService.createToken(id, res);
+    res.send(token);
   }
-  @Get('kakao') // 프론트에서 GET 요청으로 kakao 인증 호출
+
+  /**
+   * 프론트에서 GET 요청으로 kakao 인증 호출
+   */
+  @Get('kakao')
   @UseGuards(AuthGuard('kakao'))
+  async kakaoAuth() {}
+
+  /**
+   * 카카오 콜백 (res : 액세스, 리프레쉬 )
+   * @param id UserEntity id : string
+   * @param res {token, 2 arg}
+   */
   @Get('kakao/callback') // google 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('kakao')) // kakao strategy 인증 과정
-  async kakaoAuth(
-    @getUser() id: UserEntity,
-    @Res() res: Response,
-  ): Promise<tokenType> {
-    const { accessToken, refreshToken } = await this.authService.createToken(
-      id,
-      res,
-    );
-    return { accessToken, refreshToken };
+  async kakaoAuthRedirect(@getUser() id: UserEntity, @Res() res: Response) {
+    const token = await this.authService.createToken(id, res);
+    res.send(token);
   }
-  @Get('naver') // 프론트에서 GET 요청으로'naver 인증 호출
+
+  /**
+   * 프론트에서 GET 네이버 요청
+   */
+  @Get('naver')
   @UseGuards(AuthGuard('naver'))
+  async naverAuth() {}
+
+  /**
+   * 네이버 콜백 (res : 액세스, 리프레쉬 )
+   * @param id UserEntity id : string
+   * @param res {token, 2 arg}
+   */
   @Get('naver/callback') //'naver 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('naver')) //'naver strategy 인증 과정
-  async naverAuth(
-    @getUser() id: UserEntity,
-    @Res() res: Response,
-  ): Promise<tokenType> {
-    const { accessToken, refreshToken } = await this.authService.createToken(
-      id,
-      res,
-    );
-    return { accessToken, refreshToken };
+  async naverAuthRedirect(@getUser() id: UserEntity, @Res() res: Response) {
+    const token = await this.authService.createToken(id, res);
+    res.send(token);
   }
+
   @Post('local') // local 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('local')) // local strategy 인증 과정
-  async localAuth(
-    @getUser() id: UserEntity,
-    @Res() res: Response,
-  ): Promise<tokenType> {
-    const { accessToken, refreshToken } = await this.authService.createToken(
-      id,
-      res,
-    );
-    return { accessToken, refreshToken };
+  async localAuth(@getUser() id: UserEntity, @Res() res: Response) {
+    const token = await this.authService.createToken(id, res);
+    res.send(token);
   }
 }
