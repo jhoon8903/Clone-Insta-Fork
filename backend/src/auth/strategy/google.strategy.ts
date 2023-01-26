@@ -1,4 +1,3 @@
-import { socialType } from './../auth.interface';
 import { UserEntity } from 'src/Users/users.entity';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -23,24 +22,25 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async validate(profile: Profile) {
-    const { id, name, emails } = profile;
-    const provider = 'google';
-    const userId = id;
-    const username = name.givenName;
+  async validate(profile: Profile): Promise<{ id: string }> {
+    const { id, emails, _json } = profile;
+    const { picture } = _json;
     const email = emails[0].value;
-    const newUser: socialType = {
-      provider,
-      userId,
-      username,
-      email,
-    };
+
+    const provider: string = 'google';
+    const socialUser = new UserEntity();
+    socialUser.name = provider;
+    socialUser.password = id;
+    socialUser.nickname = email.split('@')[0];
+    socialUser.email = email;
+    socialUser.profileImg = picture ? picture : process.env.DEFUALT_IMG_URL;
     const existUser: UserEntity = await this.userRepository.findOneBy({
       email,
     });
     if (!existUser) {
-      return newUser;
+      const newUser = await this.userRepository.insert(socialUser);
+      return { id: newUser.identifiers[0].id };
     }
-    return existUser;
+    return { id: String(existUser.id) };
   }
 }
