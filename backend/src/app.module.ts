@@ -16,6 +16,7 @@ import { CommentEntity } from './Comments/comments.entity';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { CommentsModule } from './comments/comments.module';
+import { PostsModule } from './posts/posts.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -53,10 +54,11 @@ const typeOrmModuleOptions = {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
+    //AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
     CommentsModule,
+    PostsModule,
   ],
   controllers: [],
   providers: [],
