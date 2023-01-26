@@ -1,7 +1,7 @@
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'UserPostTag' })
-export class UserPostTagEntity extends BaseEntity {
+export class UserPostTagEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 

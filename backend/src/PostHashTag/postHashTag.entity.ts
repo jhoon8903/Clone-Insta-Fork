@@ -1,7 +1,7 @@
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { HashTagEntity } from 'src/HashTags/hashTags.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'PostHashTag' })
-export class PostHashTagEntity extends BaseEntity {
+export class PostHashTagEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
