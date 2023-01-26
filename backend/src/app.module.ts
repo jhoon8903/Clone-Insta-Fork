@@ -1,13 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import {
-  TypeOrmModule,
-  TypeOrmModuleAsyncOptions,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserEntity } from './Users/users.entity';
 import { UserPostTagEntity } from './UserPostTags/userPostTags.entity';
 import { UserPostLikeEntity } from './UserPostLikes/userPostLikes.entity';
@@ -19,6 +13,9 @@ import { ImageEntity } from './Images/Images.entity';
 import { HashTagEntity } from './HashTags/hashTags.entity';
 import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
+import { UsersModule } from './Users/users.module';
+import { CommentsModule } from './Comments/comments.module';
+import { PostsModule } from './Posts/posts.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -56,10 +53,19 @@ const typeOrmModuleOptions = {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
+
+    /**
+     * Authmodule, 중복 호출로 인한 error 발생 app.modules에서 비활성화
+     */
+    // AuthModule,
+
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    UsersModule,
+    CommentsModule,
+    AuthModule,
+    PostsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

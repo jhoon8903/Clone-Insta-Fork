@@ -1,6 +1,6 @@
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -9,12 +9,15 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'Image' })
-export class ImageEntity extends BaseEntity {
+export class ImageEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'text' })
   imgUrl: string;
+
+  @Column({ type: 'int' })
+  postId: number;
 
   //*   Relation    */
 

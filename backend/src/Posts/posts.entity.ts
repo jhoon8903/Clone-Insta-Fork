@@ -1,11 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { CommentEntity } from 'src/Comments/comments.entity';
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { ImageEntity } from 'src/Images/Images.entity';
 import { PostHashTagEntity } from 'src/PostHashTag/postHashTag.entity';
 import { UserPostLikeEntity } from 'src/UserPostLikes/userPostLikes.entity';
 import { UserPostTagEntity } from 'src/UserPostTags/userPostTags.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -15,12 +16,26 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'Post' })
-export class PostEntity extends BaseEntity {
+export class PostEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @ApiProperty({
+    description: '게시글의 Text',
+    required: true,
+    example:
+      '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려 강산 대한 사람 대한으로 길이 보전하세',
+  })
   @Column({ type: 'text' })
   content: string;
+
+  @ApiProperty({
+    description: 'User의 고유한 ID값.',
+    required: true,
+    example: '1',
+  })
+  @Column({ type: 'int' })
+  userId: number;
 
   //*   Relation    */
 

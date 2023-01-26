@@ -1,7 +1,8 @@
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
-  BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -9,10 +10,16 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'UserPostLike' })
-export class UserPostLikeEntity extends BaseEntity {
+export class UserPostLikeEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @Column({ type: 'int' })
+  userId: number;
+
+  @Column({ type: 'int' })
+  postId: number;
+//
   //*   Relation    */
 
   //*   UserPostLike | M : 1 | User
