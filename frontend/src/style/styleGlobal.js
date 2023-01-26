@@ -8,4 +8,5 @@ export const COLORS = {
   defaultLemon: "#f6ff7c",
   defaultBlueLight: "#AECDFF",
   defaultBlueBold: "#0A82FF",
+  defaultGray: "#888",
 };
