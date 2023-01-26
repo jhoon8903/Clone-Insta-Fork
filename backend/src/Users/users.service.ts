@@ -33,4 +33,8 @@ export class UsersService {
       profileImg: profileImg,
     });
   }
+
+  /**
+   * auth의 user 로그인서비스
+   */
 }
