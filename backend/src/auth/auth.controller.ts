@@ -1,8 +1,17 @@
+import { AuthLoginDto } from './dtos/auth.login.dto';
 import { UserEntity } from 'src/Users/users.entity';
 import { getUser } from 'src/common/decorator/user.data.decorator';
 import { tokenType } from './auth.interface';
 import { AuthService } from './auth.service';
-import { Controller, Get, Res, UseGuards, Post, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Res,
+  UseGuards,
+  Post,
+  Req,
+  Body,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
@@ -26,7 +35,7 @@ export class AuthController {
    */
   @Get('google/callback') // google 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('google')) // google strategy 인증 과정
-  async googleAuthRedirect(@getUser() id: UserEntity, @Res() res: Response) {
+  async googleAuthRedirect(@getUser() id: string, @Res() res: Response) {
     const token = await this.authService.createToken(id, res);
     res.send(token);
   }
@@ -45,7 +54,7 @@ export class AuthController {
    */
   @Get('kakao/callback') // google 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('kakao')) // kakao strategy 인증 과정
-  async kakaoAuthRedirect(@getUser() id: UserEntity, @Res() res: Response) {
+  async kakaoAuthRedirect(@getUser() id: string, @Res() res: Response) {
     const token = await this.authService.createToken(id, res);
     res.send(token);
   }
@@ -64,15 +73,16 @@ export class AuthController {
    */
   @Get('naver/callback') //'naver 인증 후 돌아오는 callback 주소
   @UseGuards(AuthGuard('naver')) //'naver strategy 인증 과정
-  async naverAuthRedirect(@getUser() id: UserEntity, @Res() res: Response) {
+  async naverAuthRedirect(@getUser() id: string, @Res() res: Response) {
     const token = await this.authService.createToken(id, res);
     res.send(token);
   }
 
-  @Post('local') // local 인증 후 돌아오는 callback 주소
-  @UseGuards(AuthGuard('local')) // local strategy 인증 과정
-  async localAuth(@getUser() id: UserEntity, @Res() res: Response) {
-    const token = await this.authService.createToken(id, res);
+  @Post('local') // local login
+  @UseGuards()
+  async localAuth(@Body() body: AuthLoginDto, @Res() res: Response) {
+    const { id } = await this.authService.localLogin(body);
+    const token = await this.authService.createToken({ id }, res);
     res.send(token);
   }
 }

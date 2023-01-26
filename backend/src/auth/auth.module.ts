@@ -4,8 +4,7 @@ import { AuthController } from './auth.controller';
 import { KakaoStrategy } from './strategy/kakao.strategy';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { NaverStrategy } from './strategy/naver.strategy';
-import { LocalStrategy } from './strategy/local.strategy';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserEntity } from 'src/Users/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,13 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forFeature([UserEntity]),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    KakaoStrategy,
-    GoogleStrategy,
-    NaverStrategy,
-    LocalStrategy,
-  ],
+  providers: [AuthService, KakaoStrategy, GoogleStrategy, NaverStrategy],
   exports: [AuthModule],
 })
 export class AuthModule {}
