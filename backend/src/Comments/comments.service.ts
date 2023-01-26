@@ -12,7 +12,15 @@ export class CommentsService {
   ) {}
 
   async getAllComments(postId) {
-    //* Nickname[UserEntity] , comment[CommentEntity], likeCount[UserCommentLike], createdAt[CommentEntity]
+    //* Nickname[UserEntity] , comment[CommentEntity], createdAt[CommentEntity]
+    const comments = await this.commentsRepository
+      .createQueryBuilder('c')
+      .select(['c.id', 'c.comment', 'c.parentId', 'User.nickname'])
+      .innerJoin('c.user', 'User')
+      .where('c.postId = :id', { id: postId })
+      .getMany();
+
+    return comments;
   }
 
   async createComment(data: CommentDto, postId: number) {
@@ -25,4 +33,8 @@ export class CommentsService {
 
     return await this.commentsRepository.insert(comment);
   }
+
+  async updateComment() {}
+
+  async deleteComment() {}
 }
