@@ -33,7 +33,7 @@ const SideNav = () => {
         
     }
     // 로그인 페이지에서 공통헤더 숨김처리
-    if (window.location.pathname === '/') return null
+    if (window.location.pathname === '/' || window.location.pathname === '/signup') return null
   return (
     <StSideNavWrap>
         <StH1>
