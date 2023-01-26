@@ -16,8 +16,7 @@ export class PostsService {
     return await this.postRepository.save({ userId, content });
   }
 
-  async changePost(param, body) {
-    const { postId } = param;
+  async changePost(postId, body) {
     const { content } = body;
     const userId = 1;
     return await this.postRepository
@@ -31,8 +30,7 @@ export class PostsService {
       .execute();
   }
 
-  async deletePost(param) {
-    const { postId } = param;
+  async deletePost(postId) {
     const userId = 1;
     return await this.postRepository
       .createQueryBuilder()
@@ -46,8 +44,7 @@ export class PostsService {
     return await this.postRepository.find();
   }
 
-  async findOnePost(param) {
-    const { postId } = param;
+  async findOnePost(postId: number) {
     return await this.postRepository.findOneBy({
       id: postId,
     });
