@@ -18,17 +18,22 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     });
   }
 
-  async validate(profile: Profile): Promise<{ id: string }> {
+  async validate(
+    accesstoken: string,
+    refereshtoken: string,
+    profile: Profile,
+  ): Promise<{ id: string }> {
     const { _json } = profile;
-    const { id, email } = _json;
+    const { id, kakao_account } = _json;
+    const email = kakao_account.email;
     const provider: string = 'kakao';
     const socialUser = new UserEntity();
     socialUser.name = provider;
     socialUser.password = id;
     socialUser.nickname = email.split('@')[0];
     socialUser.email = email;
-    socialUser.profileImg = _json.profile.profile_image_url
-      ? _json.profile.profile_image_url
+    socialUser.profileImg = kakao_account.profile.profile_image_url
+      ? kakao_account.profile.profile_image_url
       : process.env.DEFUALT_IMG_URL;
 
     const existUser: UserEntity = await this.userRepository.findOneBy({

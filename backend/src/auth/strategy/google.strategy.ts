@@ -5,6 +5,7 @@ import { Profile, Strategy } from 'passport-google-oauth20';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { request } from 'http';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -17,12 +18,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URI,
-      passReqToCallback: true,
       scope: ['email', 'profile'],
     });
   }
 
-  async validate(profile: Profile): Promise<{ id: string }> {
+  async validate(
+    accesstoken: string,
+    refereshtoken: string,
+    profile: Profile,
+  ): Promise<{ id: string }> {
+    console.log();
     const { id, emails, _json } = profile;
     const { picture } = _json;
     const email = emails[0].value;
