@@ -14,9 +14,6 @@ import { HiOutlineLogout } from "react-icons/hi";
 
 const SideNav = () => {
     const navigate = useNavigate()
-    const onClickHeaderLogo=()=>{
-        navigate('/')
-    }
 
     const onClickLogout=()=>{
         if(!window.confirm('로그아웃 하시겠습니까?')){
@@ -32,7 +29,7 @@ const SideNav = () => {
         
         
     }
-    // 로그인 페이지에서 공통헤더 숨김처리
+    // 로그인, 회원가입 페이지에서 공통 사이드 메뉴바 숨김처리
     if (window.location.pathname === '/' || window.location.pathname === '/signup') return null
   return (
     <StSideNavWrap>
@@ -112,9 +109,7 @@ const StH1=styled.h1`
 const StSideNavWrap=styled.nav`
     display: flex;
     flex-direction: column;
-    width: 20%;
-    max-width: 250px;
-    min-width: 100px;
+    width: 250px;
     height: calc(100vh - 40px);
     position: fixed;
     top:0;
