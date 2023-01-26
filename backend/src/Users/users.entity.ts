@@ -1,22 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { CommentEntity } from 'src/Comments/comments.entity';
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { FollowEntity } from 'src/Follows/follows.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import { UserCommentLikeEntity } from 'src/UserCommentLikes/userCommentLikes.entity';
 import { UserCommentTagEntity } from 'src/UserCommentTags/userCommentTags.entity';
 import { UserPostLikeEntity } from 'src/UserPostLikes/userPostLikes.entity';
 import { UserPostTagEntity } from 'src/UserPostTags/userPostTags.entity';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'User' })
-export class UserEntity extends BaseEntity {
+export class UserEntity extends CommonEntity {
   @ApiProperty({
     description: 'User의 고유한 id',
     required: true,

@@ -44,5 +44,11 @@ export class CommentsService {
     });
   }
 
-  async deleteComment() {}
+  async deleteComment(commentId: number) {
+    return await this.commentsRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where('id = :id', { id: commentId })
+      .execute();
+  }
 }

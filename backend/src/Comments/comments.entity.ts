@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
 import { UserCommentLikeEntity } from 'src/UserCommentLikes/userCommentLikes.entity';
 import { UserCommentTagEntity } from 'src/UserCommentTags/userCommentTags.entity';
@@ -14,7 +15,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'Comment' })
-export class CommentEntity extends BaseEntity {
+export class CommentEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 

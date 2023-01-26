@@ -1,11 +1,11 @@
 import { CommentEntity } from 'src/Comments/comments.entity';
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { ImageEntity } from 'src/Images/Images.entity';
 import { PostHashTagEntity } from 'src/PostHashTag/postHashTag.entity';
 import { UserPostLikeEntity } from 'src/UserPostLikes/userPostLikes.entity';
 import { UserPostTagEntity } from 'src/UserPostTags/userPostTags.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -15,7 +15,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'Post' })
-export class PostEntity extends BaseEntity {
+export class PostEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
