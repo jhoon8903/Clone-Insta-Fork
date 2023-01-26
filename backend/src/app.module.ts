@@ -17,7 +17,9 @@ import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 
 const typeOrmModuleOptions = {
-  useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
+  useFactory: async (
+    configService: ConfigService,
+  ): Promise<TypeOrmModuleOptions> => ({
     type: 'mysql',
     host: configService.get('DB_HOST'),
     port: 3306,
@@ -50,7 +52,10 @@ const typeOrmModuleOptions = {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
+    /**
+     * Authmodule, 중복 호출로 인한 error 발생 app.modules에서 비활성화
+     */
+    // AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
   ],
