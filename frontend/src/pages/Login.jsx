@@ -93,7 +93,7 @@ const StMain = styled.div`
   justify-content: center;
   align-items: center;
   gap: 40px;
-  margin: 15px;
+  margin: 10px;
   background-color: white;
 `;
 
