@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CommentEntity } from './comments.entity';
@@ -12,16 +16,26 @@ export class CommentsService {
     private readonly commentsRepository: Repository<CommentEntity>,
   ) {}
 
-  async getAllComments(postId) {
+  async getAllComments(postId: number) {
     //* Nickname[UserEntity] , comment[CommentEntity], createdAt[CommentEntity]
     const comments = await this.commentsRepository
       .createQueryBuilder('c')
-      .select(['c.id', 'c.comment', 'c.parentId', 'User.nickname'])
+      .select(['c.id', 'c.comment', 'User.nickname'])
       .innerJoin('c.user', 'User')
       .where('c.postId = :id', { id: postId })
+      .andWhere('c.parentId = :parentId', { parentId: 0 })
       .getMany();
 
-    if (!comments.length) throw new NotFoundException();
+    return comments;
+  }
+
+  async getRecomments(parentId: number) {
+    const comments = await this.commentsRepository
+      .createQueryBuilder('c')
+      .select(['c.id', 'c.comment', 'User.nickname'])
+      .innerJoin('c.user', 'User')
+      .where('c.parentId = :parentId', { parentId: parentId })
+      .getMany();
 
     return comments;
   }
@@ -39,12 +53,35 @@ export class CommentsService {
   }
 
   async updateComment(data: CommentUpdateDto, commentId: number) {
+    const userId = 1;
+    const comment = await this.commentsRepository
+      .createQueryBuilder('c')
+      .select(['c.userId', 'c.id'])
+      .where('c.id = :id', { id: commentId })
+      .getOne();
+
+    if (!comment) throw new NotFoundException('존재하지 않는 댓글입니다.');
+
+    if (userId !== comment.userId)
+      throw new UnauthorizedException('권한이 없습니다.');
+
     return await this.commentsRepository.update(commentId, {
       comment: data.comment,
     });
   }
 
   async deleteComment(commentId: number) {
+    const userId = 1;
+    const comment = await this.commentsRepository
+      .createQueryBuilder('c')
+      .select(['c.userId', 'c.id'])
+      .where('c.id = :id', { id: commentId })
+      .getOne();
+
+    if (!comment) throw new NotFoundException('존재하지 않는 댓글입니다.');
+    if (userId !== comment.userId)
+      throw new UnauthorizedException('권한이 없습니다.');
+
     return await this.commentsRepository
       .createQueryBuilder()
       .softDelete()

@@ -31,11 +31,8 @@ export class AuthService {
 
     if (existUser.name === 'kakao' || 'google' || 'naver')
       return { id: String(existUser.id) };
-
-    const salt = Number(process.env.BCRYPT_SALT);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    if (hashedPassword === existUser.password) {
+    const check = await bcrypt.compare(password, existUser.password);
+    if (check) {
       return { id: String(existUser.id) };
     } else {
       throw new UnauthorizedException('아이디 또는 비빌번호를 확인해주세요');

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { Delete, HttpCode, Put } from '@nestjs/common/decorators';
+import { Delete, HttpCode, Put, UseGuards } from '@nestjs/common/decorators';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -10,10 +10,11 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { DeleteDateColumn } from 'typeorm';
+import { getUser } from 'src/common/decorator/user.data.decorator';
 import { CommentsService } from './comments.service';
 import { CommentDto } from './dtos/comment.dto';
 import { CommentUpdateDto } from './dtos/comment.update.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 
 @ApiTags('Comment')
 @Controller('comments')
@@ -29,8 +30,10 @@ export class CommentsController {
     description: '존재하지 않는 게시글의 댓글을 불러오려 시도 할 경우',
   })
   @ApiOkResponse({ description: '정상적으로 댓글을 전부 불러온 경우.' })
+  @UseGuards(JwtAuthGuard)
   @Get(':postId')
-  async getAllComments(@Param('postId') postId: number) {
+  async getAllComments(@Param('postId') postId: number, @getUser() a) {
+    console.log(a);
     return await this.commentsService.getAllComments(postId);
   }
 

@@ -1,9 +1,13 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //* 전역으로 Pipes 설정
+  app.useGlobalPipes(new ValidationPipe());
 
   //* Swagger 설정.
   const swaggerConfig = new DocumentBuilder()
