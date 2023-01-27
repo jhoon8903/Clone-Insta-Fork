@@ -8,8 +8,12 @@ import { BiTrash } from "react-icons/bi";
 import { BsPencilFill } from "react-icons/bs";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+
 import ButtonDefault from '../components/ButtonDefault';
 import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
+import PostDetailContent from './PostDetailContent'
+import PostDetailCommentBox from './PostDetailCommentBox';
 
 
 function PostDetailModal({width, height, bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
@@ -24,7 +28,6 @@ function PostDetailModal({width, height, bgColor, hoverBgColor, hoverFontColor, 
   
 
   return (
-    <>
     <StPostDetailModalWrap display={!isGlobalModalPostDetail ? "none" : "flex"}>
       <StPostDetailContentBox>
         <StPostDetailImageBox>
@@ -33,73 +36,57 @@ function PostDetailModal({width, height, bgColor, hoverBgColor, hoverFontColor, 
         <StPostDetailInfoBox>
           <StPostDetailUserInfo>
             <Link to="/main" title="피드 방문하기" className="linkPostDetailUserInfo">
-              <StPostDetailThumb></StPostDetailThumb>
+              <StPostDetailThumb/>
               <StPostDetailNick>닉네임닉네임</StPostDetailNick>
               <StMainPostItemDate>2023-01-26</StMainPostItemDate>
             </Link>
           </StPostDetailUserInfo>
-        </StPostDetailInfoBox>
-      </StPostDetailContentBox>
+          <StPostDetailContentCommentBox>
 
+            <PostDetailContent/>
+            <PostDetailContent/>
+            <PostDetailContent/>
+            <PostDetailContent/>
+            <PostDetailContent/>
+            <PostDetailContent/>
+
+          </StPostDetailContentCommentBox>
+
+          <PostDetailCommentBox/>
+
+        </StPostDetailInfoBox>
+        <AiOutlineCloseCircle className="iconClose" onClick={onClickModalClose}/>
+      </StPostDetailContentBox>
       <StPostDetailContentBoxDim onClick={onClickModalClose}></StPostDetailContentBoxDim>
     </StPostDetailModalWrap>
-
-    {/* <StMainPostItem display={isGlobalModalPostDetail ? "true" : "false"}>
-    
-
-      <StMainPostItemTopInfo>
-        <StMainPostItemUserInfo>
-          <Link to="/main" title="피드 방문하기">
-            <StPostDetailNick>닉네임닉네임 ·</StPostDetailNick>
-            <StMainPostItemDate>2023-01-26</StMainPostItemDate>
-          </Link>
-        </StMainPostItemUserInfo>
-        <StMainPostItemPostFunction>
-          <BsPencilFill onClick={onClickPostEdit} className="iconEdit"/>
-          <BiTrash onClick={onClickPostDelete}/>
-        </StMainPostItemPostFunction>
-      </StMainPostItemTopInfo>
-      
-      <StMainPostItemBottomInfo>
-        <StMainPostItemLikeBox>
-          <FaRegHeart/><HiOutlinePaperAirplane/>
-        </StMainPostItemLikeBox>
-        <StMainPostItemLikeTotal>좋아요 999개</StMainPostItemLikeTotal>
-          <StMainPostItemContent>
-            <StPostDetailNickContent>
-              <Link to="/main" title="피드 방문하기">닉네임닉네임</Link>
-            </StPostDetailNickContent>
-            {!isEdit
-            ?<>
-              <StMainPostItemDescContent>
-                게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 
-              </StMainPostItemDescContent>
-              <ButtonDefault onClick={onClickModalPostDetail}
-              bgColor={`${COLORS.defaultLemon}`} hoverBgColor={`${COLORS.defaultBold}`}
-              >모두보기</ButtonDefault>
-              </> 
-            :<>
-                <StMainPostItemDescContentEdit autoFocus placeholder="value = 게시글 설명글"/>
-                <ButtonDefault 
-                width="100px"
-                bgColor={`${COLORS.defaultBlueLight}`} hoverBgColor={`${COLORS.defaultBold}`}
-                >수정</ButtonDefault>
-              </>
-            }
-          </StMainPostItemContent>
-          <StMainPostItemCommentTotal>댓글 999개</StMainPostItemCommentTotal>
-      </StMainPostItemBottomInfo>
-    </StMainPostItem> */}
-    </>
   )
 }
 
 
+const StPostDetailCommentBox=styled.div`
+`
 const StMainPostItemDate=styled.span`
   margin-left: 8px;
 `
 const StPostDetailNick=styled.span`
-  
+  font-weight: bold;
+`
+const StPostDetailContentCommentBox=styled.div`
+  padding: 0 20px 20px;
+  height: 420px;
+  overflow: auto;
+  border-bottom: 1px solid #e2e2e2;
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: ${COLORS.defaultPinkLight};
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${COLORS.defaultPinkBold};
+    border-radius: 10px;
+  }
 `
 const StPostDetailThumb=styled.img`
   width: 30px;
@@ -109,13 +96,11 @@ const StPostDetailThumb=styled.img`
 `
 const StPostDetailUserInfo=styled.div`
   border-bottom:1px solid #e2e2e2;
-  padding-bottom: 20px;
+  padding: 10px 20px;
 `
 const StPostDetailInfoBox=styled.div`
-  border:1px solid red;
-  height: calc(100% - 10px);
+  height: calc(100% - 20px);
   flex-basis: 40%;
-  padding: 5px;
 `
 const StPostDetailImage=styled.img.attrs(props=>({
   src:`${props.src || "images/logo.png"}`,
@@ -131,14 +116,13 @@ const StPostDetailImageBox=styled.div`
   align-items: center;
   height: 100%;
   flex-basis: 60%;
-  border: 1px solid #e2e2e2;
-  border-radius: 5px;
+  border-right: 1px solid ${COLORS.defaultGrayLight};
 `
 const StPostDetailContentBoxDim=styled.div`
   width:100%;
   height:100%;
   background-color: #000;
-  opacity: 0.5;
+  opacity: 0.6;
   position: absolute;
   top:0;
   left:0;
@@ -148,13 +132,12 @@ const StPostDetailContentBox=styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  column-gap: 10px;
   width: 70%;
   min-width: 550px;
   height: 70%;
   min-height: 400px;
-  padding: 16px 10px;
-  border: 1px solid red;
+  border: 3px solid ${COLORS.defaultGrayLight};
+  border-radius: 5px;
   position: relative;
   z-index: 2;
   background-color: #fff;
@@ -172,80 +155,6 @@ const StPostDetailModalWrap=styled.div`
   width:100vw;
   height:100vh;
 `
-
-const StMainPostItemCommentTotal=styled.span`
-  color: ${COLORS.defaultGray};
-  cursor: pointer;
-`
-const StMainPostItemDescContentEdit=styled.textarea`
-  width: calc(100% - 10px);
-  height: 30px;
-  margin: 10px 0;
-  padding: 5px;
-  border: 1px solid ${COLORS.defaultOrange};
-  resize: none;
-`
-const StMainPostItemDescContent=styled.p`
-  max-height: 30px;
-  padding: 10px;
-  margin-bottom: 6px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-height: 20px;
-`
-const StPostDetailNickContent=styled.span`
-  font-weight:bold;
-  :hover{
-    color: ${COLORS.defaultBlueBold}
-  }
-`
-const StMainPostItemContent=styled.div`
-`
-const StMainPostItemLikeTotal=styled.span`
-  font-weight: bold;
-`
-const StMainPostItemLikeBox=styled.div`
-  display: flex;
-  column-gap: 5px;
-`
-const StMainPostItemBottomInfo=styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  row-gap: 14px;
-`
-
-
-const StMainPostItemPostFunction=styled.div`
-  
-`
-const StMainPostItemUserInfo=styled.span`
-  :hover{
-    color: ${COLORS.defaultBlueBold}
-  }
-`
-const StMainPostItemTopInfo=styled.span`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-`
-const StMainPostItem=styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  row-gap: 10px;
-  width: 40%;
-  max-width: 450px;
-  min-width: 240px;
-  padding: 10px;
-  border-bottom: 1px solid #e2e2e2;
-`
-
 
 
 export default PostDetailModal

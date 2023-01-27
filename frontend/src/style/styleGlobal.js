@@ -9,4 +9,7 @@ export const COLORS = {
   defaultBlueLight: "#AECDFF",
   defaultBlueBold: "#0A82FF",
   defaultGray: "#888",
+  defaultGrayLight: "#d2d2d2",
+  defaultPinkLight: "#FEC6C8",
+  defaultPinkBold: "#ff71a1",
 };
