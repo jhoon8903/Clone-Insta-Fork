@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 function ButtonDefault({width, height, bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
   return (
-    <StButtonDefault bgColor={bgColor} hoverBgColor={hoverBgColor} hoverFontColor={hoverFontColor}
+    <StButtonDefault width={width} height={height} bgColor={bgColor} hoverBgColor={hoverBgColor} hoverFontColor={hoverFontColor}
     onClick={onClick}
     >{children}
     </StButtonDefault>
