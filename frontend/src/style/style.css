@@ -32,3 +32,10 @@ svg:hover{
     width: 20px;
     height: 20px;
 }
+
+/*상세 모달*/
+.linkPostDetailUserInfo{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}

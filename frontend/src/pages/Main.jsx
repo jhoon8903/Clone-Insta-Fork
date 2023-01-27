@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import ButtonDefault from '../components/ButtonDefault';
 import PostItem from '../components/PostItem';
+import PostDetailModal from '../components/PostDetailModal';
 
 import { COLORS } from '../style/styleGlobal';
 import { BiTrash } from "react-icons/bi";
@@ -19,6 +20,7 @@ const Main = () => {
         <PostItem></PostItem>
         <PostItem></PostItem>
       </StMainPostItemBox>
+      <PostDetailModal/>
     </StMainWrap>
   )
 }
