@@ -62,9 +62,6 @@ function PostDetailModal({width, height, bgColor, hoverBgColor, hoverFontColor, 
   )
 }
 
-
-const StPostDetailCommentBox=styled.div`
-`
 const StMainPostItemDate=styled.span`
   margin-left: 8px;
 `
