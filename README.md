@@ -19,7 +19,7 @@
 
 #### 📡 배포 링크 :
 
-swagger : URL
+swagger : https://codingtestrg.shop/api-docs
 
 ---
 
