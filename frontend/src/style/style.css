@@ -20,6 +20,12 @@ svg:hover{
     color: var(--color-defaultBold);
 }
 
+/*공통*/
+.flex-align-center{
+    display: flex;
+    align-items: center;
+}
+
 /*사이드 메뉴*/
 .linkSideNav{
     display: flex;
@@ -38,4 +44,21 @@ svg:hover{
     display: flex;
     align-items: center;
     column-gap: 10px;
+}
+.inline-flex{
+    display: inline-flex;
+    width: auto;
+    align-items: center;
+}
+.position-right{
+    position: absolute;
+    right: -14px;
+}
+.iconClose{
+    position: absolute;
+    top:10px;
+    right:10px;
+    width: 24px;
+    height: 24px;
+    color: var(--color-defaultOrange);
 }

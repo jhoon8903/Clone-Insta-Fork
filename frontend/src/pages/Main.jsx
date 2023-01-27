@@ -1,21 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import styled from 'styled-components'
+import { useSelector } from 'react-redux';
 
-import ButtonDefault from '../components/ButtonDefault';
 import PostItem from '../components/PostItem';
 import PostDetailModal from '../components/PostDetailModal';
 
-import { COLORS } from '../style/styleGlobal';
-import { BiTrash } from "react-icons/bi";
-import { BsPencilFill } from "react-icons/bs";
-import { HiOutlinePaperAirplane } from "react-icons/hi";
-import { FaRegHeart } from "react-icons/fa";
 
 
 const Main = () => {
+
+  const isGlobalModalPostDetail=useSelector((state)=>state.postDetailSlice.isGlobalModalPostDetail)
+
   return (
-    <StMainWrap>
+    <StMainWrap
+    //모달 창 오픈시 뒷 배경 스크롤 막기
+    overflow={!isGlobalModalPostDetail ? "auto" : "hidden"}
+    height={!isGlobalModalPostDetail ? "auto" : "calc(100vh - 110px)"}
+    >
       <StMainPostItemBox>
         <PostItem></PostItem>
         <PostItem></PostItem>
@@ -30,6 +31,8 @@ const Main = () => {
 const StMainWrap=styled.div`
   margin-left: 290px;
   padding: 30px 20px 80px 20px;
+  overflow-y: ${(props)=> props.overflow || 'auto'};
+  height: ${(props)=> props.height || 'auto'};
 `
 const StMainPostItemBox=styled.div`
   width: auto;

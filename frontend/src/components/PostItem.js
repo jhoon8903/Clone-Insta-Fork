@@ -44,7 +44,8 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
     <StMainPostItem>
       <StMainPostItemTopInfo>
         <StMainPostItemUserInfo>
-          <Link to="/main" title="피드 방문하기">
+          <Link to="/main" title="피드 방문하기" className="flex-align-center">
+            <StPostDetailThumb/>
             <StMainPostItemNick>닉네임닉네임 ·</StMainPostItemNick>
             <StMainPostItemDate>2023-01-26</StMainPostItemDate>
           </Link>
@@ -64,7 +65,8 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
         <StMainPostItemLikeTotal>좋아요 999개</StMainPostItemLikeTotal>
           <StMainPostItemContent>
             <StMainPostItemNickContent>
-              <Link to="/main" title="피드 방문하기">닉네임닉네임</Link>
+              <Link to="/main" title="피드 방문하기" className="flex-align-center">
+                <StPostDetailThumb/>닉네임닉네임</Link>
             </StMainPostItemNickContent>
             {!isEdit
             ?<>
@@ -84,13 +86,21 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
               </>
             }
           </StMainPostItemContent>
-          <StMainPostItemCommentTotal>댓글 999개</StMainPostItemCommentTotal>
+          <StMainPostItemCommentTotal onClick={onClickModalPostDetail}>댓글 999개</StMainPostItemCommentTotal>
       </StMainPostItemBottomInfo>
     </StMainPostItem>
     </>
   )
 }
 
+
+const StPostDetailThumb=styled.img`
+  width: 30px;
+  height:30px;
+  border-radius: 30px;
+  border: 1px solid ${COLORS.defaultGray};
+  margin-right: 10px;
+`
 const StMainPostItemCommentTotal=styled.span`
   color: ${COLORS.defaultGray};
   cursor: pointer;
@@ -154,7 +164,7 @@ const StMainPostItemDate=styled.span`
   margin-left: 8px;
 `
 const StMainPostItemNick=styled.span`
-
+font-weight: bold;
 `
 const StMainPostItemPostFunction=styled.div`
   
