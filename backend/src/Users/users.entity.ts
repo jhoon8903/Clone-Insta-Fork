@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { ChattingLogEntity } from 'src/ChattingLog/chattingLog.entity';
+import { ChattingRoomUserListEntity } from 'src/ChattingRoomUserList/chattingRoomUsetList.entity';
 import { CommentEntity } from 'src/Comments/comments.entity';
 import { CommonEntity } from 'src/common/entity/common.entity';
 import { FollowEntity } from 'src/Follows/follows.entity';
@@ -111,4 +113,20 @@ export class UserEntity extends CommonEntity {
     cascade: true,
   })
   followee: FollowEntity[];
+
+  //*   User | 1 : M | ChattingLog
+  @OneToMany(() => ChattingLogEntity, (chattingLog) => chattingLog.user, {
+    cascade: true,
+  })
+  chattingLog: ChattingLogEntity[];
+
+  //*   User | 1 : M | ChattingRoomUserList
+  @OneToMany(
+    () => ChattingRoomUserListEntity,
+    (chattingRoomUserList) => chattingRoomUserList.user,
+    {
+      cascade: true,
+    },
+  )
+  chattingRoomUserList: ChattingRoomUserListEntity[];
 }
