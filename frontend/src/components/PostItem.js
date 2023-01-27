@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 
@@ -11,6 +11,24 @@ import ButtonDefault from '../components/ButtonDefault';
 
 
 function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
+
+
+  //상태 값
+  const [isEdit, setIsEdit]=useState(false)
+
+  const onClickPostEdit=()=>{ //수정 토글
+    setIsEdit(!isEdit)
+  }
+  const onClickPostDelete=()=>{ //글 삭제
+    if(window.confirm('삭제하시겠습니까?')){
+      alert('삭제완료!')
+    }else{
+      alert('삭제취소')
+    }
+  }
+
+  
+
   return (
     <StMainPostItem>
           <StMainPostItemTopInfo>
@@ -21,8 +39,8 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
               </Link>
             </StMainPostItemUserInfo>
             <StMainPostItemPostFunction>
-              <BiTrash/>
-              <BsPencilFill className="iconEdit"/>
+              <BsPencilFill onClick={onClickPostEdit} className="iconEdit"/>
+              <BiTrash onClick={onClickPostDelete}/>
             </StMainPostItemPostFunction>
           </StMainPostItemTopInfo>
           <StMainPostItemImageBox>
@@ -37,10 +55,22 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
                 <StMainPostItemNickContent>
                   <Link to="/main" title="피드 방문하기">닉네임닉네임</Link>
                 </StMainPostItemNickContent>
-                <StMainPostItemDescContent>
-                게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 
-                </StMainPostItemDescContent>
-                <ButtonDefault bgColor={`${COLORS.defaultLemon}`} hoverBgColor={`${COLORS.defaultBold}`}>모두보기</ButtonDefault>
+                {!isEdit
+                ?<>
+                  <StMainPostItemDescContent>
+                    게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 
+                  </StMainPostItemDescContent>
+                  <ButtonDefault bgColor={`${COLORS.defaultLemon}`} hoverBgColor={`${COLORS.defaultBold}`}>모두보기</ButtonDefault>
+                  </> 
+                :<>
+                    <StMainPostItemDescContentEdit autoFocus placeholder="value = 게시글 설명글"/>
+                    <ButtonDefault 
+                    width="100px"
+                    bgColor={`${COLORS.defaultBlueLight}`} hoverBgColor={`${COLORS.defaultBold}`}
+                    >수정</ButtonDefault>
+                  </>
+                }
+                
               </StMainPostItemContent>
               <StMainPostItemCommentTotal>댓글 999개</StMainPostItemCommentTotal>
           </StMainPostItemBottomInfo>
@@ -51,6 +81,13 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
 const StMainPostItemCommentTotal=styled.span`
   color: ${COLORS.defaultGray};
   cursor: pointer;
+`
+const StMainPostItemDescContentEdit=styled.textarea`
+  width: calc(100% - 10px);
+  height: 30px;
+  margin: 10px 0;
+  padding: 5px;
+  resize: none;
 `
 const StMainPostItemDescContent=styled.p`
   max-height: 30px;
