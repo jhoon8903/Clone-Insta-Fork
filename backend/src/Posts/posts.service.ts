@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
@@ -11,17 +11,16 @@ export class PostsService {
     private readonly postRepository: Repository<PostEntity>,
   ) {}
 
-  async createPost(body) {
+  async createPost(userId, body) {
     const { content } = body;
-    const userId = 1;
     await this.postRepository.save({ userId, content });
     return;
   }
 
-  async changePost(postId, body) {
+  async changePost(postId, body, userId) {
     const { content } = body;
-    const userId = 1;
-    return await this.postRepository
+
+    const result = await this.postRepository
       .createQueryBuilder()
       .update(PostEntity)
       .set({
@@ -30,16 +29,25 @@ export class PostsService {
       .where('id = :id', { id: postId })
       .andWhere('userId=:userId', { userId: userId })
       .execute();
+    if (result.affected === 0) {
+      throw new ForbiddenException();
+    }
+    return;
   }
 
-  async deletePost(postId) {
-    const userId = 1;
-    return await this.postRepository
+  async deletePost(userId, postId) {
+    const result = await this.postRepository
       .createQueryBuilder()
       .delete()
       .from(PostEntity)
       .where('id = :id', { id: postId })
+      .andWhere('userId=:userId', { userId: userId })
       .execute();
+
+    if (result.affected === 0) {
+      throw new ForbiddenException();
+    }
+    return;
   }
 
   async findAllPost() {
