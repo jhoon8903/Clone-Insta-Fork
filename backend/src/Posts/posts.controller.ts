@@ -9,6 +9,7 @@ import {
   Get,
   UseGuards,
   UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import {
@@ -24,11 +25,17 @@ import {
 import { PostDto } from './dtos/posts.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { getUser } from 'src/common/decorator/user.data.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AwsService } from 'src/common/aws/aws.service';
 
 @ApiTags('Post')
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly awsService: AwsService,
+  ) {}
+
   //*게시글 작성
   @ApiOperation({
     summary: '게시글작성',
@@ -43,9 +50,16 @@ export class PostsController {
   @ApiCreatedResponse({ description: '게시글 작성에 성공한 경우' })
   @UseInterceptors()
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('image'))
   @Post()
-  createPost(@getUser() user, @Body() body: PostDto) {
-    return this.postsService.createPost(user.id, body);
+  async createPost(
+    @getUser() user,
+    @Body() body: PostDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const result = await this.awsService.uploadFileToS3('myimg', file);
+    const imgUrl = this.awsService.getAwsS3FileUrl(result.key);
+    return this.postsService.createPost(user.id, body, imgUrl);
   }
 
   //*게시글수정
@@ -67,7 +81,6 @@ export class PostsController {
     @Param('postId') postId: number,
     @Body() body: PostDto,
   ) {
-    console.log(user);
     return this.postsService.changePost(postId, body, user.id);
   }
 
