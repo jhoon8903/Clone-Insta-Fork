@@ -96,4 +96,6 @@ export class PostsController {
   deletePost(@Param('postId') postId: number) {
     return this.postsService.deletePost(postId);
   }
+
+  //*게시글 좋아요
 }
