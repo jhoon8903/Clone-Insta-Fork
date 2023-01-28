@@ -27,7 +27,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     refereshtoken: string,
     profile: Profile,
   ): Promise<{ id: string }> {
-    console.log();
     const { id, emails, _json } = profile;
     const { picture } = _json;
     const email = emails[0].value;

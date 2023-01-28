@@ -26,6 +26,7 @@ export class UsersController {
   @ApiCreatedResponse({ description: '회원가입에 성공한 경우' })
   @Post('signup')
   async signUp(@Body() body: UserSignUpDto) {
+    console.log(body);
     return await this.usersService.signUp(body);
   }
 }

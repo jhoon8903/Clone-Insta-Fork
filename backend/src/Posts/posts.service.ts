@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
+import { UserEntity } from '../Users/users.entity';
 
 @Injectable()
 export class PostsService {
@@ -13,7 +14,8 @@ export class PostsService {
   async createPost(body) {
     const { content } = body;
     const userId = 1;
-    return await this.postRepository.save({ userId, content });
+    await this.postRepository.save({ userId, content });
+    return;
   }
 
   async changePost(postId, body) {
@@ -41,12 +43,38 @@ export class PostsService {
   }
 
   async findAllPost() {
-    return await this.postRepository.find();
+    const result = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .getMany();
+
+    return result.map((post) => {
+      return {
+        id: post.id,
+        content: post.content,
+        nickname: post.user.nickname,
+        createAt: post.createdAt,
+        updateAt: post.updatedAt,
+      };
+    });
   }
 
   async findOnePost(postId: number) {
-    return await this.postRepository.findOneBy({
-      id: postId,
+    const result = await this.postRepository.find({
+      relations: {
+        user: true,
+      },
+      where: { id: postId },
+    });
+
+    return result.map((post) => {
+      return {
+        id: post.id,
+        content: post.content,
+        nickname: post.user.nickname,
+        createAt: post.createdAt,
+        updateAt: post.updatedAt,
+      };
     });
   }
 }
