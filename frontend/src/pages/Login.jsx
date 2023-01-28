@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { idCheck, pwCheck } from "../shared/regExp";
 import { __loginUser } from "../redux/modules/loginSlice";
+import { RiKakaoTalkFill } from "react-icons/ri";
+import { FcGoogle } from "react-icons/fc";
+import { AiFillApple } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -62,17 +66,32 @@ const Login = () => {
               <StButton>로그인</StButton>
             </StInputWrap>
           </StForm>
-          <StPassword>비밀번호를 잊으셨나요?</StPassword>
+          <StSocialButtonWrap>
+            <StSocialButton bc="#f7f7f7">
+              <FcGoogle />
+            </StSocialButton>
+            <StSocialButton bc="yellow">
+              <RiKakaoTalkFill />
+            </StSocialButton>
+            <StSocialButton bc="#f7f7f7">
+              <AiFillApple />
+            </StSocialButton>
+          </StSocialButtonWrap>
+          <StPassword>
+            {" "}
+            <Link to="/">비밀번호를 잊으셨나요?</Link>
+          </StPassword>
         </StMain>
         <StSignUpBox>
-          계정이 없으신가요?<span style={{ color: "#5252d4" }}>가입하기</span>
+          계정이 없으신가요?
+          <span style={{ color: "#000ac0" }}>
+            <Link to="/">가입하기</Link>
+          </span>
         </StSignUpBox>
       </StContainer>
     </>
   );
 };
-
-export default Login;
 
 const StContainer = styled.div`
   border: 2px solid #d2d2d2;
@@ -88,7 +107,7 @@ const StContainer = styled.div`
 const StMain = styled.div`
   border: 2px solid #d2d2d2;
   width: 350px;
-  height: 402px;
+  height: 452px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -104,7 +123,7 @@ const StInputWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 `;
 
 const StForm = styled.form``;
@@ -158,3 +177,29 @@ const StSignUpBox = styled.div`
   font-weight: 500;
   background-color: white;
 `;
+
+const StSocialButtonWrap = styled.div`
+  /* border: 1px solid; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+`;
+
+const StSocialButton = styled.button`
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px lightgray;
+  background-color: ${(props) => props.bc};
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & :hover {
+    color: black;
+  }
+`;
+
+export default Login;
