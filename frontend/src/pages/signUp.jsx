@@ -45,7 +45,9 @@ const SignUp = () => {
     <>
       <StContainer>
         <StMain>
-          <div>Logo</div>
+          <StLoginImageBox>
+            <StLoginImage src="" />
+          </StLoginImageBox>
           <StForm onSubmit={onSubmitSignUp}>
             <StInputWrap>
               <StInput
@@ -88,10 +90,9 @@ const SignUp = () => {
               <StButton>가입</StButton>
             </StInputWrap>
           </StForm>
-          <StPassword>비밀번호를 잊으셨나요?</StPassword>
         </StMain>
         <StSignUpBox>
-          계정이 있으신가요?<span style={{ color: "#5252d4" }}>로그인</span>
+          계정이 있으신가요?<span style={{ color: "#3fb3da" }}>로그인</span>
         </StSignUpBox>
       </StContainer>
     </>
@@ -99,7 +100,6 @@ const SignUp = () => {
 };
 
 const StContainer = styled.div`
-  border: 2px solid #d2d2d2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -113,7 +113,7 @@ const StContainer = styled.div`
 const StMain = styled.div`
   border: 2px solid #d2d2d2;
   width: 350px;
-  height: 480px;
+  height: 520px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -133,12 +133,6 @@ const StInputWrap = styled.div`
 `;
 
 const StForm = styled.form``;
-
-const StPassword = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: #141467;
-`;
 
 const StInput = styled.input`
   box-sizing: border-box;
@@ -180,9 +174,29 @@ const StSignUpBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 400;
   background-color: white;
+
+  & span {
+    font-weight: 700;
+    cursor: pointer;
+  }
+`;
+
+const StLoginImageBox = styled.div`
+  /* border: 1px solid red; */
+  width: 220px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StLoginImage = styled.img.attrs((props) => ({
+  src: `${props.src || "images/logo-ver2-1.png"}`,
+}))`
+  max-width: 100%;
 `;
 
 export default SignUp;
