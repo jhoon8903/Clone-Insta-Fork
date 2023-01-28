@@ -53,7 +53,9 @@ const Login = () => {
       <StContainer>
         <StMain>
           <StLoginImageBox>
-            <StLoginImage src="" />
+            <Link to="/">
+              <StLoginImage src="" onClick={() => window.location.reload()} />
+            </Link>
           </StLoginImageBox>
 
           <StForm onSubmit={onSubmitLogin}>
@@ -252,6 +254,7 @@ const StLoginImage = styled.img.attrs((props) => ({
   src: `${props.src || "images/logo-ver2-1.png"}`,
 }))`
   max-width: 100%;
+  cursor: pointer;
 `;
 
 export default Login;
