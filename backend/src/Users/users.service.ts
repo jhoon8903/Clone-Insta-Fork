@@ -14,7 +14,6 @@ export class UsersService {
 
   async signUp(body: UserSignUpDto) {
     const { nickname, email, password } = body;
-    console.log('이거왜 안나와?', email);
     const profileImg = body.profileImg
       ? body.profileImg
       : process.env.DEFAULT_IMG_URL;

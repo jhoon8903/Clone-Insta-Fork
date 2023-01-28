@@ -3,11 +3,17 @@ import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 import { PostEntity } from './posts.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MulterModule } from '@nestjs/platform-express';
+import { ImageEntity } from 'src/Images/Images.entity';
+import { AwsService } from 'src/common/aws/aws.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PostEntity])],
+  imports: [
+    MulterModule.register(),
+    TypeOrmModule.forFeature([PostEntity, ImageEntity]),
+  ],
   controllers: [PostsController],
-  providers: [PostsService],
+  providers: [PostsService, AwsService],
   exports: [PostsService],
 })
 export class PostsModule {}
