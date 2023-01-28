@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useInput from "../hooks/useInput";
 import { idCheck, pwCheck, nickCheck, nameCheck } from "../shared/regExp";
-import { __signUp } from "../redux/modules/loginSlice";
+import { __signUp } from "../redux/modules/signUpSlice";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -29,15 +29,15 @@ const SignUp = () => {
       alert("다시 확인해주세요.");
       return false;
     }
-    alert("회원가입 성공");
+    const signUpUser = {
+      email: valueId,
+      password: valuePw,
+      nickname: valueNickname,
+      name: valueName,
+    };
 
-    // const user = {
-    //   // id: Date.now(),
-    //   email: userId,
-    //   password: userPw,
-    // };
-    // console.log("user", user);
-    // dispatch(__loginUser(user));
+    dispatch(__signUp(signUpUser));
+    alert("회원가입 성공");
   };
 
   return (
