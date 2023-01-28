@@ -18,7 +18,7 @@ const SignUp = () => {
 
   const onSubmitSignUp = (e) => {
     e.preventDefault();
-    console.log(idCheck, nickCheck, nameCheck, pwCheck);
+    // console.log(idCheck, nickCheck, nameCheck, pwCheck);
     //유효성 검사
     if (
       !idCheck(valueId) &&
@@ -35,6 +35,7 @@ const SignUp = () => {
       nickname: valueNickname,
       name: valueName,
     };
+    // console.log("signUpUser", signUpUser);
 
     dispatch(__signUp(signUpUser));
     alert("회원가입 성공");
@@ -51,6 +52,7 @@ const SignUp = () => {
                 placeholder="이메일 주소"
                 value={valueId}
                 onChange={onChangeInputValueId}
+                required
                 onBlur={() => {
                   idCheck(valueId);
                 }}
@@ -59,6 +61,7 @@ const SignUp = () => {
                 placeholder="성명"
                 value={valueName}
                 onChange={onChangeInputValueName}
+                required
                 onBlur={() => {
                   nameCheck(valueName);
                 }}
@@ -67,6 +70,7 @@ const SignUp = () => {
                 placeholder="닉네임"
                 value={valueNickname}
                 onChange={onChangeInputValueNickname}
+                required
                 onBlur={() => {
                   nickCheck(valueNickname);
                 }}
@@ -75,6 +79,7 @@ const SignUp = () => {
                 placeholder="비밀번호"
                 value={valuePw}
                 onChange={onChangeInputValuePw}
+                required
                 onBlur={() => {
                   pwCheck(valuePw);
                 }}

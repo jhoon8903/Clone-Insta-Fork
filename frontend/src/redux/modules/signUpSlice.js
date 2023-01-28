@@ -21,6 +21,7 @@ export const __signUp = createAsyncThunk(
             // const refreshToken = res.headers.refreshauthorization;
             // localStorage.setItem("token", token);
             // localStorage.setItem("refreshToken", refreshToken);
+            // console.log("회원가입", res);
             alert("sign up success");
             return res;
           }
