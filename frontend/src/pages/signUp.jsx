@@ -5,10 +5,15 @@ import { useNavigate } from "react-router-dom";
 import useInput from "../hooks/useInput";
 import { idCheck, pwCheck, nickCheck, nameCheck } from "../shared/regExp";
 import { __signUp } from "../redux/modules/signUpSlice";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const onClickLogin = () => {
+    navigate("/");
+  };
 
   const [valueId, onChangeInputValueId, setValueId] = useInput("");
   const [valueNickname, onChangeInputValueNickname, setValueNickname] =
@@ -92,7 +97,10 @@ const SignUp = () => {
           </StForm>
         </StMain>
         <StSignUpBox>
-          계정이 있으신가요?<span style={{ color: "#3fb3da" }}>로그인</span>
+          계정이 있으신가요?
+          <span style={{ color: "#3fb3da" }} onClick={onClickLogin}>
+            로그인
+          </span>
         </StSignUpBox>
       </StContainer>
     </>
