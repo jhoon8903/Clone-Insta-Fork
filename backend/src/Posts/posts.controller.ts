@@ -7,6 +7,8 @@ import {
   Post,
   Put,
   Get,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import {
@@ -20,6 +22,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { PostDto } from './dtos/posts.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 
 @ApiTags('Post')
 @Controller('posts')
@@ -37,6 +40,7 @@ export class PostsController {
     description: '로그인 하지 않은 사용자일 경우',
   })
   @ApiCreatedResponse({ description: '게시글 작성에 성공한 경우' })
+  @UseInterceptors()
   @Post()
   createPost(@Body() body: PostDto) {
     return this.postsService.createPost(body);
@@ -75,6 +79,7 @@ export class PostsController {
   })
   @ApiNotFoundResponse({ description: '게시글이 존재하지 않을 경우' })
   @ApiOkResponse({ description: '게시글이 정상적으로 조회된 경우' })
+  @UseGuards(JwtAuthGuard)
   @Get(':postId')
   findOnePost(@Param('postId') postId: number) {
     return this.postsService.findOnePost(postId);

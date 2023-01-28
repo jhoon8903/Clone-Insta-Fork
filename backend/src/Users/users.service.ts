@@ -14,13 +14,12 @@ export class UsersService {
 
   async signUp(body: UserSignUpDto) {
     const { nickname, email, password } = body;
-
+    console.log('이거왜 안나와?', email);
     const profileImg = body.profileImg
       ? body.profileImg
       : process.env.DEFAULT_IMG_URL;
 
     const isUserEmailExists = await this.usersRepository.findOneBy({ email });
-
     if (isUserEmailExists)
       throw new ConflictException('이미 존재하는 Email 입니다.');
 

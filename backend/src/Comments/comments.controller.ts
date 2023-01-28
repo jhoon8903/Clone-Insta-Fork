@@ -33,7 +33,6 @@ export class CommentsController {
   @UseGuards(JwtAuthGuard)
   @Get(':postId')
   async getAllComments(@Param('postId') postId: number, @getUser() a) {
-    console.log(a);
     return await this.commentsService.getAllComments(postId);
   }
 
