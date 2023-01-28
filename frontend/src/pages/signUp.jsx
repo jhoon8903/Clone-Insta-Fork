@@ -46,7 +46,7 @@ const SignUp = () => {
       <StContainer>
         <StMain>
           <StLoginImageBox>
-            <StLoginImage src="" />
+            <StLoginImage src="" onClick={() => window.location.reload()} />
           </StLoginImageBox>
           <StForm onSubmit={onSubmitSignUp}>
             <StInputWrap>
@@ -197,6 +197,7 @@ const StLoginImage = styled.img.attrs((props) => ({
   src: `${props.src || "images/logo-ver2-1.png"}`,
 }))`
   max-width: 100%;
+  cursor: pointer;
 `;
 
 export default SignUp;
