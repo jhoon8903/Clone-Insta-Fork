@@ -8,6 +8,7 @@ import { __loginUser } from "../redux/modules/loginSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log("git");
 
   const user = useSelector((state) => state);
   // const isLogin = useSelector((store) => store.user.is_login);
