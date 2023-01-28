@@ -14,6 +14,10 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const onClickSignup = () => {
+    navigate("/signUp");
+  };
+
   const user = useSelector((state) => state);
   // const isLogin = useSelector((store) => store.user.is_login);
   const [userId, setUserId] = useState("");
@@ -105,9 +109,8 @@ const Login = () => {
         </StMain>
         <StSignUpBox>
           계정이 없으신가요?
-          <span style={{ color: "#3fb3da" }}>
-            {/* 꼭 링크 정리! */}
-            <Link to="/">가입하기</Link>
+          <span style={{ color: "#3fb3da" }} onClick={onClickSignup}>
+            가입하기
           </span>
         </StSignUpBox>
       </StContainer>
