@@ -1,18 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import useInput from "../hooks/useInput";
+import { idCheck, pwCheck, nickCheck, nameCheck } from "../shared/regExp";
+import { __signUp } from "../redux/modules/loginSlice";
 
-const signUp = () => {
+const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [valueId, onChangeInputValueId, setValueId] = useInput("");
+  const [valueNickname, onChangeInputValueNickname, setValueNickname] =
+    useInput("");
+  const [valueName, onChangeInputValueName, setValueName] = useInput("");
+  const [valuePw, onChangeInputValuePw, setValuePw] = useInput("");
+
+  const onSubmitSignUp = (e) => {
+    e.preventDefault();
+    console.log(idCheck, nickCheck, nameCheck, pwCheck);
+    //유효성 검사
+    if (
+      !idCheck(valueId) &&
+      !nameCheck(valueName) &&
+      !nickCheck(valueNickname) &&
+      !pwCheck(valuePw)
+    ) {
+      alert("다시 확인해주세요.");
+      return false;
+    }
+    alert("회원가입 성공");
+
+    // const user = {
+    //   // id: Date.now(),
+    //   email: userId,
+    //   password: userPw,
+    // };
+    // console.log("user", user);
+    // dispatch(__loginUser(user));
+  };
+
   return (
     <>
       <StContainer>
         <StMain>
           <div>Logo</div>
-          <StForm>
+          <StForm onSubmit={onSubmitSignUp}>
             <StInputWrap>
-              <StInput placeholder="이메일 주소" />
-              <StInput placeholder="성명" />
-              <StInput placeholder="사용자 이름" />
-              <StInput placeholder="비밀번호" />
+              <StInput
+                placeholder="이메일 주소"
+                value={valueId}
+                onChange={onChangeInputValueId}
+                onBlur={() => {
+                  idCheck(valueId);
+                }}
+              />
+              <StInput
+                placeholder="성명"
+                value={valueName}
+                onChange={onChangeInputValueName}
+                onBlur={() => {
+                  nameCheck(valueName);
+                }}
+              />
+              <StInput
+                placeholder="닉네임"
+                value={valueNickname}
+                onChange={onChangeInputValueNickname}
+                onBlur={() => {
+                  nickCheck(valueNickname);
+                }}
+              />
+              <StInput
+                placeholder="비밀번호"
+                value={valuePw}
+                onChange={onChangeInputValuePw}
+                onBlur={() => {
+                  pwCheck(valuePw);
+                }}
+              />
 
               <StButton>가입</StButton>
             </StInputWrap>
@@ -26,8 +92,6 @@ const signUp = () => {
     </>
   );
 };
-
-export default signUp;
 
 const StContainer = styled.div`
   border: 2px solid #d2d2d2;
@@ -115,3 +179,5 @@ const StSignUpBox = styled.div`
   font-weight: 500;
   background-color: white;
 `;
+
+export default SignUp;

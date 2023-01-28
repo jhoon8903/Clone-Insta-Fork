@@ -33,7 +33,7 @@ const Login = () => {
     console.log("user", user);
     dispatch(__loginUser(user));
   };
-  console.log("help");
+
   return (
     <>
       <StContainer>
