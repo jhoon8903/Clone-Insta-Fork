@@ -1,27 +1,49 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
 import PostItem from '../components/PostItem';
-import PostDetailModal from '../components/PostDetailModal';
+import { __postsMain } from '../redux/modules/postsMainSlice';
 
 
 
 const Main = () => {
+  const dispatch=useDispatch()
 
-  const isGlobalModalPostDetail=useSelector((state)=>state.postDetailSlice.isGlobalModalPostDetail)
+  //모달 상태
+  const isGlobalModalPostDetail=useSelector((state)=>
+  state.postDetailSlice.isGlobalModalPostDetail)
+
+  //게시글 전체 조회
+  const posts=useSelector((state)=>state.postsMainSlice.posts)
+  console.log('메인 게시글 data',posts)
+
+  useEffect(()=>{
+    dispatch(__postsMain()) //게시글 전체 조회
+  },[])
 
   return (
     <StMainWrap
     //모달 창 오픈시 뒷 배경 스크롤 막기
     overflow={!isGlobalModalPostDetail ? "auto" : "hidden"}
-    height={!isGlobalModalPostDetail ? "auto" : "calc(100vh - 110px)"}
+    height={!isGlobalModalPostDetail ? "auto" : ""}
     >
       <StMainPostItemBox>
-        <PostItem></PostItem>
-        <PostItem></PostItem>
+        {posts?.map((post)=>{
+          return(
+            <PostItem 
+            key={post.id}
+            id={post.id}
+            content={post.content}
+            nickname={post.nickname}
+            image={post.imageUrl}
+            createAt={post.createAt}
+            updateAt={post.updateAt}
+            likes={post.likes}
+            />
+          )
+          })}
       </StMainPostItemBox>
-      <PostDetailModal/>
     </StMainWrap>
   )
 }
