@@ -40,6 +40,15 @@ api.interceptors.response.use(
   function (response) {
     console.log("응답 성공! ", response);
     //로그인일 경우엔 토큰 세팅 필요
+    if (response.status === 201) {
+      console.log("😂😂😂로그인 res.status : ", response);
+      const accessToken = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      alert("로그인 성공!!!");
+      window.location.assign("/main");
+    }
     //그러면 헤더에 토큰 값이 있을 경우를 로그인으로 처리?
     //or 인증 전용 api를 따로 제작?
     return response;
@@ -48,7 +57,8 @@ api.interceptors.response.use(
   function (error) {
     console.log("응답 에러! ", error);
     if (error.response.status > 401) {
-      window.location.herf("/");
+      alert("error!🔥");
+      window.location.assign("/");
     }
     return Promise.reject(error);
   }
