@@ -8,7 +8,7 @@ import { PostEntity } from './posts.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../Users/users.entity';
 import { ImageEntity } from 'src/Images/Images.entity';
-import { NotFoundError } from 'rxjs';
+import { UserPostLikeEntity } from 'src/UserPostLikes/userPostLikes.entity';
 
 @Injectable()
 export class PostsService {
@@ -17,6 +17,8 @@ export class PostsService {
     private readonly postRepository: Repository<PostEntity>,
     @InjectRepository(ImageEntity)
     private readonly imageRepository: Repository<ImageEntity>,
+    @InjectRepository(UserPostLikeEntity)
+    private readonly likeRepository: Repository<UserPostLikeEntity>,
   ) {}
 
   async createPost(userId, body, imgUrl) {
@@ -44,12 +46,13 @@ export class PostsService {
     return;
   }
 
-  async deletePost(userId, postId) {
+  async deletePost(data) {
+    const { userId, id } = data;
     const result = await this.postRepository
       .createQueryBuilder()
-      .delete()
+      .softDelete()
       .from(PostEntity)
-      .where('id = :id', { id: postId })
+      .where('id = :id', { id: id })
       .andWhere('userId=:userId', { userId: userId })
       .execute();
 
@@ -69,9 +72,11 @@ export class PostsService {
         'p.updatedAt',
         'user.nickname',
         'image.imgUrl',
+        'likes',
       ])
       .leftJoin('p.user', 'user')
       .leftJoin('p.image', 'image')
+      .leftJoin('p.userPostLike', 'likes')
       .getMany();
     return result.map((post) => {
       return {
@@ -81,6 +86,7 @@ export class PostsService {
         imageUrl: post.image[0].imgUrl,
         createAt: post.createdAt,
         updateAt: post.updatedAt,
+        likes: post.userPostLike.length,
       };
     });
   }
@@ -95,12 +101,13 @@ export class PostsService {
         'p.updatedAt',
         'user.nickname',
         'image.imgUrl',
+        'likes',
       ])
       .where('p.id = :id', { id: postId })
       .leftJoin('p.user', 'user')
       .leftJoin('p.image', 'image')
+      .leftJoin('p.userPostLike', 'likes')
       .getOne();
-    console.log(result);
     if (!result) throw new NotFoundException();
     return {
       id: result.id,
@@ -109,6 +116,31 @@ export class PostsService {
       imageUrl: result.image[0].imgUrl,
       createAt: result.createdAt,
       updateAt: result.updatedAt,
+      likes: result.userPostLike.length,
     };
+  }
+
+  async likeEvent(data) {
+    //있는 포스트인지 검사
+    const { id, userId } = data;
+    const result = await this.postRepository.findOneBy({ id: id });
+    if (!result) throw new NotFoundException();
+
+    const existLike = await this.likeRepository.findOne({
+      where: {
+        userId: userId,
+        postId: id,
+      },
+    });
+    if (!existLike) {
+      const result = await this.likeRepository.save({ userId, postId: id });
+      return result;
+    } else {
+      const result = await this.likeRepository.delete({
+        userId: userId,
+        postId: id,
+      });
+      return result;
+    }
   }
 }
