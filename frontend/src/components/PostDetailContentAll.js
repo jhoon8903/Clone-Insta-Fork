@@ -8,8 +8,9 @@ import { BiTrash } from "react-icons/bi";
 import { BsPencilFill } from "react-icons/bs";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
-import ButtonDefault from '../components/ButtonDefault';
+import ButtonDefault from './ButtonDefault';
 import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
+
 
 function PostDetailContent({nickname, content, createAt}) {
 
@@ -29,12 +30,12 @@ function PostDetailContent({nickname, content, createAt}) {
         </Link>
         <StPostDetailUserCommentBox>
           <Link to="/main" title="피드 방문하기" className="linkPostDetailUserInfo inline-flex">
-            <StPostDetailNick>{nickname}</StPostDetailNick>
+            <StPostDetailNick>nickname</StPostDetailNick>
           </Link>
           <StMainPostItemDescContent>
-              {content}
+              content
           </StMainPostItemDescContent>
-          <StMainPostItemDateBlock>{createAt}</StMainPostItemDateBlock>
+          <StMainPostItemDateBlock>createAt</StMainPostItemDateBlock>
         </StPostDetailUserCommentBox>
         <BiTrash onClick={onClickPostDelete} className="position-right"/>
       </StPostDetailContent>

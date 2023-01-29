@@ -12,7 +12,7 @@ import { FaRegHeart } from "react-icons/fa";
 import ButtonDefault from './ButtonDefault';
 
 
-function PostDetailCommentBox() {
+function PostDetailCommentBox({likes, createAt}) {
 
 
   const commentRef=useRef()
@@ -37,8 +37,8 @@ function PostDetailCommentBox() {
               <FaRegHeart/>
               <HiOutlinePaperAirplane/>
             </StPostDetailCommentIconBox>
-            <StPostDetailCommentLikeTotal>좋아요 999개</StPostDetailCommentLikeTotal>
-            <StMainPostItemDateBlock>2023-01-26</StMainPostItemDateBlock>
+            <StPostDetailCommentLikeTotal>좋아요 {likes}개</StPostDetailCommentLikeTotal>
+            <StMainPostItemDateBlock>{createAt}</StMainPostItemDateBlock>
           </StPostDetailCommentBoxTop>
           <StPostDetailCommentInputBox onSubmit={onSubmitPostCommnet}>
             <StPostDetailCommentInput ref={commentRef} required />
@@ -90,6 +90,6 @@ const StPostDetailCommentIconBox=styled.div`
   
 `
 const StPostDetailCommentBox=styled.div`
-  
+  height: 153px;
 `
 export default PostDetailCommentBox
