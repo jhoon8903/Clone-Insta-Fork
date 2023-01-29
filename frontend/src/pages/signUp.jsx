@@ -9,7 +9,6 @@ import { __signUp } from "../redux/modules/signUpSlice";
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("git");
   const [valueId, onChangeInputValueId, setValueId] = useInput("");
   const [valueNickname, onChangeInputValueNickname, setValueNickname] =
     useInput("");
@@ -41,12 +40,16 @@ const SignUp = () => {
     alert("회원가입 성공");
   };
 
+  const goToLogin = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <StContainer>
         <StMain>
           <StLoginImageBox>
-            <StLoginImage src="" />
+            <StLoginImage src="" onClick={() => window.location.reload()} />
           </StLoginImageBox>
           <StForm onSubmit={onSubmitSignUp}>
             <StInputWrap>
@@ -92,7 +95,10 @@ const SignUp = () => {
           </StForm>
         </StMain>
         <StSignUpBox>
-          계정이 있으신가요?<span style={{ color: "#3fb3da" }}>로그인</span>
+          계정이 있으신가요?
+          <span style={{ color: "#3fb3da" }} onClick={goToLogin}>
+            로그인
+          </span>
         </StSignUpBox>
       </StContainer>
     </>
@@ -194,9 +200,10 @@ const StLoginImageBox = styled.div`
 `;
 
 const StLoginImage = styled.img.attrs((props) => ({
-  src: `${props.src || "images/logo-ver2-1.png"}`,
+  src: `${props.src || "images/bistalogo.png"}`,
 }))`
   max-width: 100%;
+  cursor: pointer;
 `;
 
 export default SignUp;
