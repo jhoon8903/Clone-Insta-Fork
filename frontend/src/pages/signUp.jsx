@@ -9,7 +9,7 @@ import { __signUp } from "../redux/modules/signUpSlice";
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  console.log("git");
   const [valueId, onChangeInputValueId, setValueId] = useInput("");
   const [valueNickname, onChangeInputValueNickname, setValueNickname] =
     useInput("");
