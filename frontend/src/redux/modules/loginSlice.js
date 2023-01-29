@@ -13,22 +13,7 @@ export const __loginUser = createAsyncThunk(
   "loginUser",
   async (payload, thunkAPI) => {
     try {
-      const data = await api
-        .post(`auth/local`, payload)
-        .then((res) => {
-          if (res.status === 200) {
-            // const token = res.headers.authorization;
-            // const refreshToken = res.headers.refreshauthorization;
-            // localStorage.setItem("token", token);
-            // localStorage.setItem("refreshToken", refreshToken);
-            alert("Login success");
-            return res;
-          }
-        })
-        .catch((err) => {
-          alert("다시 확인해주세요.");
-          return err;
-        });
+      const data = await api.post(`auth/local`, payload);
       console.log("login data", data);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
