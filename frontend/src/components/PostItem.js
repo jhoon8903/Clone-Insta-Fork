@@ -60,6 +60,7 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt}) {
     dispatch(__postDetail(id))
     .then((res)=>{
       console.log("res : ", res)
+      //마지막 게시글 내용 불러와지는 문제 수정필요
       setModalDetailContent(
         <PostDetailModal 
         key={res.payload.id}
