@@ -19,7 +19,7 @@ export class UserPostLikeEntity extends CommonEntity {
 
   @Column({ type: 'int' })
   postId: number;
-//
+  //
   //*   Relation    */
 
   //*   UserPostLike | M : 1 | User
