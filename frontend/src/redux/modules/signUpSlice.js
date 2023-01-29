@@ -6,22 +6,23 @@ const initialState = {
   user: {},
   isLoading: false,
   error: null,
-  is_login: false,
+  is_signup: false,
 };
 
-export const __loginUser = createAsyncThunk(
-  "loginUser",
+export const __signUp = createAsyncThunk(
+  "signUp",
   async (payload, thunkAPI) => {
     try {
       const data = await api
-        .post(`auth/local`, payload)
+        .post(`users/signup`, payload)
         .then((res) => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             // const token = res.headers.authorization;
             // const refreshToken = res.headers.refreshauthorization;
             // localStorage.setItem("token", token);
             // localStorage.setItem("refreshToken", refreshToken);
-            alert("Login success");
+            // console.log("회원가입", res);
+            alert("sign up success");
             return res;
           }
         })
@@ -29,7 +30,7 @@ export const __loginUser = createAsyncThunk(
           alert("다시 확인해주세요.");
           return err;
         });
-      console.log("login data", data);
+      console.log("sign up data", data);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       alert("다시 확인해주세요.");
@@ -38,22 +39,22 @@ export const __loginUser = createAsyncThunk(
   }
 );
 
-const loginSlice = createSlice({
-  name: "loginUser",
+const signUpSlice = createSlice({
+  name: "signUp",
   initialState,
   reducers: {},
   extraReducers: {
-    [__loginUser.pending]: (state) => {
+    [__signUp.pending]: (state) => {
       state.isLoading = true;
     },
-    [__loginUser.fulfilled]: (state, action) => {
+    [__signUp.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.users = action.payload;
-      console.log("로그인 state.users", state.users);
-      console.log("로그인 action payload", action.payload);
+      console.log("회원가입 state.users", state.users);
+      console.log("회원가입 action payload", action.payload);
       state.isLoginOk = true;
     },
-    [__loginUser.rejected]: (state, action) => {
+    [__signUp.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
       console.log("state err", state.error);
@@ -63,5 +64,5 @@ const loginSlice = createSlice({
   },
 });
 
-export const {} = loginSlice.actions;
-export default loginSlice.reducer;
+export const {} = signUpSlice.actions;
+export default signUpSlice.reducer;

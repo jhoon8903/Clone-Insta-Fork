@@ -4,16 +4,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { idCheck, pwCheck } from "../shared/regExp";
 import { __loginUser } from "../redux/modules/loginSlice";
+import { RiKakaoTalkFill } from "react-icons/ri";
+import { FcGoogle } from "react-icons/fc";
+import { AiFillApple } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { BiHide, BiShowAlt } from "react-icons/bi";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("git");
+
+  const onClickSignup = () => {
+    navigate("/signUp");
+  };
 
   const user = useSelector((state) => state);
   // const isLogin = useSelector((store) => store.user.is_login);
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
+
+  const [showPw, setShowPW] = useState(false);
 
   // const { data, error } = useSelector((state) => state.loginSlice);
   // const state = useSelector((state) => state.loginSlice);
@@ -34,12 +44,24 @@ const Login = () => {
     console.log("user", user);
     dispatch(__loginUser(user));
   };
-  console.log("help");
+  // console.log("help");
+
+  const passwordToggle = () => {
+    setShowPW(!showPw);
+    // console.log(showPw);
+    // alert("되나요?");
+  };
+
   return (
     <>
       <StContainer>
         <StMain>
-          <div>Logo</div>
+          <StLoginImageBox>
+            <Link to="/">
+              <StLoginImage src="" onClick={() => window.location.reload()} />
+            </Link>
+          </StLoginImageBox>
+
           <StForm onSubmit={onSubmitLogin}>
             <StInputWrap>
               <StInput
@@ -51,28 +73,50 @@ const Login = () => {
                   idCheck(userId);
                 }}
               />
-              <StInput
-                placeholder="비밀번호"
-                onChange={(e) => setUserPw(e.target.value)}
-                value={userPw}
-                onBlur={() => {
-                  pwCheck(userPw);
-                }}
-              />
+              <StInputIcon>
+                <StInput
+                  placeholder="비밀번호"
+                  type={showPw ? "text" : "password"}
+                  onChange={(e) => setUserPw(e.target.value)}
+                  value={userPw}
+                  onBlur={() => {
+                    pwCheck(userPw);
+                  }}
+                ></StInput>
+                <StHideShow>
+                  {showPw ? (
+                    <BiShowAlt onClick={passwordToggle} />
+                  ) : (
+                    <BiHide onClick={passwordToggle} />
+                  )}
+                </StHideShow>
+              </StInputIcon>
+
               <StButton>로그인</StButton>
             </StInputWrap>
           </StForm>
-          <StPassword>비밀번호를 잊으셨나요?</StPassword>
+          <StSocialButtonWrap>
+            <StSocialButton bc="#f7f7f7">
+              <FcGoogle />
+            </StSocialButton>
+            <StSocialButton bc="yellow">
+              <RiKakaoTalkFill />
+            </StSocialButton>
+            <StSocialButton bc="#f7f7f7">
+              <AiFillApple />
+            </StSocialButton>
+          </StSocialButtonWrap>
         </StMain>
         <StSignUpBox>
-          계정이 없으신가요?<span style={{ color: "#5252d4" }}>가입하기</span>
+          계정이 없으신가요?
+          <span style={{ color: "#3fb3da" }} onClick={onClickSignup}>
+            가입하기
+          </span>
         </StSignUpBox>
       </StContainer>
     </>
   );
 };
-
-export default Login;
 
 const StContainer = styled.div`
   border: 2px solid #d2d2d2;
@@ -88,7 +132,7 @@ const StContainer = styled.div`
 const StMain = styled.div`
   border: 2px solid #d2d2d2;
   width: 350px;
-  height: 402px;
+  height: 452px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -104,30 +148,10 @@ const StInputWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 `;
 
 const StForm = styled.form``;
-
-const StPassword = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: #141467;
-`;
-
-const StInput = styled.input`
-  box-sizing: border-box;
-  border: 1px solid gray;
-  background-color: #f3f3f3;
-  width: 268px;
-  height: 36px;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-left: 8px;
-`;
 
 const StButton = styled.button`
   border: 1px solid;
@@ -157,4 +181,83 @@ const StSignUpBox = styled.div`
   font-size: 13px;
   font-weight: 500;
   background-color: white;
+  & span {
+    font-weight: 700;
+    cursor: pointer;
+  }
 `;
+
+const StSocialButtonWrap = styled.div`
+  /* border: 1px solid; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+`;
+
+const StSocialButton = styled.button`
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px lightgray;
+  background-color: ${(props) => props.bc};
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & :hover {
+    color: black;
+  }
+`;
+
+const StInputIcon = styled.div`
+  position: relative;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StInput = styled.input`
+  box-sizing: border-box;
+  border: 1px solid gray;
+  background-color: #f3f3f3;
+  width: 268px;
+  height: 36px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 8px;
+`;
+
+const StHideShow = styled.div`
+  position: absolute;
+  right: 10px;
+  text-align: left;
+  cursor: pointer;
+
+  & :hover {
+    color: black;
+  }
+`;
+
+const StLoginImageBox = styled.div`
+  /* border: 1px solid red; */
+  width: 220px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StLoginImage = styled.img.attrs((props) => ({
+  src: `${props.src || "images/bistalogo.png"}`,
+}))`
+  max-width: 100%;
+  cursor: pointer;
+`;
+
+export default Login;
