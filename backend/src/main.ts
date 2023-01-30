@@ -7,30 +7,25 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as fs from 'fs';
-import { Server, ServerOptions } from 'spdy';
-const express = require('express');
-const spdy = require('spdy');
 
 async function bootstrap() {
-  const expressApp = express();
-  const spdyOpts: ServerOptions = {
-    ca: fs.readFileSync(
-      '/etc/letsencrypt/live/codingtestrg.shop/fullchain.pem',
-    ),
-    key: fs.readFileSync('/etc/letsencrypt/live/codingtestrg.shop/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/codingtestrg.shop/cert.pem'),
-    spdy: {
-      protocols: ['h2', 'spdy/3.1', 'spdy/3', 'spdy/2', 'http/1.1'],
-      connection: { autoSpdy31: true },
-    },
-  };
+  //* Local , Remote 환경 구분
+  const isLocal = process.env.SERVER_MODE === 'local' ? true : false;
 
-  const server: Server = spdy.createServer(spdyOpts, expressApp);
-  const app: NestApplication = await NestFactory.create(
-    AppModule,
-    new ExpressAdapter(expressApp),
-  );
-  //* Static Assets
+  //* key ,cert load
+  const httpsOptions = isLocal
+    ? null
+    : {
+        key: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/cert.pem'),
+      };
+
+  //* Local ( http ), Remote ( https )
+  const app = isLocal
+    ? await NestFactory.create<NestExpressApplication>(AppModule)
+    : await NestFactory.create<NestExpressApplication>(AppModule, {
+        httpsOptions,
+      });
 
   //* 전역으로 Pipes 설정
   app.useGlobalPipes(new ValidationPipe());
@@ -52,7 +47,8 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
-  await app.init();
-  await server.listen(process.env.HTTPS_PORT);
+
+  if (isLocal) await app.listen(process.env.HTTP_PORT);
+  if (!isLocal) await app.listen(process.env.HTTPS_PORT);
 }
 bootstrap();
