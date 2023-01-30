@@ -14,7 +14,7 @@ export const api = axios.create({
   //로그인 경우에는 추가할 토큰이 없다
   //헤더 컨텐츠 타입이 json이 아니라 fromdata일 경우는 api를 따로 제작?
 });
-
+console.log("수정");
 api.interceptors.request.use(function (config) {
   // console.log("들어가나");
 
