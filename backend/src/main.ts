@@ -1,12 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
-import { NestApplication, NestFactory } from '@nestjs/core';
-import {
-  ExpressAdapter,
-  NestExpressApplication,
-} from '@nestjs/platform-express';
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as fs from 'fs';
+import { HttpExceptionFIlter } from './common/exceptions/exception.filter';
 
 async function bootstrap() {
   //* Local , Remote 환경 구분
@@ -29,6 +27,9 @@ async function bootstrap() {
 
   //* 전역으로 Pipes 설정
   app.useGlobalPipes(new ValidationPipe());
+
+  //* 전역으로 Filter 설정
+  app.useGlobalFilters(new HttpExceptionFIlter());
 
   //* Swagger 설정.
   const swaggerConfig = new DocumentBuilder()

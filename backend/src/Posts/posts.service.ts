@@ -84,7 +84,6 @@ export class PostsService {
       .leftJoin('p.comment', 'Comment')
       .loadRelationCountAndMap('p.comment', 'p.comment')
       .getMany();
-    console.log(result);
 
     return result.map((post) => {
       return {

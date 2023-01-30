@@ -1,5 +1,5 @@
+import { IsString, IsNotEmpty, Length } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
 import { CommentEntity } from 'src/Comments/comments.entity';
 import { CommonEntity } from 'src/common/entity/common.entity';
 import { FollowEntity } from 'src/Follows/follows.entity';
@@ -24,6 +24,9 @@ export class UserEntity extends CommonEntity {
     required: true,
     example: 'wndhdks4536@gmail.com',
   })
+  @IsString({ message: 'Email 의 Type은 String 입니다.' })
+  @IsNotEmpty({ message: 'Email의 값이 공백입니다.' })
+  @Length(7, 50, { message: 'Email의 길이가 7이하, 50 이상입니다.' })
   @Column({ type: 'varchar', length: 50 })
   email: string;
 
@@ -32,7 +35,8 @@ export class UserEntity extends CommonEntity {
     required: true,
     example: 'q1w2e3r4',
   })
-  @Exclude()
+  @IsString({ message: 'Password 의 Type은 String 입니다.' })
+  @IsNotEmpty({ message: 'Password 의 값이 공백입니다.' })
   @Column({ type: 'varchar', length: 32 })
   password: string;
 
@@ -41,6 +45,8 @@ export class UserEntity extends CommonEntity {
     required: true,
     example: '닉넴뭐하지',
   })
+  @IsString({ message: 'Nickname 의 Type은 String 입니다.' })
+  @IsNotEmpty({ message: 'Nickname 의 값이 공백입니다.' })
   @Column({ type: 'varchar', length: 10 })
   nickname: string;
 
@@ -49,6 +55,8 @@ export class UserEntity extends CommonEntity {
     required: true,
     example: '신중완',
   })
+  @IsString({ message: 'Name 의 Type은 String 입니다.' })
+  @IsNotEmpty({ message: 'Name 의 값이 공백입니다.' })
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
