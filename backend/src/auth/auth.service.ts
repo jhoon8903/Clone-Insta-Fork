@@ -51,8 +51,11 @@ export class AuthService {
       expiresIn: '7d',
       secret: process.env.JWT_SECRET,
     });
-    res.header('Authorization', accessToken);
-    res.header('refreshToken', refreshToken);
-    return { accessToken, refreshToken };
+    res.header('Authorization', `Bearer ${accessToken}`);
+    res.header('refreshToken', `Bearer ${refreshToken}`);
+    return {
+      AccessToken: `Bearer ${accessToken}`,
+      RefreshToken: `Bearer ${refreshToken}`,
+    };
   }
 }

@@ -7,6 +7,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  //* Static Assets
+
   //* 전역으로 Pipes 설정
   app.useGlobalPipes(new ValidationPipe());
 

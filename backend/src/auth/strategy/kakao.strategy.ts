@@ -1,11 +1,12 @@
 import { UserEntity } from 'src/Users/users.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile, Strategy } from 'passport-kakao';
 import { Repository } from 'typeorm';
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
+  private logger = new Logger('KAKAO');
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
@@ -23,10 +24,12 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     refereshtoken: string,
     profile: Profile,
   ): Promise<{ id: string }> {
+    delete profile._raw;
+    this.logger.log(profile);
     const { _json } = profile;
     const { id, kakao_account } = _json;
     const email = kakao_account.email;
-    const provider: string = 'kakao';
+    const provider = 'kakao';
     const socialUser = new UserEntity();
     socialUser.name = provider;
     socialUser.password = id;

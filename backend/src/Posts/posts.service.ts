@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +10,8 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../Users/users.entity';
 import { ImageEntity } from 'src/Images/Images.entity';
 import { UserPostLikeEntity } from 'src/UserPostLikes/userPostLikes.entity';
+import { map } from 'rxjs';
+import { PinpointSMSVoice } from 'aws-sdk';
 
 @Injectable()
 export class PostsService {
@@ -77,7 +80,11 @@ export class PostsService {
       .leftJoin('p.user', 'user')
       .leftJoin('p.image', 'image')
       .leftJoin('p.userPostLike', 'likes')
+      .leftJoin('p.comment', 'Comment')
+      .loadRelationCountAndMap('p.comment', 'p.comment')
       .getMany();
+    console.log(result);
+
     return result.map((post) => {
       return {
         id: post.id,
@@ -87,6 +94,14 @@ export class PostsService {
         createAt: post.createdAt,
         updateAt: post.updatedAt,
         likes: post.userPostLike.length,
+        commentCount: post.comment,
+        // commentCount: post.comment.commentCount,
+        // commentCount: post.commentCount,
+        // comment: {
+        //   id: post.comment[index].id,
+        //   comment: post.comment[index].comment,
+        //   nickname: post.comment[index].user.nickname,
+        // },
       };
     });
   }
@@ -102,11 +117,16 @@ export class PostsService {
         'user.nickname',
         'image.imgUrl',
         'likes',
+        'Comment.id',
+        'Comment.comment',
+        'User.nickname',
       ])
       .where('p.id = :id', { id: postId })
       .leftJoin('p.user', 'user')
       .leftJoin('p.image', 'image')
       .leftJoin('p.userPostLike', 'likes')
+      .leftJoin('p.comment', 'Comment')
+      .leftJoin('Comment.user', 'User')
       .getOne();
     if (!result) throw new NotFoundException();
     return {
@@ -117,6 +137,13 @@ export class PostsService {
       createAt: result.createdAt,
       updateAt: result.updatedAt,
       likes: result.userPostLike.length,
+      comment: result.comment.map((v) => {
+        return {
+          id: v.id,
+          comment: v.comment,
+          nickname: v.user.nickname,
+        };
+      }),
     };
   }
 
