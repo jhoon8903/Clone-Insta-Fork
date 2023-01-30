@@ -39,7 +39,7 @@ export class AuthService {
     }
   }
 
-  async createToken(req: string | object, res: Response) {
+  async createToken(req: string | object) {
     const payload = req;
 
     const accessToken = this.jwtService.sign(payload, {
@@ -51,8 +51,7 @@ export class AuthService {
       expiresIn: '7d',
       secret: process.env.JWT_SECRET,
     });
-    res.header('Authorization', `Bearer ${accessToken}`);
-    res.header('refreshToken', `Bearer ${refreshToken}`);
+
     return {
       AccessToken: `Bearer ${accessToken}`,
       RefreshToken: `Bearer ${refreshToken}`,
