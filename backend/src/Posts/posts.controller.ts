@@ -84,7 +84,8 @@ export class PostsController {
     @Param('postId') postId: number,
     @Body() body: PostDto,
   ) {
-    return this.postsService.changePost(postId, body, payload.id);
+    this.postsService.changePost(postId, body, payload.id);
+    return this.postsService.findAllPost();
   }
 
   //*게시글 전체 조회

@@ -80,6 +80,7 @@ export class PostsService {
       .leftJoin('p.user', 'user')
       .leftJoin('p.image', 'image')
       .leftJoin('p.userPostLike', 'likes')
+      .loadRelationCountAndMap('p.userPostLike', 'p.userPostLike')
       .leftJoin('p.comment', 'Comment')
       .loadRelationCountAndMap('p.comment', 'p.comment')
       .getMany();
@@ -93,7 +94,7 @@ export class PostsService {
         imageUrl: post.image[0].imgUrl,
         createAt: post.createdAt,
         updateAt: post.updatedAt,
-        likes: post.userPostLike.length,
+        likes: post.userPostLike,
         commentCount: post.comment,
         // commentCount: post.comment.commentCount,
         // commentCount: post.commentCount,
