@@ -8,6 +8,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiPlusSquare } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { HiOutlineLogout } from "react-icons/hi";
+import UploadModal from "./UploadModal";
+
 const SideNav = () => {
   const navigate = useNavigate();
   const onClickLogout = () => {
@@ -53,7 +55,8 @@ const SideNav = () => {
         </StNavMenuItem>
         <StNavMenuItem>
           <Link to="/main" className="linkSideNav">
-            <FiPlusSquare />
+            {/* <FiPlusSquare /> */}
+            <UploadModal />
             <StNavMenuItemSpan>만들기</StNavMenuItemSpan>
           </Link>
         </StNavMenuItem>

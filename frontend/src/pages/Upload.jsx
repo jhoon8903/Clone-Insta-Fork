@@ -76,7 +76,7 @@ const Upload = () => {
             <StStBoxTopInner>
               <AiOutlineReload className="iconUploadTop" />
               <span>새 게시물 올리기</span>
-              <AiOutlineCloseCircle className="iconUploadTop" />
+              <div></div>
             </StStBoxTopInner>
           </StBoxTop>
 
