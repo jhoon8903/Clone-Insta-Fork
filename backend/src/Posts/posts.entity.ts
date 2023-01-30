@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt } from 'class-validator';
 import { CommentEntity } from 'src/Comments/comments.entity';
 import { CommonEntity } from 'src/common/entity/common.entity';
 import { ImageEntity } from 'src/Images/Images.entity';
@@ -37,7 +38,7 @@ export class PostEntity extends CommonEntity {
     required: true,
     example: '1',
   })
-  @IsString({ message: 'Name 의 Type은 Number 입니다.' })
+  @IsInt({ message: 'Name 의 Type은 Number 입니다.' })
   @Column({ type: 'int' })
   userId: number;
 

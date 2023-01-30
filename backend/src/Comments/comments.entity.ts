@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from '@nestjs/class-validator';
+import { IsNotEmpty, IsInt, IsString } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CommonEntity } from 'src/common/entity/common.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
@@ -35,15 +35,15 @@ export class CommentEntity extends CommonEntity {
     required: true,
     example: '1',
   })
-  @IsNumber()
+  @IsInt()
   @Column({ type: 'int' })
   parentId: number;
 
-  @IsNumber()
+  @IsInt()
   @Column({ type: 'int' })
   userId: number;
 
-  @IsNumber()
+  @IsInt()
   @Column({ type: 'int' })
   postId: number;
 
