@@ -30,7 +30,7 @@ export class AuthService {
     if (!existUser) {
       throw new NotFoundException('회원정보를 찾을 수 없습니다.');
     }
-    Logger.log('Line 33', 'Auth');
+
     if (
       existUser.name === 'kakao' ||
       existUser.name === 'google' ||
@@ -39,7 +39,6 @@ export class AuthService {
       return { id: String(existUser.id) };
     }
 
-    Logger.log('Line 37', 'Auth');
     const check = await bcrypt.compare(password, existUser.password);
     Logger.log(check, 'Auth');
     if (check) {
@@ -49,7 +48,7 @@ export class AuthService {
     }
   }
 
-  async createToken(req: string | object) {
+  async createToken(req: string | object): Promise<tokenType> {
     const payload = req;
 
     const accessToken = this.jwtService.sign(payload, {

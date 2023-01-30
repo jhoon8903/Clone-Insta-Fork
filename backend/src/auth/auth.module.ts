@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     JwtModule,
-    PassportModule.register({ defaultStrategy: 'jwt', session: true }),
+    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     TypeOrmModule.forFeature([UserEntity]),
     UsersModule,
   ],
@@ -25,6 +25,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     NaverStrategy,
     JwtStrategy,
   ],
-  exports: [AuthModule, JwtStrategy],
+  exports: [AuthModule, JwtStrategy, PassportModule],
 })
 export class AuthModule {}
