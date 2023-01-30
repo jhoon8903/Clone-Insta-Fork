@@ -14,7 +14,6 @@ export abstract class CommonEntity {
   updatedAt: Date;
 
   // Soft Delete : 기존에는 null, 삭제시에 timestamp를 찍는다.
-  @Exclude()
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt?: Date | null;
 }

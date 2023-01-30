@@ -9,6 +9,7 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
+
 import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthLoginDto } from './dtos/auth.login.dto';
@@ -87,8 +88,10 @@ export class AuthController {
   // }
 
   @Post('local') // local login
-  @UseGuards()
   async localAuth(@Body() body: AuthLoginDto, @Res() res: Response) {
+    console.log('asdas');
+    Logger.log('body들어오나?', 'localAuth');
+    Logger.log(body, 'localAuth');
     const { id } = await this.authService.localLogin(body);
     const token = await this.authService.createToken({ id });
     const { AccessToken, RefreshToken } = token;

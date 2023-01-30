@@ -10,6 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  Logger,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import {
@@ -79,13 +80,13 @@ export class PostsController {
   @ApiCreatedResponse({ description: '게시글이 정상적으로 수정된 경우' })
   @UseGuards(JwtAuthGuard)
   @Put(':postId')
-  patchPost(
+  async patchPost(
     @getUser() payload: JwtPayload,
     @Param('postId') postId: number,
     @Body() body: PostDto,
   ) {
-    this.postsService.changePost(postId, body, payload.id);
-    return this.postsService.findAllPost();
+    await this.postsService.changePost(postId, body, payload.id);
+    return await this.postsService.findAllPost();
   }
 
   //*게시글 전체 조회

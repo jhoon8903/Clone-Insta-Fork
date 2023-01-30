@@ -1,3 +1,4 @@
+import { IsNotEmpty, IsInt, IsString } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CommonEntity } from 'src/common/entity/common.entity';
 import { PostEntity } from 'src/Posts/posts.entity';
@@ -24,6 +25,8 @@ export class CommentEntity extends CommonEntity {
     required: true,
     example: 'ㅋㅋ 진짜 웃기네',
   })
+  @IsString({ message: 'Comment 의 Type은 String 입니다.' })
+  @IsNotEmpty({ message: 'Comment 의 값이 공백입니다.' })
   @Column({ type: 'text' })
   comment: string;
 
@@ -32,12 +35,15 @@ export class CommentEntity extends CommonEntity {
     required: true,
     example: '1',
   })
+  @IsInt()
   @Column({ type: 'int' })
   parentId: number;
 
+  @IsInt()
   @Column({ type: 'int' })
   userId: number;
 
+  @IsInt()
   @Column({ type: 'int' })
   postId: number;
 
