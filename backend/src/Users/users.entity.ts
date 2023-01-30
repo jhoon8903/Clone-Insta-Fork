@@ -37,7 +37,7 @@ export class UserEntity extends CommonEntity {
   })
   @IsString({ message: 'Password 의 Type은 String 입니다.' })
   @IsNotEmpty({ message: 'Password 의 값이 공백입니다.' })
-  @Column({ type: 'varchar', length: 32 })
+  @Column({ type: 'varchar', length: 100 })
   password: string;
 
   @ApiProperty({
