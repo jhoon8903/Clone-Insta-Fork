@@ -1,10 +1,10 @@
 import React from 'react';
-// import Header from '../components/Header';
+import SideNav from '../components/SideNav';
 
 function Layout({ children }) {
     return (
         <div>
-            {/* <Header/> */}
+            <SideNav/>
             <div>
                 {children}
             </div>

@@ -1,0 +1,65 @@
+:root{
+   --color-defaultLight: #D8B0F7;
+   --color-defaultBold: #9A71F0;
+   --color-defaultWarning: #ff5447;
+   --color-defaultWhite: #fff;
+   --color-defaultOrange: #ff5100;
+   --color-defaultOrangeLight: #f7a16f;
+   --color-defaultLemon: #f6ff7c;
+   --color-defaultBlueLight: #AECDFF;
+   --color-defaultBlueBold: #0A82FF;
+}
+
+/*아이콘*/
+svg{
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+}
+svg:hover{
+    color: var(--color-defaultBold);
+}
+
+/*공통*/
+.flex-align-center{
+    display: flex;
+    align-items: center;
+}
+
+/*사이드 메뉴*/
+.linkSideNav{
+    display: flex;
+    align-items: center;
+}
+
+/*메인*/
+.iconEdit{
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+}
+
+/*상세 모달*/
+.linkPostDetailUserInfo{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+.inline-flex{
+    display: inline-flex;
+    width: auto;
+    align-items: center;
+}
+.position-right{
+    position: absolute;
+    right: -14px;
+}
+.iconClose.modal{
+    position: absolute;
+    top:10px;
+    right:30px;
+    width: 42px;
+    height: 42px;
+    color: #fff;
+    z-index: 3;
+}
