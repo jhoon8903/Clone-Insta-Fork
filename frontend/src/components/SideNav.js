@@ -26,7 +26,8 @@ const SideNav = () => {
   // 로그인, 회원가입 페이지에서 공통 사이드 메뉴바 숨김처리
   if (
     window.location.pathname === "/" ||
-    window.location.pathname === "/signUp"
+    window.location.pathname === "/signUp" ||
+    window.location.pathname === "/oauth"
   )
     return null;
   return (

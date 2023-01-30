@@ -8,7 +8,9 @@ import store from "./redux/config/configStore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  //<CookiesProvider>
   <Provider store={store}>
     <App />
   </Provider>
+  //</CookiesProvider>
 );

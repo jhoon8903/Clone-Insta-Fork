@@ -30,7 +30,13 @@ function PostDetailModal({id, content, nickname, image, createAt, likes, updateA
   }
 
   const createAtSlice = createAt?.slice(0, 10)
+  console.log('모달 상세 id : ', id)  
+  console.log('모달 상세 nickname : ', nickname)  
   console.log('모달 상세 content : ', content)  
+  console.log('모달 상세 createAt : ', createAt)
+  console.log('모달 상세 image : ', image)  
+  
+
 
   return (
     <StPostDetailModalWrap display={!isGlobalModalPostDetail ? "none" : "flex"}>
@@ -49,7 +55,12 @@ function PostDetailModal({id, content, nickname, image, createAt, likes, updateA
             </StPostDetailUserInfo>
             <StPostDetailContentCommentBox>
               {/* 작성자 */}
-              <PostDetailContent nickname={nickname} content={content} createAt={createAtSlice} />
+              <PostDetailContent
+              key={id}
+              id={id}
+              nickname={nickname} 
+              content={content} 
+              createAt={createAtSlice} />
               {/* 전체 댓글 */}
               <PostDetailContentAll/>
               <PostDetailContentAll/>
@@ -63,7 +74,7 @@ function PostDetailModal({id, content, nickname, image, createAt, likes, updateA
           </StPostDetailInfoBoxSection>
         </StPostDetailInfoBox>
       </StPostDetailContentBox>
-      <AiOutlineCloseCircle className="iconClose" onClick={onClickModalClose}/>
+      <AiOutlineCloseCircle className="iconClose modal" onClick={onClickModalClose}/>
       <StPostDetailContentBoxDim onClick={onClickModalClose}></StPostDetailContentBoxDim>
     </StPostDetailModalWrap>
   )
@@ -135,7 +146,7 @@ const StPostDetailContentBoxDim=styled.div`
   width:100%;
   height:100%;
   background-color: #000;
-  opacity: 0.2;
+  opacity: 0.6;
   position: absolute;
   top:0;
   left:0;

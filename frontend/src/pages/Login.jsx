@@ -51,6 +51,19 @@ const Login = () => {
     // console.log(showPw);
     // alert("되나요?");
   };
+  
+  //소셜로그인 영역
+  //카카오
+  const REST_API_KEY = 'd0580377a6320e0c9b0627eda5578d6d';
+  //const REDIRECT_URI = 'http://localhost:3000/oauth';
+  const REDIRECT_URI = 'https://f1rstweb.shop/auth/kakao';
+  //const KAKAO_AUTH_URL = "http://f1rstweb.shop/auth/kakao"
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  
+  const onClickSocialLoginKakao=()=>{ //카카오 로그인
+    window.location.href = KAKAO_AUTH_URL;
+  }
+
 
   return (
     <>
@@ -99,10 +112,10 @@ const Login = () => {
             <StSocialButton bc="#f7f7f7">
               <FcGoogle />
             </StSocialButton>
-            <StSocialButton bc="yellow">
+            <StSocialButton bc="yellow" onClick={onClickSocialLoginKakao}>
               <RiKakaoTalkFill />
             </StSocialButton>
-            <StSocialButton bc="#f7f7f7">
+            <StSocialButton bc="#f7f7f7" onClick={()=>{alert('현재 구현중 입니다')}}>
               <AiFillApple />
             </StSocialButton>
           </StSocialButtonWrap>

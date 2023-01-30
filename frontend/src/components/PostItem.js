@@ -9,20 +9,21 @@ import { BsPencilFill } from "react-icons/bs";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
 import ButtonDefault from '../components/ButtonDefault';
-import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
+import { isGlobalModalPostDetailAction, postDetailAction } from '../redux/modules/postDetailSlice';
 import { __commentsGet } from '../redux/modules/commentsSlice';
 import { __postDetail } from '../redux/modules/postDetailSlice';
-import PostDetailModal from '../components/PostDetailModal';
+import { __EditPostMain, __deletePostMain } from '../redux/modules/postsMainSlice';
 
 
-function PostItem({id, content, nickname, image, createAt, likes, updateAt}) {
+function PostItem({id, content, nickname, image, createAt, likes, updateAt, commentCount}) {
   
   const dispatch=useDispatch()
 
   //모달 상태
   const isGlobalModalPostDetail=useSelector((state)=>
   state.postDetailSlice.isGlobalModalPostDetail)
-  
+
+
   //댓글 전체 조회
   const commnets=useSelector((state)=>state.commentsSlice.commnets)
   const commnetsLength = commnets === undefined ? 0 : commnets.length
@@ -33,47 +34,66 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt}) {
   },[dispatch])
   
 
-  //수정 토글 상태
-  const [isEdit, setIsEdit]=useState(false)
+  //수정 영역
+  const [isEdit, setIsEdit]=useState(false) //수정 토글 상태
+  const [editPostContent, setEditPostContent]=useState(content)
 
   const onClickPostEdit=()=>{ //수정 토글
     setIsEdit(!isEdit)
   }
+
+  const onClickEditPostMain=()=>{ //글 수정
+    console.log('글수정 id : ', id)
+    const EditPost={
+      id,
+      nickname,
+      image,
+      createAt,
+      likes,
+      updateAt,
+      content:editPostContent
+    }
+    console.log('EditPost : ', EditPost)
+    dispatch(__EditPostMain(EditPost))
+    .then(()=>{
+      setIsEdit(!isEdit)
+    })
+    
+  }
+
   const onClickPostDelete=()=>{ //글 삭제
     if(window.confirm('삭제하시겠습니까?')){
-      alert('삭제완료!')
+      dispatch(__deletePostMain(id))
     }else{
       alert('삭제취소')
     }
   }
-
   const [modalDetailContent, setModalDetailContent]=useState("")
 
-  let postDetail=useSelector((state)=>state.postDetail)
-  console.log('postDetail : ' , postDetail)
+  // let postDetail=useSelector((state)=>state.postDetail)
+  // console.log('postDetail : ' , postDetail)
 
   const onClickModalPostDetail = ()=>{ //글 상세 모달 열기
-    console.log('isGlobalModalPostDetail : ', isGlobalModalPostDetail)
-    
-    console.log('모달 열기 아이디 : ', id, content)
-    dispatch(isGlobalModalPostDetailAction(true))
+
     dispatch(__postDetail(id))
     .then((res)=>{
       console.log("res : ", res)
-      //마지막 게시글 내용 불러와지는 문제 수정필요
-      setModalDetailContent(
-        <PostDetailModal 
-        key={res.payload.id}
-        id={res.payload.id} 
-        content={res.payload.content} 
-        nickname={res.payload.nickname} 
-        image={res.payload.image} 
-        createAt={res.payload.createAt} 
-        likes={res.payload.likes}
-        />
-      )
+      console.log("res.payload.id: ", res.payload.id)
+      console.log("res.payload.content: ", res.payload.content)
+      console.log('!!! modalDetailContent : ', modalDetailContent)
+      dispatch(isGlobalModalPostDetailAction(true))
+      const newPostDetail={ //글 상세 내용 스토어 저장
+        key : res.payload.id,
+        id : res.payload.id,
+        content : res.payload.content,
+        nickname : res.payload.nickname,
+        image : res.payload.imageUrl,
+        createAt : res.payload.createAt,
+        likes : res.payload.likes,
+      }
+      dispatch(postDetailAction(newPostDetail))
     })
-    
+    return console.log('모달 내용 modalDetailContent : ', modalDetailContent)
   }
 
 
@@ -118,18 +138,21 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt}) {
               >모두보기</ButtonDefault>
               </> 
             :<>
-                <StMainPostItemDescContentEdit autoFocus placeholder="value = 게시글 설명글"/>
+                <StMainPostItemDescContentEdit autoFocus 
+                value={editPostContent}
+                onChange={(e)=>{setEditPostContent(e.target.value)}}/>
                 <ButtonDefault 
                 width="100px"
-                bgColor={`${COLORS.defaultBlueLight}`} hoverBgColor={`${COLORS.defaultBold}`}
+                bgColor={`${COLORS.defaultBlueLight}`} 
+                hoverBgColor={`${COLORS.defaultBold}`}
+                onClick={onClickEditPostMain}
                 >수정</ButtonDefault>
               </>
             }
           </StMainPostItemContent>
-          <StMainPostItemCommentTotal onClick={onClickModalPostDetail}>댓글 {commnetsLength}개</StMainPostItemCommentTotal>
+          <StMainPostItemCommentTotal onClick={onClickModalPostDetail}>댓글 {commentCount}개</StMainPostItemCommentTotal>
       </StMainPostItemBottomInfo>
     </StMainPostItem>
-    {modalDetailContent}
     </>
   )
 }
