@@ -4,7 +4,7 @@ const serverUrl = process.env.REACT_APP_API_URL;
 
 export const api = axios.create({
   //baseURL: serverUrl,
-  baseURL: "http://f1rstweb.shop/",
+  baseURL: "https://f1rstweb.shop/",
   timeout: 1000,
   headers: {
     "content-type": "application/json;charset=UTF-8",
