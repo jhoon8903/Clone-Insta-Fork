@@ -13,7 +13,10 @@ export const __userOauthKakao = createAsyncThunk(
   "oauth/USER_OAUTH_KAKAO",
   async (payload, thunkAPI) => {
     try{
-      const data = await api.post(`auth/kakao`, payload)
+      const data = await api.post(`auth/kakao`, {payload})
+      //.then((res)=>{
+        //if(){}
+      //})
       console.log('🔒 카카오 로그인 data : ', data)
       return thunkAPI.fulfillWithValue(data)
     }catch(error){
