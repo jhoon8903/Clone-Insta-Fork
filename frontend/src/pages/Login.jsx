@@ -51,21 +51,21 @@ const Login = () => {
     // console.log(showPw);
     // alert("되나요?");
   };
-  
+
   //소셜로그인 영역
   //카카오
-  
+
   //const REDIRECT_URI = 'https://f1rstweb.shop/auth/kakao';
   //const KAKAO_AUTH_URL = "http://f1rstweb.shop/auth/kakao"
 
-  const restApiKey = process.env.REST_API_KEY
-  const redirectUrl = process.env.REDIRECT_URI
+  const restApiKey = process.env.REST_API_KEY;
+  const redirectUrl = process.env.REDIRECT_URI;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${redirectUrl}&response_type=code`;
-  
-  const onClickSocialLoginKakao=()=>{ //카카오 로그인
-    window.location.href = KAKAO_AUTH_URL;
-  }
 
+  const onClickSocialLoginKakao = () => {
+    //카카오 로그인
+    window.location.href = KAKAO_AUTH_URL;
+  };
 
   return (
     <>
@@ -112,13 +112,23 @@ const Login = () => {
           </StForm>
           {/*소셜로그인*/}
           <StSocialButtonWrap>
-            <StSocialButton bc="#f7f7f7" onClick={()=>{alert('현재 구현중 입니다')}}>
+            <StSocialButton
+              bc="#f7f7f7"
+              onClick={() => {
+                alert("현재 구현중 입니다");
+              }}
+            >
               <FcGoogle />
             </StSocialButton>
             <StSocialButton bc="yellow" onClick={onClickSocialLoginKakao}>
               <RiKakaoTalkFill />
             </StSocialButton>
-            <StSocialButton bc="#f7f7f7" onClick={()=>{alert('현재 구현중 입니다')}}>
+            <StSocialButton
+              bc="#f7f7f7"
+              onClick={() => {
+                alert("현재 구현중 입니다");
+              }}
+            >
               <AiFillApple />
             </StSocialButton>
           </StSocialButtonWrap>

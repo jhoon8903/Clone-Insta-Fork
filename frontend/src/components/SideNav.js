@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
-
 import { COLORS } from "../style/styleGlobal";
 import { HiHome } from "react-icons/hi";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
@@ -9,10 +8,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiPlusSquare } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { HiOutlineLogout } from "react-icons/hi";
-
 const SideNav = () => {
   const navigate = useNavigate();
-
   const onClickLogout = () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) {
     } else {
@@ -74,7 +71,6 @@ const SideNav = () => {
     </StSideNavWrap>
   );
 };
-
 const StNavMenuItemSpan = styled.span`
   margin-left: 10px;
 `;
@@ -121,5 +117,4 @@ const StSideNavWrap = styled.nav`
   padding: 20px;
   background-color: #eee;
 `;
-
 export default SideNav;
