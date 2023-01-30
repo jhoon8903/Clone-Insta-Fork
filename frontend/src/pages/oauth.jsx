@@ -2,25 +2,17 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { Cookies } from 'react-cookie';
 import { __userOauthKakao } from '../redux/modules/user';
-
-//import { actionCreators as userAction } from "../redux/modules/user";
-// import Spinner from "../elements/Spinner";
 
 const KakaoAuthHandler = (props) => {
 
   const dispatch = useDispatch();
+  const code = new URL(window.location.href).searchParams.get("code");
 
-  const cookies = new Cookies()
-  const cookieToken = cookies.get('token')
-  // const code = new URL(window.location.href).searchParams.get("code");
-
-  console.log('❗❗❗ oauth 페이지로 이동 완료 ❗❗❗')
-  console.log('❗❗❗ oauth 페이지 document.cookie : ', cookieToken)
+  console.log('❗❗❗ oauth 페이지 code : ', code)
 
   useEffect(()=>{ //백엔드로 쿠키 토큰 전송
-    //dispatch(__userOauthKakao(cookieToken))
+    dispatch(__userOauthKakao(code))
   },[])
 
 
