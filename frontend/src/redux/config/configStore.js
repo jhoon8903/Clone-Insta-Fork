@@ -5,7 +5,7 @@ import signUpSlice from "../modules/signUpSlice";
 import postsMainSlice from '../modules/postsMainSlice';
 import postDetailSlice from '../modules/postDetailSlice';
 import commentsSlice from '../modules/commentsSlice';
-
+import userOauth from '../modules/user';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +14,7 @@ const store = configureStore({
     postsMainSlice,
     postDetailSlice,
     commentsSlice,
+    userOauth
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: getDefaultMiddleware({
