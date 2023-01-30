@@ -65,7 +65,7 @@ export class PostsService {
     return;
   }
 
-  async findAllPost() {
+  async findAllPost(userId: number) {
     const result = await this.postRepository
       .createQueryBuilder('p')
       .select([
@@ -74,6 +74,7 @@ export class PostsService {
         'p.createdAt',
         'p.updatedAt',
         'user.nickname',
+        'user.id',
         'image.imgUrl',
         'likes',
       ])
@@ -84,7 +85,6 @@ export class PostsService {
       .leftJoin('p.comment', 'Comment')
       .loadRelationCountAndMap('p.comment', 'p.comment')
       .getMany();
-
     return result.map((post) => {
       return {
         id: post.id,
@@ -95,6 +95,7 @@ export class PostsService {
         updateAt: post.updatedAt,
         likes: post.userPostLike,
         commentCount: post.comment,
+        myPost: Number(post.user.id) === Number(userId) ? true : false,
         // commentCount: post.comment.commentCount,
         // commentCount: post.commentCount,
         // comment: {
