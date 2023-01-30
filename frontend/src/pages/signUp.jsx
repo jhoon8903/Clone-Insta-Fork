@@ -46,6 +46,10 @@ const SignUp = () => {
     alert("회원가입 성공");
   };
 
+  const goToLogin = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <StContainer>

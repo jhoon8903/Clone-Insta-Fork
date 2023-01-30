@@ -10,16 +10,30 @@ import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
 import ButtonDefault from '../components/ButtonDefault';
 import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
+import { __commentsGet } from '../redux/modules/commentsSlice';
+import { __postDetail } from '../redux/modules/postDetailSlice';
+import PostDetailModal from '../components/PostDetailModal';
 
 
-function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
-
+function PostItem({id, content, nickname, image, createAt, likes, updateAt}) {
+  
   const dispatch=useDispatch()
 
-  const isGlobalModalPostDetail=useSelector((state)=>state.postDetailSlice.isGlobalModalPostDetail)
+  //모달 상태
+  const isGlobalModalPostDetail=useSelector((state)=>
+  state.postDetailSlice.isGlobalModalPostDetail)
+  
+  //댓글 전체 조회
+  const commnets=useSelector((state)=>state.commentsSlice.commnets)
+  const commnetsLength = commnets === undefined ? 0 : commnets.length
+  console.log('댓글 조회 : ', commnets)
+
+  useEffect(()=>{ //댓글 전체 조회
+    dispatch(__commentsGet(id))
+  },[dispatch])
   
 
-  //상태 값
+  //수정 토글 상태
   const [isEdit, setIsEdit]=useState(false)
 
   const onClickPostEdit=()=>{ //수정 토글
@@ -33,11 +47,36 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
     }
   }
 
-  const onClickModalPostDetail=()=>{ //글 상세 모달 열기
+  const [modalDetailContent, setModalDetailContent]=useState("")
+
+  let postDetail=useSelector((state)=>state.postDetail)
+  console.log('postDetail : ' , postDetail)
+
+  const onClickModalPostDetail = ()=>{ //글 상세 모달 열기
     console.log('isGlobalModalPostDetail : ', isGlobalModalPostDetail)
+    
+    console.log('모달 열기 아이디 : ', id, content)
     dispatch(isGlobalModalPostDetailAction(true))
+    dispatch(__postDetail(id))
+    .then((res)=>{
+      console.log("res : ", res)
+      setModalDetailContent(
+        <PostDetailModal 
+        key={res.payload.id}
+        id={res.payload.id} 
+        content={res.payload.content} 
+        nickname={res.payload.nickname} 
+        image={res.payload.image} 
+        createAt={res.payload.createAt} 
+        likes={res.payload.likes}
+        />
+      )
+    })
+    
   }
-  
+
+
+  const createAtSlice = createAt.slice(0, 10)
 
   return (
     <>
@@ -45,9 +84,9 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
       <StMainPostItemTopInfo>
         <StMainPostItemUserInfo>
           <Link to="/main" title="피드 방문하기" className="flex-align-center">
-            <StPostDetailThumb/>
-            <StMainPostItemNick>닉네임닉네임 ·</StMainPostItemNick>
-            <StMainPostItemDate>2023-01-26</StMainPostItemDate>
+            <StPostDetailThumb src=""/>
+            <StMainPostItemNick>{nickname} ·</StMainPostItemNick>
+            <StMainPostItemDate>{createAtSlice}</StMainPostItemDate>
           </Link>
         </StMainPostItemUserInfo>
         <StMainPostItemPostFunction>
@@ -56,22 +95,22 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
         </StMainPostItemPostFunction>
       </StMainPostItemTopInfo>
       <StMainPostItemImageBox>
-        <StMainPostItemImage src=""/>
+        <StMainPostItemImage src={image}/>
       </StMainPostItemImageBox>
       <StMainPostItemBottomInfo>
         <StMainPostItemLikeBox>
           <FaRegHeart/><HiOutlinePaperAirplane/>
         </StMainPostItemLikeBox>
-        <StMainPostItemLikeTotal>좋아요 999개</StMainPostItemLikeTotal>
+        <StMainPostItemLikeTotal>좋아요 {likes}개</StMainPostItemLikeTotal>
           <StMainPostItemContent>
             <StMainPostItemNickContent>
               <Link to="/main" title="피드 방문하기" className="flex-align-center">
-                <StPostDetailThumb/>닉네임닉네임</Link>
+                <StPostDetailThumb/>{nickname}</Link>
             </StMainPostItemNickContent>
             {!isEdit
             ?<>
               <StMainPostItemDescContent>
-                게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 게시글 설명글 
+                {content}
               </StMainPostItemDescContent>
               <ButtonDefault onClick={onClickModalPostDetail}
               bgColor={`${COLORS.defaultLemon}`} hoverBgColor={`${COLORS.defaultBold}`}
@@ -86,15 +125,18 @@ function PostItem({width, height, bgColor, hoverBgColor, hoverFontColor, onClick
               </>
             }
           </StMainPostItemContent>
-          <StMainPostItemCommentTotal onClick={onClickModalPostDetail}>댓글 999개</StMainPostItemCommentTotal>
+          <StMainPostItemCommentTotal onClick={onClickModalPostDetail}>댓글 {commnetsLength}개</StMainPostItemCommentTotal>
       </StMainPostItemBottomInfo>
     </StMainPostItem>
+    {modalDetailContent}
     </>
   )
 }
 
 
-const StPostDetailThumb=styled.img`
+const StPostDetailThumb=styled.img.attrs(props=>({
+  src:`${props.src || "images/logo.png"}`,
+}))`
   width: 30px;
   height:30px;
   border-radius: 30px;
@@ -159,6 +201,7 @@ const StMainPostItemImageBox=styled.div`
   justify-content: center;
   border: 1px solid #e2e2e2;
   border-radius: 5px;
+  background-color: #000;
 `
 const StMainPostItemDate=styled.span`
   margin-left: 8px;

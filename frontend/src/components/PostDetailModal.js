@@ -12,11 +12,14 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import ButtonDefault from '../components/ButtonDefault';
 import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
-import PostDetailContent from './PostDetailContent'
 import PostDetailCommentBox from './PostDetailCommentBox';
+import PostDetailContent from './PostDetailContent'
+import PostDetailContentAll from './PostDetailContentAll';
 
 
-function PostDetailModal({width, height, bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
+
+
+function PostDetailModal({id, content, nickname, image, createAt, likes, updateAt}) {
 
   const dispatch=useDispatch()
 
@@ -25,38 +28,42 @@ function PostDetailModal({width, height, bgColor, hoverBgColor, hoverFontColor, 
   const onClickModalClose=()=>{ //모달 닫기
     dispatch(isGlobalModalPostDetailAction(false))
   }
-  
+
+  const createAtSlice = createAt?.slice(0, 10)
+  console.log('모달 상세 content : ', content)  
 
   return (
     <StPostDetailModalWrap display={!isGlobalModalPostDetail ? "none" : "flex"}>
       <StPostDetailContentBox>
         <StPostDetailImageBox>
-          <StPostDetailImage src=""/>
+          <StPostDetailImage src={image} />
         </StPostDetailImageBox>
         <StPostDetailInfoBox>
-          <StPostDetailUserInfo>
-            <Link to="/main" title="피드 방문하기" className="linkPostDetailUserInfo">
-              <StPostDetailThumb/>
-              <StPostDetailNick>닉네임닉네임</StPostDetailNick>
-              <StMainPostItemDate>2023-01-26</StMainPostItemDate>
-            </Link>
-          </StPostDetailUserInfo>
-          <StPostDetailContentCommentBox>
+          <StPostDetailInfoBoxSection>
+            <StPostDetailUserInfo>
+              <Link to="/main" title="피드 방문하기" className="linkPostDetailUserInfo">
+                <StPostDetailThumb src="" />
+                <StPostDetailNick>{nickname}</StPostDetailNick>
+                <StMainPostItemDate>{createAtSlice}</StMainPostItemDate>
+              </Link>
+            </StPostDetailUserInfo>
+            <StPostDetailContentCommentBox>
+              {/* 작성자 */}
+              <PostDetailContent nickname={nickname} content={content} createAt={createAtSlice} />
+              {/* 전체 댓글 */}
+              <PostDetailContentAll/>
+              <PostDetailContentAll/>
+              <PostDetailContentAll/>
+              <PostDetailContentAll/>
+              <PostDetailContentAll/>
 
-            <PostDetailContent/>
-            <PostDetailContent/>
-            <PostDetailContent/>
-            <PostDetailContent/>
-            <PostDetailContent/>
-            <PostDetailContent/>
+            </StPostDetailContentCommentBox>
 
-          </StPostDetailContentCommentBox>
-
-          <PostDetailCommentBox/>
-
+            <PostDetailCommentBox likes={likes} createAt={createAtSlice}/>
+          </StPostDetailInfoBoxSection>
         </StPostDetailInfoBox>
-        <AiOutlineCloseCircle className="iconClose" onClick={onClickModalClose}/>
       </StPostDetailContentBox>
+      <AiOutlineCloseCircle className="iconClose" onClick={onClickModalClose}/>
       <StPostDetailContentBoxDim onClick={onClickModalClose}></StPostDetailContentBoxDim>
     </StPostDetailModalWrap>
   )
@@ -70,22 +77,25 @@ const StPostDetailNick=styled.span`
 `
 const StPostDetailContentCommentBox=styled.div`
   padding: 0 20px 20px;
-  height: 420px;
-  overflow: auto;
+  height: 564px;
+  max-height: 564px;
+  overflow-y: auto;
   border-bottom: 1px solid #e2e2e2;
   ::-webkit-scrollbar {
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    background-color: ${COLORS.defaultPinkLight};
+    background-color: transparent;
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: ${COLORS.defaultPinkBold};
+    background-color: transparent;
     border-radius: 10px;
   }
 `
-const StPostDetailThumb=styled.img`
+const StPostDetailThumb=styled.img.attrs(props=>({
+  src:`${props.src || "images/logo.png"}`,
+}))`
   width: 30px;
   height:30px;
   border-radius: 30px;
@@ -94,6 +104,11 @@ const StPostDetailThumb=styled.img`
 const StPostDetailUserInfo=styled.div`
   border-bottom:1px solid #e2e2e2;
   padding: 10px 20px;
+`
+const StPostDetailInfoBoxSection=styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 `
 const StPostDetailInfoBox=styled.div`
   height: calc(100% - 20px);
@@ -114,12 +129,13 @@ const StPostDetailImageBox=styled.div`
   height: 100%;
   flex-basis: 60%;
   border-right: 1px solid ${COLORS.defaultGrayLight};
+  background-color: #000;
 `
 const StPostDetailContentBoxDim=styled.div`
   width:100%;
   height:100%;
   background-color: #000;
-  opacity: 0.6;
+  opacity: 0.2;
   position: absolute;
   top:0;
   left:0;
@@ -129,10 +145,12 @@ const StPostDetailContentBox=styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 70%;
+  width: 65%;
   min-width: 550px;
-  height: 70%;
+  max-width: 1600px;
+  height: 84%;
   min-height: 400px;
+  max-height: 1800px;
   border: 3px solid ${COLORS.defaultGrayLight};
   border-radius: 5px;
   position: relative;

@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { api } from "../../shared/api";
 
+axios.defaults.withCredentials = true;
+
 const initialState = {
   user: {},
   isLoading: false,
@@ -13,22 +15,19 @@ export const __loginUser = createAsyncThunk(
   "loginUser",
   async (payload, thunkAPI) => {
     try {
-      const data = await api
-        .post(`auth/local`, payload)
-        .then((res) => {
-          if (res.status === 200) {
-            // const token = res.headers.authorization;
-            // const refreshToken = res.headers.refreshauthorization;
-            // localStorage.setItem("token", token);
-            // localStorage.setItem("refreshToken", refreshToken);
-            alert("Login success");
-            return res;
-          }
-        })
-        .catch((err) => {
-          alert("다시 확인해주세요.");
-          return err;
-        });
+      const data = await api.post(`auth/local`, payload);
+      console.log("확인:", data.status);
+      if (data.status === 201) {
+        console.log("😂😂😂로그인 res.status : ", data);
+        const accessToken = data.data.AccessToken;
+        const refreshToken = data.data.RefreshToken;
+        console.log("accessToken", accessToken);
+        console.log("refreshToken", refreshToken);
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        alert("로그인 성공!!!");
+        window.location.assign("/main");
+      }
       console.log("login data", data);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
