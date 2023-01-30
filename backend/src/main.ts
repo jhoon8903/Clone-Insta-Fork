@@ -7,6 +7,18 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  //* 현재 모드 확인
+  const isDev: boolean = process.env.MODE === 'dev' ? true : false;
+
+  //* Product 모드
+  const httpPort = isDev
+    ? process.env.HTTP_PORT
+    : process.env.PRODUCT_HTTP_PORT;
+
+  const httpsPort = isDev
+    ? process.env.HTTPS_PORT
+    : process.env.PRODUCT_HTTPS_PORT;
+
   //* 전역으로 Pipes 설정
   app.useGlobalPipes(new ValidationPipe());
 
@@ -28,6 +40,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(process.env.HTTP_PORT);
+  await app.listen(httpPort);
 }
 bootstrap();

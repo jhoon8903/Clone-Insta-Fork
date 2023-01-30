@@ -22,6 +22,8 @@ import { CommentsModule } from './Comments/comments.module';
 import { PostsModule } from './Posts/posts.module';
 import { ChatModule } from './Chat/chat.module';
 
+const isDev = true;
+
 const typeOrmModuleOptions = {
   useFactory: async (
     configService: ConfigService,
@@ -31,7 +33,7 @@ const typeOrmModuleOptions = {
     port: 3306,
     username: configService.get('DB_USER_NAME'),
     password: configService.get('DB_USER_PASSWORD'),
-    database: configService.get('DB_NAME'),
+    database: configService.get('DB_NAME') + '_' + process.env.NODE_ENV,
     entities: [
       UserEntity,
       UserPostTagEntity,
@@ -48,9 +50,9 @@ const typeOrmModuleOptions = {
       ChattingRoomEntity,
       ChattingRoomUserListEntity,
     ],
-    synchronize: true,
+    synchronize: isDev,
     autoLoadEntities: true,
-    logging: true,
+    logging: isDev,
     keepConnectionAlive: true,
   }),
   inject: [ConfigService],

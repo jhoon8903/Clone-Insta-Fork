@@ -1,8 +1,8 @@
 import { CommentDeleteDto } from './dtos/comment.delete.dto';
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -63,7 +63,7 @@ export class CommentsService {
     if (!comment) throw new NotFoundException('존재하지 않는 댓글입니다.');
 
     if (data.userId !== comment.userId)
-      throw new UnauthorizedException('권한이 없습니다.');
+      throw new ForbiddenException('권한이 없습니다.');
 
     return await this.commentsRepository.update(data.id, {
       comment: data.comment,
@@ -79,7 +79,7 @@ export class CommentsService {
 
     if (!comment) throw new NotFoundException('존재하지 않는 댓글입니다.');
     if (data.userId !== comment.userId)
-      throw new UnauthorizedException('권한이 없습니다.');
+      throw new ForbiddenException('권한이 없습니다.');
 
     return await this.commentsRepository
       .createQueryBuilder()
