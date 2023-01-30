@@ -1,3 +1,5 @@
+import { tokenType } from './../auth.interface';
+import { AuthService } from './../auth.service';
 import { UserEntity } from 'src/Users/users.entity';
 import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -10,10 +12,10 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    private readonly authSerice: AuthService,
   ) {
     super({
       clientID: process.env.KAKAO_CLIENT_ID,
-      clientSecret: process.env.KAKAO_CLIENT_SECRET,
       callbackURL: process.env.KAKAO_CALLBACK_URI,
       scope: ['account_email', 'profile_nickname', 'profile_image'],
     });
@@ -23,7 +25,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     accesstoken: string,
     refereshtoken: string,
     profile: Profile,
-  ): Promise<{ id: string }> {
+  ): Promise<tokenType> {
     delete profile._raw;
     this.logger.log(profile);
     const { _json } = profile;
@@ -44,8 +46,9 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     });
     if (!existUser) {
       const newUser = await this.userRepository.insert(socialUser);
-      return { id: newUser.identifiers[0].id };
+      const tokenId: string = newUser.identifiers[0].id;
+      const token = await this.authSerice.createToken(tokenId);
+      return token;
     }
-    return { id: String(existUser.id) };
   }
 }
