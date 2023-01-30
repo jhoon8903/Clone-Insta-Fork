@@ -11,7 +11,12 @@ import { FaRegHeart } from "react-icons/fa";
 import ButtonDefault from '../components/ButtonDefault';
 import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
 
-function PostDetailContent({nickname, content, createAt}) {
+function PostDetailContent({id, nickname, content, createAt}) {
+
+  console.log('모달 상세 댓글 작성자 id : ', id )
+  console.log('모달 상세 댓글 작성자 nickname : ', nickname )
+  console.log('모달 상세 댓글 작성자 content : ', content )
+  console.log('모달 상세 댓글 작성자 createAt : ', createAt )
 
   const onClickPostDelete=()=>{ //글 삭제
     if(window.confirm('삭제하시겠습니까?')){

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import PostItem from '../components/PostItem';
 import { __postsMain } from '../redux/modules/postsMainSlice';
-
+import PostDetailModal from '../components/PostDetailModal';
 
 
 const Main = () => {
@@ -21,6 +21,10 @@ const Main = () => {
   useEffect(()=>{
     dispatch(__postsMain()) //게시글 전체 조회
   },[])
+
+    //글 상세 내용 조회
+    const postDetailObj=useSelector((state)=>state.postDetailSlice.postDetailObj)
+    console.log('✔ postDetailObj : ', postDetailObj)
 
   return (
     <StMainWrap
@@ -40,10 +44,20 @@ const Main = () => {
             createAt={post.createAt}
             updateAt={post.updateAt}
             likes={post.likes}
+            commentCount={post.commentCount}
             />
           )
           })}
       </StMainPostItemBox>
+      <PostDetailModal 
+      key={postDetailObj.key}
+      id={postDetailObj.id}
+      content={postDetailObj.content}
+      nickname={postDetailObj.nickname}
+      image={postDetailObj.image}
+      createAt={postDetailObj.createAt}
+      likes={postDetailObj.likes}
+      />
     </StMainWrap>
   )
 }
