@@ -43,11 +43,6 @@ const SignUp = () => {
     // console.log("signUpUser", signUpUser);
 
     dispatch(__signUp(signUpUser));
-    alert("회원가입 성공");
-  };
-
-  const goToLogin = () => {
-    navigate("/");
   };
 
   return (

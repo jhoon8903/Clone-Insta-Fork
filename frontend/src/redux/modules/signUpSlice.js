@@ -23,6 +23,7 @@ export const __signUp = createAsyncThunk(
             // localStorage.setItem("refreshToken", refreshToken);
             // console.log("회원가입", res);
             alert("sign up success");
+            window.location.assign("/");
             return res;
           }
         })
