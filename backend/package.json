@@ -50,7 +50,6 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "spdy": "^4.0.2",
-    "spdy-nest": "^0.0.8",
     "typeorm": "^0.3.11"
   },
   "devDependencies": {
@@ -108,7 +107,6 @@
     "rxjs": "^7.2.0",
     "source-map-support": "^0.5.20",
     "spdy": "^4.0.2",
-    "spdy-nest": "^0.0.8",
     "supertest": "^6.1.3",
     "ts-jest": "29.0.3",
     "ts-loader": "^9.2.3",
