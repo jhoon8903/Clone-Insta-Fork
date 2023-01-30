@@ -1,4 +1,6 @@
+import { IsNotEmpty, IsString } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt } from 'class-validator';
 import { CommentEntity } from 'src/Comments/comments.entity';
 import { CommonEntity } from 'src/common/entity/common.entity';
 import { ImageEntity } from 'src/Images/Images.entity';
@@ -26,6 +28,8 @@ export class PostEntity extends CommonEntity {
     example:
       '동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려 강산 대한 사람 대한으로 길이 보전하세',
   })
+  @IsString({ message: 'Content 의 Type은 String 입니다.' })
+  @IsNotEmpty({ message: 'Content 의 값이 공백입니다.' })
   @Column({ type: 'text' })
   content: string;
 
@@ -34,6 +38,7 @@ export class PostEntity extends CommonEntity {
     required: true,
     example: '1',
   })
+  @IsInt({ message: 'Name 의 Type은 Number 입니다.' })
   @Column({ type: 'int' })
   userId: number;
 
