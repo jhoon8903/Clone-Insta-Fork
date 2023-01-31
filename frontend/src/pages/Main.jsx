@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PostItem from "../components/PostItem";
 import { __postsMain } from "../redux/modules/postsMainSlice";
 import PostDetailModal from "../components/PostDetailModal";
+import UploadModal from "../components/UploadModal";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,8 @@ const Main = () => {
       overflow={!isGlobalModalPostDetail ? "auto" : "hidden"}
       height={!isGlobalModalPostDetail ? "auto" : ""}
     >
+      <UploadModal />
+
       <StMainPostItemBox>
         {posts?.map((post) => {
           return (

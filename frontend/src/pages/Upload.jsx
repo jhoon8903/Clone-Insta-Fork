@@ -1,11 +1,15 @@
 import React, { useRef, formData, useState, useEffect } from "react";
 import styled from "styled-components";
 import { RiImageAddFill } from "react-icons/ri";
-import { AiOutlineCloseCircle, AiOutlineReload } from "react-icons/ai";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { __addPostThunk } from "../redux/modules/uploadSlice";
+import {
+  __addPostThunk,
+  isUploadModalGlobalAction,
+} from "../redux/modules/uploadSlice";
+import { BsPersonCircle } from "react-icons/bs";
 
 const Upload = () => {
   const navigate = useNavigate();
@@ -74,7 +78,10 @@ const Upload = () => {
         <StBoxWrap>
           <StBoxTop>
             <StStBoxTopInner>
-              <AiOutlineReload className="iconUploadTop" />
+              <AiOutlineArrowLeft
+                className="iconUploadTop"
+                onClick={() => window.location.reload()}
+              />
               <span>새 게시물 올리기</span>
               <div></div>
             </StStBoxTopInner>
@@ -113,9 +120,24 @@ const Upload = () => {
               </StLeftBox>
 
               <StRightBox>
-                <StRightBoxTop>닉네임이 들어갑니다.</StRightBoxTop>
+                <StRightBoxTop>
+                  <BsPersonCircle />
+                  <span>닉네임이 들어갑니다.</span>
+                </StRightBoxTop>
                 <StRightBoxContent>
                   <textarea
+                    style={{
+                      width: "200px",
+                      height: "270px",
+                      fontSize: "15px",
+                      margin: "3px",
+                      padding: "10px",
+                      border: "none",
+                      textDecoration: "none",
+                      outline: "none",
+                      resize: "none",
+                    }}
+                    placeholder="문구 입력..."
                     name="body"
                     rows="19"
                     maxLength={2000}
@@ -149,21 +171,14 @@ const Upload = () => {
 };
 
 const StContainer = styled.div`
-  /* border: 1px solid; */
-  width: 100vh;
-  height: 100vh;
-  margin: auto;
-  padding: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const StBoxWrap = styled.div`
-  /* border: 1px solid; */
-  width: 800px;
-  height: 800px;
-  margin: auto;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -171,10 +186,9 @@ const StBoxWrap = styled.div`
 `;
 
 const StBoxTop = styled.div`
-  border: 2px solid gray;
-  border-bottom-style: none;
+  border-bottom: 2px solid gray;
   border-radius: 20px 20px 0 0;
-  width: 630px;
+  width: 700px;
   height: 42px;
   font-size: 18px;
   font-weight: 500;
@@ -187,9 +201,8 @@ const StStBoxTopInner = styled.div`
 `;
 
 const StBox = styled.div`
-  border: 2px solid gray;
   border-radius: 0 0 20px 20px;
-  width: 630px;
+  width: 700px;
   height: 500px;
   & span {
     font-size: 20px;
@@ -200,15 +213,15 @@ const StBox = styled.div`
 
 const StForm = styled.form`
   display: flex;
-  width: 630px;
+  width: 700px;
   height: 500px;
 `;
 
 const StLeftBox = styled.div`
-  border: 1px solid gray;
+  border-right: 1px solid gray;
   border-radius: 0 0 0 20px;
-  width: 400px;
-  height: 500px;
+  width: 500px;
+  height: 520px;
   position: relative;
 `;
 
@@ -218,29 +231,34 @@ const StInnerBox = styled.div`
   justify-content: center;
   align-items: center;
   padding: 3px;
-  width: 390px;
+  width: 465px;
   height: 490px;
   position: absolute;
 `;
 
 const StRightBox = styled.div`
-  /* border: 1px solid blue; */
   width: 230px;
 `;
 
 const StRightBoxTop = styled.div`
-  /* border: 1px solid blue; */
-  height: 40px;
+  height: 20px;
+  padding: 15px 0 0 15px;
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-bottom: 1px solid gray;
+  & span {
+    font-size: 15px;
+    padding-bottom: 5px;
+  }
 `;
 
 const StRightBoxContent = styled.div`
-  /* border: 1px solid blue; */
   height: 300px;
+  border-bottom: 1px solid gray;
 `;
 
-const StRightBoxBt = styled.div`
-  /* border: 1px solid blue; */
-`;
+const StRightBoxBt = styled.div``;
 
 const StButton = styled.button`
   border: none;

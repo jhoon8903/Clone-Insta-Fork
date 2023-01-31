@@ -8,10 +8,18 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiPlusSquare } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { HiOutlineLogout } from "react-icons/hi";
-import UploadModal from "./UploadModal";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { isUploadModalGlobalAction } from "../redux/modules/uploadSlice";
 
 const SideNav = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onClickModalOpen = () => {
+    dispatch(isUploadModalGlobalAction(true));
+  };
+
   const onClickLogout = () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) {
     } else {
@@ -53,10 +61,10 @@ const SideNav = () => {
             <StNavMenuItemSpan>알림</StNavMenuItemSpan>
           </Link>
         </StNavMenuItem>
-        <StNavMenuItem>
-          <Link to="/main" className="linkSideNav">
-            {/* <FiPlusSquare /> */}
-            <UploadModal />
+        <StNavMenuItem onClick={onClickModalOpen}>
+          {/* <Link to="/main" className="linkSideNav"> */}
+          <Link className="linkSideNav">
+            <FiPlusSquare />
             <StNavMenuItemSpan>만들기</StNavMenuItemSpan>
           </Link>
         </StNavMenuItem>

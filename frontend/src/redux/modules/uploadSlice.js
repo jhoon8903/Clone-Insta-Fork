@@ -39,21 +39,18 @@ const initialState = {
   },
   error: null,
   isLoading: false,
+  isUploadModal: false,
 };
 
 export const uploadSlice = createSlice({
   name: "upload",
   initialState,
   reducers: {
-    clearTodo: (state) => {
-      state.todo = {
-        id: 0,
-        body: "",
-        username: "",
-        title: "",
-      };
+    isUploadModalGlobalAction: (state, action) => {
+      state.isUploadModal = action.payload;
     },
   },
+
   extraReducers: {
     [__addPostThunk.fulfilled]: (state, action) => {
       state.isLoading = false;
@@ -80,5 +77,5 @@ export const uploadSlice = createSlice({
   },
 });
 
-export const { clearTodo } = uploadSlice.actions;
+export const { isUploadModalGlobalAction } = uploadSlice.actions;
 export default uploadSlice.reducer;
