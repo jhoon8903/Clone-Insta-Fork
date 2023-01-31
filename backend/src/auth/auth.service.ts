@@ -95,18 +95,17 @@ export class AuthService {
     });
 
     if (!existUser) {
-      console.log('신규유져', kakaoUser);
-      const newUser = await this.userRepository.insert(kakaoUser);
-      const tokenId: number = newUser.identifiers[0].id;
+      const newKakao = await this.userRepository.insert(kakaoUser);
+      const tokenId: number = newKakao.identifiers[0].id;
+      const nickname: string = newKakao.identifiers[0].nickaname;
       const token = await this.createToken({ tokenId });
-      return token;
+      return { token, nickname };
+    } else {
+      const tokenId: number = existUser.id;
+      const nickname: string = existUser.nickname;
+      const token = await this.createToken({ tokenId });
+      return { token, nickname };
     }
-
-    const ExistUser = existUser;
-    console.log('기존유저', existUser);
-    const tokenId: number = ExistUser.id;
-    const token = await this.createToken({ tokenId });
-    return token;
   }
 
   /////////////
@@ -187,7 +186,7 @@ export class AuthService {
   //////////////////////////////////////////////////////////////////
   // 로컬 로그인 ///
   /////////////////////////////////////////////////////////////////
-  async localLogin(req: AuthLoginDto): Promise<{ id: string }> {
+  async localLogin(req: AuthLoginDto) {
     const { password, email } = req;
     const existUser: UserEntity = await this.userRepository.findOneBy({
       email,
@@ -202,13 +201,17 @@ export class AuthService {
       existUser.name === 'google' ||
       existUser.name === 'naver'
     ) {
-      return { id: String(existUser.id) };
+      const id: string = String(existUser.id);
+      const nickaname: string = existUser.nickname;
+      return { id, nickaname };
     }
 
     const check = await bcrypt.compare(password, existUser.password);
     Logger.log(check, 'Auth');
     if (check) {
-      return { id: String(existUser.id) };
+      const nickname: string = existUser.nickname;
+      const id: string = String(existUser.id);
+      return { id, nickname };
     } else {
       throw new UnauthorizedException('아이디 또는 비빌번호를 확인해주세요');
     }
@@ -224,10 +227,13 @@ export class AuthService {
       secret: process.env.JWT_SECRET,
     });
 
-    const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: '7d',
-      secret: process.env.JWT_SECRET,
-    });
+    const refreshToken = this.jwtService.sign(
+      {},
+      {
+        expiresIn: '7d',
+        secret: process.env.JWT_SECRET,
+      },
+    );
 
     return {
       AccessToken: `Bearer ${accessToken}`,
