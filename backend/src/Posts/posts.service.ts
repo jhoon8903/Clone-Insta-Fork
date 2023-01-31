@@ -121,6 +121,8 @@ export class PostsService {
         'Comment.id',
         'Comment.comment',
         'Comment.userId',
+        'Comment.createdAt',
+        'Comment.updatedAt',
         'User.nickname',
       ])
       .where('p.id = :id', { id: postId })
@@ -144,6 +146,8 @@ export class PostsService {
           id: v.id,
           comment: v.comment,
           nickname: v.user.nickname,
+          createdAt: v.createdAt,
+          updatedAt: v.updatedAt,
           myComment: +v.userId === +userId ? true : false,
         };
       }),
