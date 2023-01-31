@@ -31,6 +31,8 @@ import { AwsService } from 'src/common/aws/aws.service';
 import { JwtPayload } from 'src/auth/jwt/jwt.payload.dto';
 import { PostLikeDto } from './dtos/posts.like.dto';
 import { PostDeleteDto } from './dtos/posts.delete.dto';
+import { PayloadTooLargeException } from '@nestjs/common/exceptions';
+import { JwtModuleAsyncOptions } from '@nestjs/jwt';
 
 @ApiTags('Post')
 @Controller('posts')
@@ -106,9 +108,10 @@ export class PostsController {
   })
   @ApiNotFoundResponse({ description: '게시글이 존재하지 않을 경우' })
   @ApiOkResponse({ description: '게시글이 정상적으로 조회된 경우' })
+  @UseGuards(JwtAuthGuard)
   @Get(':postId')
-  findOnePost(@Param('postId') postId: number) {
-    return this.postsService.findOnePost(postId);
+  findOnePost(@Param('postId') postId: number, @getUser() payload: JwtPayload) {
+    return this.postsService.findOnePost(postId, payload.id);
   }
 
   //*게시글삭제
