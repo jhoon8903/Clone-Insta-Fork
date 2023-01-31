@@ -201,17 +201,13 @@ export class AuthService {
       existUser.name === 'google' ||
       existUser.name === 'naver'
     ) {
-      const id: string = String(existUser.id);
-      const nickaname: string = existUser.nickname;
-      return { id, nickaname };
+      return { id: String(existUser.id), nickname: existUser.nickname };
     }
 
     const check = await bcrypt.compare(password, existUser.password);
     Logger.log(check, 'Auth');
     if (check) {
-      const nickname: string = existUser.nickname;
-      const id: string = String(existUser.id);
-      return { id, nickname };
+      return { id: String(existUser.id), nickname: existUser.nickname };
     } else {
       throw new UnauthorizedException('아이디 또는 비빌번호를 확인해주세요');
     }

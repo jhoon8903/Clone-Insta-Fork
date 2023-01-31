@@ -76,13 +76,11 @@ export class AuthController {
 
   @Post('local') // local login
   async localAuth(@Body() body: AuthLoginDto, @Res() res: Response) {
-    const user = await this.authService.localLogin(body);
-    const { id, nickname } = user;
-    const token = await this.authService.createToken(id);
+    const { id, nickname } = await this.authService.localLogin(body);
+    const token = await this.authService.createToken({ id });
     const { AccessToken, RefreshToken } = token;
     res.header('Authorization', AccessToken);
     res.header('refreshToken', RefreshToken);
-    res.send({ nickname, token });
-    return nickname;
+    res.send({ token, nickname });
   }
 }
