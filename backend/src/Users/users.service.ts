@@ -13,15 +13,21 @@ export class UsersService {
   ) {}
 
   async signUp(body: UserSignUpDto) {
-    const { email, password } = body;
-
+    const { nickname, email, password } = body;
     const profileImg = body.profileImg
       ? body.profileImg
       : process.env.DEFAULT_IMG_URL;
 
-    const isUserExist = await this.usersRepository.findOneBy({ email });
+    const isUserEmailExists = await this.usersRepository.findOneBy({ email });
+    if (isUserEmailExists)
+      throw new ConflictException('이미 존재하는 Email 입니다.');
 
-    if (isUserExist) throw new ConflictException('이미 존재하는 Email 입니다.');
+    const isUserNicknameExists = await this.usersRepository.findOneBy({
+      nickname,
+    });
+
+    if (isUserNicknameExists)
+      throw new ConflictException('이미 존재하는 Nickname 입니다.');
 
     const salt = Number(process.env.BCRYPT_SALT);
 
@@ -32,6 +38,10 @@ export class UsersService {
       password: hashedPassword,
       profileImg: profileImg,
     });
+  }
+
+  async findUserById(id) {
+    return await this.usersRepository.findOneBy({ id });
   }
 
   /**

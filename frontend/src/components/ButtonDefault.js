@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-function ButtonDefault({bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
+function ButtonDefault({width, height, bgColor, hoverBgColor, hoverFontColor, onClick, children}) {
   return (
-    <StButtonDefault bgColor={bgColor} hoverBgColor={hoverBgColor} hoverFontColor={hoverFontColor}
+    <StButtonDefault width={width} height={height} bgColor={bgColor} hoverBgColor={hoverBgColor} hoverFontColor={hoverFontColor}
     onClick={onClick}
     >{children}
     </StButtonDefault>
@@ -13,8 +13,8 @@ function ButtonDefault({bgColor, hoverBgColor, hoverFontColor, onClick, children
 
 const StButtonDefault=styled.button.attrs({
 })`
-    width: 150px;
-    height: 40px;
+    width: ${(props)=> props.width || '140px'};
+    height: ${(props)=> props.height || '30px'};
     border-radius: 20px;
     font-weight: bold;
     font-size: 16px;

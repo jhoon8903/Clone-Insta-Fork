@@ -1,88 +1,87 @@
-import { AuthLoginDto } from './dtos/auth.login.dto';
-import { UserEntity } from 'src/Users/users.entity';
-import { getUser } from 'src/common/decorator/user.data.decorator';
-import { tokenType } from './auth.interface';
+import { IsString } from '@nestjs/class-validator';
+import { UserEntity } from './../Users/users.entity';
 import { AuthService } from './auth.service';
 import {
   Controller,
-  Get,
   Res,
-  UseGuards,
   Post,
-  Req,
   Body,
+  BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+
+import { Response } from 'express';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthLoginDto } from './dtos/auth.login.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-  /**
-   * 구글 로그인 호출
-   * 프론트에서 GET 요청으로 google 인증 호출
-   */
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
-
-  /**
-   * 구글 콜백 (res : 액세스, 리프레쉬 )
-   * @param id UserEntity id : string
-   * @param res {token, 2 arg}
-   */
-  @Get('google/callback') // google 인증 후 돌아오는 callback 주소
-  @UseGuards(AuthGuard('google')) // google strategy 인증 과정
-  async googleAuthRedirect(@getUser() id: string, @Res() res: Response) {
-    const token = await this.authService.createToken(id, res);
-    res.send(token);
+  constructor(private authService: AuthService) {}
+  @ApiOperation({
+    summary: '카카오 로그인',
+    description: '카카오 로그인을 하는 API입니다.',
+  })
+  @Post('kakao')
+  async kakaoLogin(@Body() body, @Res() res) {
+    try {
+      const { payload } = body;
+      console.log(body);
+      if (!payload) {
+        throw new BadRequestException('카카오정보가 없습니다.');
+      }
+      const kakao = await this.authService.kakaoLogin(payload);
+      console.log('카카오 컨트롤러', kakao);
+      const kakaoInfo = await this.authService.kakaoUser(kakao);
+      const { token, nickname } = kakaoInfo;
+      const { AccessToken, RefreshToken } = token;
+      res.setHeader('Authorization', AccessToken);
+      res.setHeader('RefreshToken', RefreshToken);
+      console.log(token, nickname);
+      if (!kakao.id) {
+        throw new BadRequestException('카카오 정보가 없습니다.');
+      }
+      res.send({ nickname, token });
+    } catch (e) {
+      console.log(e);
+      throw new UnauthorizedException();
+    }
   }
-
-  /**
-   * 프론트에서 GET 요청으로 kakao 인증 호출
-   */
-  @Get('kakao')
-  @UseGuards(AuthGuard('kakao'))
-  async kakaoAuth() {}
-
-  /**
-   * 카카오 콜백 (res : 액세스, 리프레쉬 )
-   * @param id UserEntity id : string
-   * @param res {token, 2 arg}
-   */
-  @Get('kakao/callback') // google 인증 후 돌아오는 callback 주소
-  @UseGuards(AuthGuard('kakao')) // kakao strategy 인증 과정
-  async kakaoAuthRedirect(@getUser() id: string, @Res() res: Response) {
-    const token = await this.authService.createToken(id, res);
-    res.send(token);
-  }
-
-  /**
-   * 프론트에서 GET 네이버 요청
-   */
-  @Get('naver')
-  @UseGuards(AuthGuard('naver'))
-  async naverAuth() {}
-
-  /**
-   * 네이버 콜백 (res : 액세스, 리프레쉬 )
-   * @param id UserEntity id : string
-   * @param res {token, 2 arg}
-   */
-  @Get('naver/callback') //'naver 인증 후 돌아오는 callback 주소
-  @UseGuards(AuthGuard('naver')) //'naver strategy 인증 과정
-  async naverAuthRedirect(@getUser() id: string, @Res() res: Response) {
-    const token = await this.authService.createToken(id, res);
-    res.send(token);
+  @ApiOperation({
+    summary: '구글 로그인',
+    description: '카카오 로그인을 하는 API입니다.',
+  })
+  @Post('google')
+  async googleLogin(@Body() body, @Res() res) {
+    try {
+      const { payload } = body;
+      if (!payload) {
+        throw new BadRequestException('카카오정보가 없습니다.');
+      }
+      const google = await this.authService.googleLogin(payload);
+      console.log('구글 컨트롤러', google);
+      const googleInfo = await this.authService.googleUser(google);
+      const { token, nickname } = googleInfo;
+      const { AccessToken, RefreshToken } = token;
+      res.setHeader('Authorization', AccessToken);
+      res.setHeader('RefreshToken', RefreshToken);
+      if (!google.id) {
+        throw new BadRequestException('구글 정보가 없습니다.');
+      }
+      res.send(token, nickname);
+    } catch (e) {
+      console.log(e);
+      throw new UnauthorizedException();
+    }
   }
 
   @Post('local') // local login
-  @UseGuards()
   async localAuth(@Body() body: AuthLoginDto, @Res() res: Response) {
-    const { id } = await this.authService.localLogin(body);
-    const token = await this.authService.createToken({ id }, res);
-    res.send(token);
+    const { id, nickname } = await this.authService.localLogin(body);
+    const token = await this.authService.createToken({ id });
+    const { AccessToken, RefreshToken } = token;
+    res.header('Authorization', AccessToken);
+    res.header('refreshToken', RefreshToken);
+    res.send({ token, nickname });
   }
 }

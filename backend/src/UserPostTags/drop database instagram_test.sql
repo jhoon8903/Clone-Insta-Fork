@@ -1,1 +1,1 @@
-drop database instagram_test
+drop database instagram_dev
