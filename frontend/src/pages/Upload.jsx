@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   __addPostThunk,
+  __getPostThunk,
   isUploadModalGlobalAction,
 } from "../redux/modules/uploadSlice";
 import { BsPersonCircle } from "react-icons/bs";
@@ -14,20 +15,39 @@ import { BsPersonCircle } from "react-icons/bs";
 const Upload = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // const [files, setFiles] = useState("");
   const token = localStorage.getItem("token");
+  const nickName = localStorage.getItem("nickName");
   // console.log(token);
 
   //이미지 미리보기와 파일첨부 기능
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [imgFile, setImgFile] = useState(null); //파일
+  const [fileImage, setFileImage] = useState();
   const [content, setContent] = useState(null);
-  console.log("content", content);
+  // console.log("content", content);
+  let test;
 
   //미리보기
   const handleChangeFile = (event) => {
-    setImgFile(event.target.files);
+    test = event.target.files[0];
+
+    console.log("event.target", event.target);
+    const newImage = event.target.files[0];
+    setFileImage(newImage);
+    const formData = new FormData();
+    formData.append("image", event.target.files[0]);
+    console.log("졸려", fileImage === event.target.files[0]);
+    console.log("fileImage", fileImage);
+    console.log("event.target.files[0]", event.target.files[0]);
+
+    // formData.append("content",content)
+    dispatch(__addPostThunk(formData));
     setImgBase64([]);
+    // const formImage = event.target.files;
+    // setFileImage(formImage);
+
     for (var i = 0; i < event.target.files.length; i++) {
       if (event.target.files[i]) {
         let reader = new FileReader();
@@ -43,19 +63,27 @@ const Upload = () => {
     }
   };
 
-  const onWriteHandler = async () => {
+  const onWriteHandler = async (e) => {
+    e.preventDefault();
     const formdata = new FormData();
     // Object.values(imgFile).forEach((file) => fd.append("image", file));
-    formdata.append("image", imgFile);
-    formdata.append("content", content);
-
+    // formdata.append("image", imgFile);
+    // formdata.append("content", content);
+    console.log("e.target:", e.target);
+    formData.append("image", test);
+    // console.log("image:", imgFile);
+    // console.log("content:", content);
+    const postData = {
+      image: formdata,
+      content: content,
+    };
     dispatch(__addPostThunk(formdata));
 
     //여기서 보내준다.
     // await axios
     //   .post(`https://f1rstweb.shop/posts`, formdata, {
     //     headers: {
-    //       Authorization: token,
+    //       // Authorization: token,
     //       "Content-Type": "multipart/form-data",
     //     },
     //   })
@@ -90,8 +118,7 @@ const Upload = () => {
           <StBox>
             <StForm
               onSubmit={(e) => {
-                e.preventDefault();
-                onWriteHandler();
+                onWriteHandler(e);
               }}
             >
               <StLeftBox>
@@ -122,7 +149,7 @@ const Upload = () => {
               <StRightBox>
                 <StRightBoxTop>
                   <BsPersonCircle />
-                  <span>닉네임이 들어갑니다.</span>
+                  <span>{nickName}</span>
                 </StRightBoxTop>
                 <StRightBoxContent>
                   <textarea
@@ -153,7 +180,7 @@ const Upload = () => {
                       className="uploadInput"
                       type="file"
                       id="image"
-                      accept="image/jpg,image/png,image/jpeg,image/gif"
+                      accept="image/*"
                       onChange={handleChangeFile}
                       multiple="multiple"
                     />

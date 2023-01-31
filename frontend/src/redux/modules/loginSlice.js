@@ -19,14 +19,18 @@ export const __loginUser = createAsyncThunk(
       // console.log("확인:", data.status);
       if (data.status === 201) {
         console.log("😂😂😂로그인 res.status : ", data);
-        const accessToken = data.data.AccessToken;
-        const refreshToken = data.data.RefreshToken;
+        const accessToken = data.data.token.AccessToken;
+        const refreshToken = data.data.token.RefreshToken;
+        const nickName = data.data.nickname;
+        console.log("nickName", nickName);
         // console.log("accessToken", accessToken);
         // console.log("refreshToken", refreshToken);
+        // localStorage.setItem("token", accessToken);
         localStorage.setItem("token", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("nickName", nickName);
         alert("로그인 성공!!!");
-        window.location.assign("/main");
+        // window.location.assign("/main");
       }
       // console.log("login data", data);
       return thunkAPI.fulfillWithValue(data);

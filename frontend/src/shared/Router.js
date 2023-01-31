@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import Login from "../pages/Login";
 import SignUp from "../pages/signUp";
+
 import Main from "../pages/Main";
 import KakaoAuthHandler from "../pages/oauth";
 import Upload from "../pages/Upload";
@@ -17,6 +18,7 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
+
           <Route path="/main" element={<Main />} />
           <Route path="/oauth" element={<KakaoAuthHandler />} />
           <Route path="/upload" element={<Upload />} />

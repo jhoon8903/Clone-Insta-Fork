@@ -1,11 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import api from "../../shared/api";
+
+export const __getPostThunk = createAsyncThunk(
+  "GET_POST",
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await axios.get(`posts`);
+      return thunkAPI.fulfillWithValue(data);
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.code);
+    }
+  }
+);
 
 export const __addPostThunk = createAsyncThunk(
   "ADD_POST",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.post(`posts`, payload, {
+      console.log("upload payload:payload", payload);
+      const data = await api.post(`posts`, payload, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -52,9 +66,20 @@ export const uploadSlice = createSlice({
   },
 
   extraReducers: {
-    [__addPostThunk.fulfilled]: (state, action) => {
+    [__getPostThunk.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.todo = action.payload;
+    },
+    [__getPostThunk.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [__getPostThunk.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__addPostThunk.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.uploadPost = action.payload;
     },
     [__addPostThunk.rejected]: (state, action) => {
       state.isLoading = false;
