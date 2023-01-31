@@ -62,7 +62,7 @@ export class AuthService {
         });
 
         if (responseUserInfo.status === 200) {
-          console.log(responseUserInfo);
+          console.log('리스폰스 서비스 유저인포', responseUserInfo);
           return responseUserInfo.data;
         } else {
           throw new UnauthorizedException();
@@ -93,13 +93,17 @@ export class AuthService {
     const existUser: UserEntity = await this.userRepository.findOneBy({
       email,
     });
+
     if (!existUser) {
+      console.log('신규유져', kakaoUser);
       const newUser = await this.userRepository.insert(kakaoUser);
       const tokenId: number = newUser.identifiers[0].id;
       const token = await this.createToken({ tokenId });
       return token;
     }
+
     const ExistUser = existUser;
+    console.log('기존유저', existUser);
     const tokenId: number = ExistUser.id;
     const token = await this.createToken({ tokenId });
     return token;

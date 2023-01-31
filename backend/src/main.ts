@@ -12,12 +12,14 @@ async function bootstrap() {
   const isLocal = process.env.SERVER_MODE === 'local' ? true : false;
 
   //* key ,cert load
+
   const httpsOptions = isLocal
     ? null
     : {
         key: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/privkey.pem'),
         cert: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/cert.pem'),
       };
+
   //* Local ( http ), Remote ( https )
   const app = isLocal
     ? await NestFactory.create<NestExpressApplication>(AppModule)
