@@ -60,14 +60,15 @@ export class AuthController {
       }
       const google = await this.authService.googleLogin(payload);
       console.log('구글 컨트롤러', google);
-      const token = await this.authService.googleUser(google);
+      const googleInfo = await this.authService.googleUser(google);
+      const { token, nickname } = googleInfo;
       const { AccessToken, RefreshToken } = token;
       res.setHeader('Authorization', AccessToken);
       res.setHeader('RefreshToken', RefreshToken);
       if (!google.id) {
         throw new BadRequestException('구글 정보가 없습니다.');
       }
-      res.send();
+      res.send(token, nickname);
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();
