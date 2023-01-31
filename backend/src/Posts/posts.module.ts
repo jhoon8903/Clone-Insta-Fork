@@ -6,11 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { ImageEntity } from 'src/Images/Images.entity';
 import { AwsService } from 'src/common/aws/aws.service';
+import { UserPostLikeEntity } from 'src/UserPostLikes/userPostLikes.entity';
 
 @Module({
   imports: [
     MulterModule.register(),
-    TypeOrmModule.forFeature([PostEntity, ImageEntity]),
+    TypeOrmModule.forFeature([PostEntity, ImageEntity, UserPostLikeEntity]),
   ],
   controllers: [PostsController],
   providers: [PostsService, AwsService],

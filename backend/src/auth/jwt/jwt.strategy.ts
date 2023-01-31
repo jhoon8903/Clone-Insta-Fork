@@ -1,7 +1,7 @@
 import { JwtPayload } from './jwt.payload.dto';
 import { UsersService } from '../../Users/users.service';
 import { PassportStrategy } from '@nestjs/passport';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()

@@ -1,26 +1,39 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as fs from 'fs';
+import { HttpExceptionFIlter } from './common/exceptions/exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  //* Local , Remote 환경 구분
+  const isLocal = process.env.SERVER_MODE === 'local' ? true : false;
 
-  //* 현재 모드 확인
-  const isDev: boolean = process.env.MODE === 'dev' ? true : false;
+  //* key ,cert load
+  const httpsOptions = isLocal
+    ? null
+    : {
+        key: fs.readFileSync(
+          '/etc/letsencrypt/live/codingtestrg.shop/privkey.pem', /// SSL 인증서 위치
+        ),
+        cert: fs.readFileSync(
+          '/etc/letsencrypt/live/codingtestrg.shop/cert.pem', /// SSL 인증서 위치
+        ),
+      };
 
-  //* Product 모드
-  const httpPort = isDev
-    ? process.env.HTTP_PORT
-    : process.env.PRODUCT_HTTP_PORT;
-
-  const httpsPort = isDev
-    ? process.env.HTTPS_PORT
-    : process.env.PRODUCT_HTTPS_PORT;
+  //* Local ( http ), Remote ( https )
+  const app = isLocal
+    ? await NestFactory.create<NestExpressApplication>(AppModule)
+    : await NestFactory.create<NestExpressApplication>(AppModule, {
+        httpsOptions,
+      });
 
   //* 전역으로 Pipes 설정
   app.useGlobalPipes(new ValidationPipe());
+
+  //* 전역으로 Filter 설정
+  app.useGlobalFilters(new HttpExceptionFIlter());
 
   //* Swagger 설정.
   const swaggerConfig = new DocumentBuilder()
@@ -40,6 +53,13 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(httpPort);
+  if (isLocal)
+    await app.listen(process.env.HTTP_PORT, () => {
+      Logger.log(`${process.env.HTTP_PORT} 포트 실행 HTTP`);
+    });
+  if (!isLocal)
+    await app.listen(process.env.HTTPS_PORT, () => {
+      Logger.log(`${process.env.HTTPS_PORT} 포트 실행 hTTPS`);
+    });
 }
 bootstrap();

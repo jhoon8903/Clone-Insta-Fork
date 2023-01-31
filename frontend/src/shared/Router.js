@@ -1,8 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
-import Login from '../pages/Login';
-
+import Login from "../pages/Login";
+import SignUp from "../pages/signUp";
+import Main from "../pages/Main";
+import KakaoAuthHandler from '../pages/oauth';
 
 // 2. Router 라는 함수를 만들고 아래와 같이 작성합니다.
 //BrowserRouter를 Router로 감싸는 이유는,
@@ -13,6 +15,9 @@ const Router = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/main" element={<Main />} />
+          <Route path="/oauth" element={<KakaoAuthHandler />} />
         </Routes>
       </Layout>
     </BrowserRouter>
