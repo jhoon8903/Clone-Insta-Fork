@@ -25,6 +25,7 @@ export class AuthController {
   async kakaoLogin(@Body() body, @Res() res) {
     try {
       const { payload } = body;
+      console.log(body);
       if (!payload) {
         throw new BadRequestException('카카오정보가 없습니다.');
       }
@@ -34,10 +35,11 @@ export class AuthController {
       const { AccessToken, RefreshToken } = token;
       res.setHeader('Authorization', AccessToken);
       res.setHeader('RefreshToken', RefreshToken);
+      console.log(token);
       if (!kakao.id) {
         throw new BadRequestException('카카오 정보가 없습니다.');
       }
-      return;
+      res.send();
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();

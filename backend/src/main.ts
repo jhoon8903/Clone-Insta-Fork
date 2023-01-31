@@ -11,16 +11,24 @@ async function bootstrap() {
   const isLocal = process.env.SERVER_MODE === 'local' ? true : false;
 
   //* key ,cert load
+
   const httpsOptions = isLocal
     ? null
     : {
-        key: fs.readFileSync(
-          '/etc/letsencrypt/live/codingtestrg.shop/privkey.pem', /// SSL 인증서 위치
-        ),
-        cert: fs.readFileSync(
-          '/etc/letsencrypt/live/codingtestrg.shop/cert.pem', /// SSL 인증서 위치
-        ),
+        key: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/cert.pem'),
       };
+
+  // const httpsOptions = isLocal
+  //   ? null
+  //   : {
+  //       key: fs.readFileSync(
+  //         '/etc/letsencrypt/live/codingtestrg.shop/privkey.pem',
+  //       ),
+  //       cert: fs.readFileSync(
+  //         '/etc/letsencrypt/live/codingtestrg.shop/cert.pem',
+  //       ),
+  //     };
 
   //* Local ( http ), Remote ( https )
   const app = isLocal
