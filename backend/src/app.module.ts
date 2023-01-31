@@ -20,9 +20,7 @@ import { CommentEntity } from './Comments/comments.entity';
 import { UsersModule } from './Users/users.module';
 import { CommentsModule } from './Comments/comments.module';
 import { PostsModule } from './Posts/posts.module';
-import { ChatModule } from './Chat/chat.module';
-
-const isDev = true;
+import { DmsModule } from './dms/dms.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -74,7 +72,7 @@ const typeOrmModuleOptions = {
     CommentsModule,
     AuthModule,
     PostsModule,
-    ChatModule,
+    DmsModule,
   ],
   controllers: [],
   providers: [],
