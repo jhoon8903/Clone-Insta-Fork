@@ -35,15 +35,12 @@ export class CommentEntity extends CommonEntity {
     required: true,
     example: '1',
   })
-  @IsInt()
   @Column({ type: 'int' })
   parentId: number;
 
-  @IsInt()
   @Column({ type: 'int' })
   userId: number;
 
-  @IsInt()
   @Column({ type: 'int' })
   postId: number;
 
