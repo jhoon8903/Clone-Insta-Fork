@@ -1,6 +1,4 @@
-import { ChattingRoomUserListEntity } from 'src/ChattingRoomUserList/chattingRoomUsetList.entity';
-import { ChattingRoomEntity } from './ChattingRoom/chattingRoom.entity';
-import { ChattingLogEntity } from './ChattingLog/chattingLog.entity';
+import { DMEntity } from './dms/dms.entity';
 import { LoggerMiddleware } from './common/middleware/logger.middeware';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,6 +19,7 @@ import { UsersModule } from './Users/users.module';
 import { CommentsModule } from './Comments/comments.module';
 import { PostsModule } from './Posts/posts.module';
 import { DmsModule } from './dms/dms.module';
+import { EventsModule } from './events/events.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -44,11 +43,9 @@ const typeOrmModuleOptions = {
       HashTagEntity,
       FollowEntity,
       CommentEntity,
-      ChattingLogEntity,
-      ChattingRoomEntity,
-      ChattingRoomUserListEntity,
+      DMEntity,
     ],
-    synchronize: false,
+    synchronize: true,
     autoLoadEntities: true,
     logging: configService.get('SERVER_MODE') === 'local' ? true : false,
     keepConnectionAlive: true,
@@ -73,6 +70,7 @@ const typeOrmModuleOptions = {
     AuthModule,
     PostsModule,
     DmsModule,
+    EventsModule,
   ],
   controllers: [],
   providers: [],
