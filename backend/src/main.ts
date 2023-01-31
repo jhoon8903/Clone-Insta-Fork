@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -15,10 +15,10 @@ async function bootstrap() {
     ? null
     : {
         key: fs.readFileSync(
-          '/etc/letsencrypt/live/cordingtestrg.shop/privkey.pem',
+          '/etc/letsencrypt/live/codingtestrg.shop/privkey.pem', /// SSL 인증서 위치
         ),
         cert: fs.readFileSync(
-          '/etc/letsencrypt/live/cordingtestrg.shop/cert.pem',
+          '/etc/letsencrypt/live/codingtestrg.shop/cert.pem', /// SSL 인증서 위치
         ),
       };
 
@@ -53,7 +53,13 @@ async function bootstrap() {
     credentials: true,
   });
 
-  if (isLocal) await app.listen(process.env.HTTP_PORT);
-  if (!isLocal) await app.listen(process.env.HTTPS_PORT);
+  if (isLocal)
+    await app.listen(process.env.HTTP_PORT, () => {
+      Logger.log(`${process.env.HTTP_PORT} 포트 실행 HTTP`);
+    });
+  if (!isLocal)
+    await app.listen(process.env.HTTPS_PORT, () => {
+      Logger.log(`${process.env.HTTPS_PORT} 포트 실행 hTTPS`);
+    });
 }
 bootstrap();
