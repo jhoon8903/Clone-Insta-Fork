@@ -45,7 +45,7 @@ const typeOrmModuleOptions = {
       CommentEntity,
       DMEntity,
     ],
-    synchronize: true,
+    synchronize: false,
     autoLoadEntities: true,
     logging: configService.get('SERVER_MODE') === 'local' ? true : false,
     keepConnectionAlive: true,
