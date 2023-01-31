@@ -222,10 +222,13 @@ export class AuthService {
   async createToken(req: string | object): Promise<tokenType> {
     const payload = req;
 
-    const accessToken = this.jwtService.sign(payload, {
-      expiresIn: '10m',
-      secret: process.env.JWT_SECRET,
-    });
+    const accessToken = this.jwtService.sign(
+      { payload },
+      {
+        expiresIn: '10m',
+        secret: process.env.JWT_SECRET,
+      },
+    );
 
     const refreshToken = this.jwtService.sign(
       {},
