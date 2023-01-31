@@ -86,7 +86,7 @@ export class PostsController {
     @Body() body: PostDto,
   ) {
     await this.postsService.changePost(postId, body, payload.id);
-    return await this.postsService.findAllPost();
+    return await this.postsService.findAllPost(payload.id);
   }
 
   //*게시글 전체 조회
@@ -94,9 +94,10 @@ export class PostsController {
     summary: '게시글 조회',
   })
   @ApiOkResponse({ description: '게시글이 정상적으로 조회된 경우' })
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAllPost() {
-    return this.postsService.findAllPost();
+  findAllPost(@getUser() payload: JwtPayload) {
+    return this.postsService.findAllPost(payload.id);
   }
 
   //*게시글 상세 조회

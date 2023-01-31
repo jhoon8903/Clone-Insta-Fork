@@ -6,6 +6,7 @@ import {
   Body,
   BadRequestException,
   UnauthorizedException,
+  Logger,
 } from '@nestjs/common';
 
 import { Response } from 'express';
