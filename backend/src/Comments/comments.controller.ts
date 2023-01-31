@@ -88,6 +88,7 @@ export class CommentsController {
   @ApiForbiddenResponse({ description: '타인의 댓글을 삭제하려 할 경우' })
   @ApiNotFoundResponse({ description: '존재하지 않는 댓글을 삭제하려 할 경우' })
   @HttpCode(204)
+  @UseGuards(JwtAuthGuard)
   @Delete(':commentId')
   async deleteComment(
     @Param('commentId') commentId: number,
