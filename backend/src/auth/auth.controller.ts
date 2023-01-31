@@ -41,7 +41,7 @@ export class AuthController {
       if (!kakao.id) {
         throw new BadRequestException('카카오 정보가 없습니다.');
       }
-      res.send(nickname);
+      res.send({ nickname, token });
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();
@@ -82,6 +82,7 @@ export class AuthController {
     const { AccessToken, RefreshToken } = token;
     res.header('Authorization', AccessToken);
     res.header('refreshToken', RefreshToken);
-    res.send(nickname);
+    res.send({ nickname, token });
+    return nickname;
   }
 }
