@@ -52,13 +52,11 @@ export class CommentsService {
       postId: data.postId,
       userId: data.userId,
     });
-
     await this.commentsRepository.insert(comment);
-
     const user = await this.getUserById(data.userId);
-
     const commentData = {
       ...comment,
+      myComment: true,
       nickname: user.nickname,
     };
     return commentData;
