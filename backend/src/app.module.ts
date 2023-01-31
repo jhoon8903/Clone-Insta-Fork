@@ -1,3 +1,4 @@
+import { DMEntity } from './dms/dms.entity';
 import { LoggerMiddleware } from './common/middleware/logger.middeware';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -17,6 +18,8 @@ import { CommentEntity } from './Comments/comments.entity';
 import { UsersModule } from './Users/users.module';
 import { CommentsModule } from './Comments/comments.module';
 import { PostsModule } from './Posts/posts.module';
+import { DmsModule } from './dms/dms.module';
+import { EventsModule } from './events/events.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -27,7 +30,7 @@ const typeOrmModuleOptions = {
     port: 3306,
     username: configService.get('DB_USER_NAME'),
     password: configService.get('DB_USER_PASSWORD'),
-    database: configService.get('DB_NAME'),
+    database: configService.get('DB_NAME') + '_' + process.env.NODE_ENV,
     entities: [
       UserEntity,
       UserPostTagEntity,
@@ -40,8 +43,9 @@ const typeOrmModuleOptions = {
       HashTagEntity,
       FollowEntity,
       CommentEntity,
+      DMEntity,
     ],
-    synchronize: false,
+    synchronize: true,
     autoLoadEntities: true,
     logging: configService.get('SERVER_MODE') === 'local' ? true : false,
     keepConnectionAlive: true,
@@ -65,6 +69,8 @@ const typeOrmModuleOptions = {
     CommentsModule,
     AuthModule,
     PostsModule,
+    DmsModule,
+    EventsModule,
   ],
   controllers: [],
   providers: [],

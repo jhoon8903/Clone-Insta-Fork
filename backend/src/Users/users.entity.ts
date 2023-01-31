@@ -1,3 +1,4 @@
+import { DMEntity } from './../dms/dms.entity';
 import { IsString, IsNotEmpty, Length } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { CommentEntity } from 'src/Comments/comments.entity';
@@ -119,4 +120,12 @@ export class UserEntity extends CommonEntity {
     cascade: true,
   })
   followee: FollowEntity[];
+
+  //*   User | 1 : M | DMs
+  @OneToMany(() => DMEntity, (dms) => dms.Sender)
+  DMs: DMEntity[];
+
+  //*   User | 1 : M | DMs
+  @OneToMany(() => DMEntity, (dms) => dms.Receiver)
+  DMs2: DMEntity[];
 }
