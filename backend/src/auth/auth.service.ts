@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { Logger } from '@nestjs/common/services';
 import axios from 'axios';
 import qs from 'qs';
+import { GoogleDataDto } from './dtos/google.dto';
 
 @Injectable()
 export class AuthService {
@@ -61,7 +62,7 @@ export class AuthService {
         });
 
         if (responseUserInfo.status === 200) {
-          console.log(responseUserInfo);
+          console.log('리스폰스 서비스 유저인포', responseUserInfo);
           return responseUserInfo.data;
         } else {
           throw new UnauthorizedException();
@@ -92,8 +93,88 @@ export class AuthService {
     const existUser: UserEntity = await this.userRepository.findOneBy({
       email,
     });
+
     if (!existUser) {
+      console.log('신규유져', kakaoUser);
       const newUser = await this.userRepository.insert(kakaoUser);
+      const tokenId: number = newUser.identifiers[0].id;
+      const token = await this.createToken({ tokenId });
+      return token;
+    }
+
+    const ExistUser = existUser;
+    console.log('기존유저', existUser);
+    const tokenId: number = ExistUser.id;
+    const token = await this.createToken({ tokenId });
+    return token;
+  }
+
+  /////////////
+  //구글 로그인///
+  /////////////
+  async googleLogin(payload: string): Promise<GoogleDataDto> {
+    const code = payload;
+    const google_client_id = process.env.GOOGLE_CLIENT_ID;
+    const google_client_secret = process.env.GOOGLE_CLIENT_SECRET; //'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';
+    const google_grant_type = 'authorization_code';
+    const google_redirect_uri = 'http://localhost:3000/oauth';
+    const google_url = `https://oauth2.googleapis.com/token?code=${code}&client_id=${google_client_id}&client_secret=${google_client_secret}&redirect_uri=${google_redirect_uri}&grant_type=${google_grant_type}`;
+
+    try {
+      const access_token = await axios
+        .post(google_url, {
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        })
+        .then((el) => {
+          return el.data.access_token;
+        })
+        .catch((err) => {
+          console.log('err=', err);
+        });
+      const googleAPI = `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${access_token}`;
+      if (access_token) {
+        const responseUserInfo = await axios
+          .get(googleAPI, {
+            headers: {
+              authorization: `Bearer ${access_token}`,
+            },
+          })
+          .then((el) => {
+            return el.data;
+          })
+          .catch((err) => {
+            console.log('err=', err);
+          });
+
+        if (responseUserInfo) {
+          return responseUserInfo;
+        } else {
+          throw new UnauthorizedException();
+        }
+      } else {
+        throw new UnauthorizedException();
+      }
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
+  }
+  ////////////
+  //구글 회원가입
+  ////////////
+  async googleUser(google: GoogleDataDto) {
+    const { id, email, picture } = google;
+    const googleUser = new UserEntity();
+    googleUser.password = String(id);
+    googleUser.name = 'google';
+    googleUser.email = email;
+    googleUser.nickname = email.split('@')[0];
+    googleUser.profileImg = picture ? picture : process.env.DEFUALT_IMG_URL;
+
+    const existUser: UserEntity = await this.userRepository.findOneBy({
+      email,
+    });
+    if (!existUser) {
+      const newUser = await this.userRepository.insert(googleUser);
       const tokenId: number = newUser.identifiers[0].id;
       const token = await this.createToken({ tokenId });
       return token;
@@ -103,7 +184,6 @@ export class AuthService {
     const token = await this.createToken({ tokenId });
     return token;
   }
-
   //////////////////////////////////////////////////////////////////
   // 로컬 로그인 ///
   /////////////////////////////////////////////////////////////////

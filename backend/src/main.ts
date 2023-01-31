@@ -5,21 +5,19 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as fs from 'fs';
 import { HttpExceptionFIlter } from './common/exceptions/exception.filter';
+import { join } from 'path';
 
 async function bootstrap() {
   //* Local , Remote 환경 구분
   const isLocal = process.env.SERVER_MODE === 'local' ? true : false;
 
   //* key ,cert load
+
   const httpsOptions = isLocal
     ? null
     : {
-        key: fs.readFileSync(
-          '/etc/letsencrypt/live/codingtestrg.shop/privkey.pem', /// SSL 인증서 위치
-        ),
-        cert: fs.readFileSync(
-          '/etc/letsencrypt/live/codingtestrg.shop/cert.pem', /// SSL 인증서 위치
-        ),
+        key: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/cert.pem'),
       };
 
   //* Local ( http ), Remote ( https )
@@ -28,6 +26,9 @@ async function bootstrap() {
     : await NestFactory.create<NestExpressApplication>(AppModule, {
         httpsOptions,
       });
+
+  //* Static Assets
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   //* 전역으로 Pipes 설정
   app.useGlobalPipes(new ValidationPipe());

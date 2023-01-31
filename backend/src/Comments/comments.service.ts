@@ -2,6 +2,7 @@ import { CommentDeleteDto } from './dtos/comment.delete.dto';
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,19 +10,22 @@ import { Repository } from 'typeorm';
 import { CommentEntity } from './comments.entity';
 import { CommentCreateDto } from './dtos/comment.create.dto';
 import { CommentUpdateDto } from './dtos/comment.update.dto';
+import { UserEntity } from 'src/Users/users.entity';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(CommentEntity)
     private readonly commentsRepository: Repository<CommentEntity>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
   async getAllComments(postId: number) {
     //* Nickname[UserEntity] , comment[CommentEntity], createdAt[CommentEntity]
     const comments = await this.commentsRepository
       .createQueryBuilder('c')
-      .select(['c.id', 'c.comment', 'User.nickname'])
+      .select(['c.id', 'c.comment', 'User.nickname', 'c.userId'])
       .innerJoin('c.user', 'User')
       .where('c.postId = :id', { id: postId })
       .andWhere('c.parentId = :parentId', { parentId: 0 })
@@ -48,9 +52,16 @@ export class CommentsService {
       postId: data.postId,
       userId: data.userId,
     });
+
     await this.commentsRepository.insert(comment);
 
-    return;
+    const user = await this.getUserById(data.userId);
+
+    const commentData = {
+      ...comment,
+      nickname: user.nickname,
+    };
+    return commentData;
   }
 
   async updateComment(data: CommentUpdateDto) {
@@ -86,5 +97,9 @@ export class CommentsService {
       .softDelete()
       .where('id = :id', { id: data.id })
       .execute();
+  }
+
+  async getUserById(id: number) {
+    return await this.usersRepository.findOneBy({ id });
   }
 }

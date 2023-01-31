@@ -107,7 +107,7 @@ export class PostsService {
     });
   }
 
-  async findOnePost(postId: number) {
+  async findOnePost(postId: number, userId: number) {
     const result = await this.postRepository
       .createQueryBuilder('p')
       .select([
@@ -120,6 +120,9 @@ export class PostsService {
         'likes',
         'Comment.id',
         'Comment.comment',
+        'Comment.userId',
+        'Comment.createdAt',
+        'Comment.updatedAt',
         'User.nickname',
       ])
       .where('p.id = :id', { id: postId })
@@ -143,6 +146,9 @@ export class PostsService {
           id: v.id,
           comment: v.comment,
           nickname: v.user.nickname,
+          createdAt: v.createdAt,
+          updatedAt: v.updatedAt,
+          myComment: +v.userId === +userId ? true : false,
         };
       }),
     };
