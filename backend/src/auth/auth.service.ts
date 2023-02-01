@@ -173,15 +173,17 @@ export class AuthService {
       email,
     });
     if (!existUser) {
-      const newUser = await this.userRepository.insert(googleUser);
-      const tokenId: number = newUser.identifiers[0].id;
+      const newGoogle = await this.userRepository.insert(googleUser);
+      const tokenId: number = newGoogle.identifiers[0].id;
+      const nickname: string = newGoogle.identifiers[0].nickname;
       const token = await this.createToken({ tokenId });
-      return token;
+      return { token, nickname };
+    } else {
+      const tokenId: number = existUser.id;
+      const nickname: string = existUser.nickname;
+      const token = await this.createToken({ tokenId });
+      return { token, nickname };
     }
-    const ExistUser = existUser;
-    const tokenId: number = ExistUser.id;
-    const token = await this.createToken({ tokenId });
-    return token;
   }
   //////////////////////////////////////////////////////////////////
   // 로컬 로그인 ///
