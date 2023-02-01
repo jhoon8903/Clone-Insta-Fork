@@ -16,8 +16,12 @@ async function bootstrap() {
   const httpsOptions = isLocal
     ? null
     : {
-        key: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/privkey.pem'),
-        cert: fs.readFileSync('/etc/letsencrypt/live/f1rstweb.shop/cert.pem'),
+        key: fs.readFileSync(
+          '/etc/letsencrypt/live/codingtestrg.shop/privkey.pem',
+        ),
+        cert: fs.readFileSync(
+          '/etc/letsencrypt/live/codingtestrg.shop/cert.pem',
+        ),
       };
 
   //* Local ( http ), Remote ( https )

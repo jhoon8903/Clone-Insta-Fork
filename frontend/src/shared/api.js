@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://f1rstweb.shop/",
+  baseURL: "https://codingtestrg.shop/",
   timeout: 1000,
   headers: {
     "content-type": "application/json;charset=UTF-8",
@@ -30,7 +30,6 @@ api.interceptors.request.use(
     return config;
   },
   function (error) {
-    
     return Promise.reject(error);
   }
 );
@@ -49,4 +48,4 @@ api.interceptors.response.use(
 );
 
 // 생성한 인스턴스를 익스포트 합니다.
-export default api
+export default api;
