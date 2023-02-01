@@ -14,6 +14,7 @@ export const __postsMain = createAsyncThunk(
   async (payload, thunkAPI) => {
     try{
       const {data} = await api.get(`posts`)
+      //console.log('게시글 불러오기 완료!')
       return thunkAPI.fulfillWithValue(data)
     }catch(error){
       return thunkAPI.rejectWithValue(error)
@@ -26,13 +27,13 @@ export const __EditPostMain = createAsyncThunk(
   "posts/EDIT_POSTS_MAIN",
   async (payload, thunkAPI) => {
     try{
-      console.log('글 수정 payload : ', payload)
-      console.log('글 수정 payload.content : ', payload.content)
+      //console.log('글 수정 payload : ', payload)
+      //console.log('글 수정 payload.content : ', payload.content)
       const {data} = await api.put(`posts/${payload.id}`, {content : payload.content})
-      console.log('글 수정 data : ', data)
+      //console.log('글 수정 data : ', data)
       return thunkAPI.fulfillWithValue(data)
     }catch(error){
-      console.log('글 수정 error : ', error)
+      //console.log('글 수정 error : ', error)
       return thunkAPI.rejectWithValue(error)
     }
   }
@@ -42,12 +43,12 @@ export const __deletePostMain = createAsyncThunk(
   "posts/DELETE_POSTS_MAIN",
   async (payload, thunkAPI) => {
     try{
-      console.log('글 삭제 payload : ', payload)
+      //console.log('글 삭제 payload : ', payload)
       const data = await api.delete(`posts/${payload}`)
-      console.log('글 삭제 data : ', data)
+      //console.log('글 삭제 data : ', data)
       return thunkAPI.fulfillWithValue(payload)
     }catch(error){
-      console.log('글 삭제 error : ', error)
+      //console.log('글 삭제 error : ', error)
       return thunkAPI.rejectWithValue(error)
     }
   }
@@ -69,8 +70,8 @@ const postsMainSlice = createSlice({
     [__postsMain.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
       state.posts = action.payload; // Store에 있는 state.data에 서버에서 가져온 action.payload 추가
-      console.log('posts main state.posts : ', state.posts)
-      console.log('posts main action.payload : ', action.payload)
+      //console.log('posts main state.posts : ', state.posts)
+      //console.log('posts main action.payload : ', action.payload)
     },
     [__postsMain.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
@@ -83,8 +84,8 @@ const postsMainSlice = createSlice({
     [__EditPostMain.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
       state.posts = action.payload; // Store에 있는 state.data에 서버에서 가져온 action.payload 추가
-      console.log('posts main state.posts : ', state.posts)
-      console.log('posts main action.payload : ', action.payload)
+      //console.log('posts main state.posts : ', state.posts)
+      //console.log('posts main action.payload : ', action.payload)
     },
     [__EditPostMain.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
@@ -97,8 +98,8 @@ const postsMainSlice = createSlice({
     [__deletePostMain.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
       state.posts = state.posts.filter((post)=>post.id !== action.payload);
-      console.log('posts 삭제 state.posts : ', state.posts)
-      console.log('posts 삭제 action.payload : ', action.payload)
+      //console.log('posts 삭제 state.posts : ', state.posts)
+      //console.log('posts 삭제 action.payload : ', action.payload)
     },
     [__deletePostMain.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경

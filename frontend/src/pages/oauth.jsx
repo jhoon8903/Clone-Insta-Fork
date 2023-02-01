@@ -9,7 +9,7 @@ const KakaoAuthHandler = (props) => {
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
 
-  console.log('❗❗❗ oauth 페이지 code : ', code)
+  //console.log('❗❗❗ oauth 페이지 code : ', code)
 
   useEffect(()=>{ //백엔드로 쿠키 토큰 전송
     dispatch(__userOauthKakao(code))

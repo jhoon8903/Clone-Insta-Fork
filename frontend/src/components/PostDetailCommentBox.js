@@ -25,7 +25,6 @@ function PostDetailCommentBox({id, likes, createAt}) {
 
   const onSubmitPostCommnet=(e)=>{ //댓글 게시
     e.preventDefault()
-    alert('댓글 작성 완료')
     const newComment={
       id,
       comment: commentValue,
