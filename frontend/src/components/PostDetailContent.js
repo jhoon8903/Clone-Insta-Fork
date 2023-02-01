@@ -17,9 +17,6 @@ function PostDetailContent({id, nickname, content, createAt, myPost}) {
   const onClickPostDelete=()=>{ //글 삭제
     if(window.confirm('삭제하시겠습니까?')){
       dispatch(__commentsDelete(id))
-      alert('삭제완료!')
-    }else{
-      alert('삭제취소')
     }
   }
 
@@ -39,7 +36,7 @@ function PostDetailContent({id, nickname, content, createAt, myPost}) {
           </StMainPostItemDescContent>
           <StMainPostItemDateBlock>{createAtSlice}</StMainPostItemDateBlock>
         </StPostDetailUserCommentBox>
-        {myPost && <BiTrash onClick={onClickPostDelete} className="position-right"/>}
+        {/* {myPost && <BiTrash onClick={onClickPostDelete} className="position-right"/>} */}
       </StPostDetailContent>
   )
 }

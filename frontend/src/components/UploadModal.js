@@ -15,7 +15,7 @@ const UploadModal = () => {
 
   //리듀서 활용 useState 지역스코프니까 리듀서는 전역스코프 그래서 modal open 버튼->sideNav.js 쓰려면 전역스코프를 써야함
   //온클릭으로 버튼을 열었을때 setModalOpen
-  console.log("modalState", modalState);
+  //console.log("modalState", modalState);
   // const [modalIsOpen, setModalIsOpen] = useState(false);
   // const [modalIsOpen, setModalIsOpen] = useState(modalState);
 

@@ -73,7 +73,7 @@ function PostDetailModal({id, content, nickname, image, createAt, likes, updateA
               />
               {/* 전체 댓글 */}
               {commnets?.map((comment)=>{
-                console.log('댓글 조회 comment ', comment)  
+                //console.log('댓글 조회 comment ', comment)  
                 return (
                   <PostDetailContentAll 
                   key={comment.id} 

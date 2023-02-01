@@ -19,9 +19,6 @@ function PostDetailContent({id, nickname, content, createAt, myComment}) {
   const onClickPostDelete=()=>{ //글 삭제
     if(window.confirm('삭제하시겠습니까?')){
       dispatch(__commentsDelete(id))
-      alert('삭제완료!')
-    }else{
-      alert('삭제취소')
     }
   }
 

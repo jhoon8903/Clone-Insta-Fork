@@ -31,8 +31,8 @@ const Login = () => {
 
   const onSubmitLogin = async (event) => {
     event.preventDefault();
-    console.log("userId는", userId);
-    console.log("userPw는", userPw);
+    //console.log("userId는", userId);
+    //console.log("userPw는", userPw);
     //유효성 검사
     if (idCheck === false && pwCheck === false) return false;
     const user = {
@@ -40,7 +40,7 @@ const Login = () => {
       email: userId,
       password: userPw,
     };
-    console.log("user", user);
+    //console.log("user", user);
     dispatch(__loginUser(user));
   };
   // console.log("help");
