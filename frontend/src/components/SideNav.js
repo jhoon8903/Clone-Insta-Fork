@@ -23,11 +23,13 @@ const SideNav = () => {
   const onClickLogout = () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) {
     } else {
+      localStorage.clear('token')
+      localStorage.clear('refreshToken')
+      localStorage.clear('nickname')
       alert("로그아웃 되었습니다!");
       navigate("/");
       //window.location.href='/'
-      // localStorage.clear('token')
-      // localStorage.clear('refreshToken')
+      
     }
   };
   // 로그인, 회원가입 페이지에서 공통 사이드 메뉴바 숨김처리

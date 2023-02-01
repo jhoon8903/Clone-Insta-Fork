@@ -20,9 +20,9 @@ api.interceptors.request.use(
         //config.headers.AccessToken = token
         //config.headers.RefreshToken = refreshToken
       }
-      console.log("요청 성공! ", config);
-      console.log("요청 성공! token :  ", token);
-      console.log("요청 성공! refreshToken : ", refreshToken);
+      //console.log("요청 성공! ", config);
+      //console.log("요청 성공! token :  ", token);
+      //console.log("요청 성공! refreshToken : ", refreshToken);
       return config;
     } catch (error) {
       alert("서버 요청 에러! 다시 시도해주세요!");
@@ -37,7 +37,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   function (response) {
-    console.log("응답 성공! ", response);
+    //console.log("응답 성공! ", response);
 
     return response;
   },

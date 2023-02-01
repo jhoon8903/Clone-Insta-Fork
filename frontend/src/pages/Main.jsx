@@ -5,6 +5,7 @@ import PostItem from "../components/PostItem";
 import { __postsMain } from "../redux/modules/postsMainSlice";
 import PostDetailModal from "../components/PostDetailModal";
 import UploadModal from "../components/UploadModal";
+import { isUploadSuccessAction } from '../redux/modules/uploadSlice';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -14,19 +15,20 @@ const Main = () => {
   );
   //게시글 전체 조회
   const posts=useSelector((state)=>state.postsMainSlice.posts)
-  console.log('메인 게시글 data',posts)
+  //console.log('메인 게시글 data',posts)
 
   useEffect(()=>{
     dispatch(__postsMain()) //게시글 전체 조회
   },[dispatch])
+  
 
     //글 상세 내용 조회 가공데이터
     const postDetailObj=useSelector((state)=>state.postDetailSlice.postDetailObj)
-    console.log('✔ postDetailObj : ', postDetailObj)
+    //console.log('✔ postDetailObj : ', postDetailObj)
 
     //글 상세 내용 조회
     const postDetail=useSelector((state)=>state.postDetailSlice.postDetail)
-    console.log('✔✔ postDetail2 : ', postDetail)
+    //console.log('✔✔ postDetail2 : ', postDetail)
 
   return (
     <StMainWrap
