@@ -27,8 +27,12 @@ export class PostsService {
   async createPost(userId, body, imgUrl) {
     const { content } = body;
     const newPost = await this.postRepository.save({ userId, content });
-    await this.imageRepository.save({ imgUrl, postId: newPost.id });
-    return newPost;
+    await this.imageRepository.save({
+      imgUrl,
+      postId: newPost.id,
+    });
+
+    return await this.findOnePost(newPost.id, newPost.userId);
   }
 
   async changePost(postId, body, userId) {
@@ -85,7 +89,6 @@ export class PostsService {
       .leftJoin('p.comment', 'Comment')
       .loadRelationCountAndMap('p.comment', 'p.comment')
       .getMany();
-    console.log(result);
     return result.map((post) => {
       return {
         id: post.id,

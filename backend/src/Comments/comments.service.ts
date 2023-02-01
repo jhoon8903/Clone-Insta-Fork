@@ -47,13 +47,16 @@ export class CommentsService {
   }
 
   async createComment(data: CommentCreateDto) {
-    console.log(data);
     const comment = this.commentsRepository.create({
       comment: data.comment,
       parentId: 0,
       postId: data.postId,
       userId: data.userId,
     });
+    if (!comment)
+      throw new NotFoundException(
+        '존재하지 않는 게시글에 댓글을 달수 없습니다',
+      );
     await this.commentsRepository.insert(comment);
     const user = await this.getUserById(data.userId);
     const commentData = {
@@ -82,11 +85,10 @@ export class CommentsService {
   }
 
   async deleteComment(data: CommentDeleteDto) {
-    console.log(data);
     const comment = await this.commentsRepository
       .createQueryBuilder('c')
       .select(['c.userId', 'c.id'])
-      .where('c.userId = :id', { id: data.id })
+      .where('c.id = :id', { id: data.id })
       .getOne();
     console.log(comment);
     if (!comment) throw new NotFoundException('존재하지 않는 댓글입니다.');
