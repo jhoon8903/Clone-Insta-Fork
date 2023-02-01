@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../shared/api"
+import { useSelector } from 'react-redux';
 
 const initialState = {
   comments:[],
   isLoading: false,
   error: null,
 };
+
 
 
 export const __commentsGet = createAsyncThunk(
@@ -19,6 +21,8 @@ export const __commentsGet = createAsyncThunk(
     }
   }
 );
+
+
 
 
 const commentsSlice = createSlice({

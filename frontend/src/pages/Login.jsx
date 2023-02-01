@@ -22,7 +22,6 @@ const Login = () => {
   // const isLogin = useSelector((store) => store.user.is_login);
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
-
   const [showPw, setShowPW] = useState(false);
 
   // const { data, error } = useSelector((state) => state.loginSlice);
@@ -51,21 +50,25 @@ const Login = () => {
     // console.log(showPw);
     // alert("되나요?");
   };
-  
-  //소셜로그인 영역
-  //카카오
-  
-  //const REDIRECT_URI = 'https://f1rstweb.shop/auth/kakao';
-  //const KAKAO_AUTH_URL = "http://f1rstweb.shop/auth/kakao"
 
-  const restApiKey = process.env.REST_API_KEY
-  const redirectUrl = process.env.REDIRECT_URI
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${redirectUrl}&response_type=code`;
+  //소셜로그인 영역
+  
+  const onClickSocialLoginGoogle = () => { //구글 로그인
+    const clientId = "580574907066-dstg0rkuoic5m3dicbaami48u7138084.apps.googleusercontent.com"
+    const redirectUrl_google = "http://localhost:3000/oauthGoogle"
+    const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl_google}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`
+    window.location.href = GOOGLE_AUTH_URL;
+  };
   
   const onClickSocialLoginKakao=()=>{ //카카오 로그인
+  //const REDIRECT_URI = 'https://f1rstweb.shop/auth/kakao';
+  //const KAKAO_AUTH_URL = "http://f1rstweb.shop/auth/kakao"
+    const restApiKey = '1b6507f790effacecbec0df34314f133'
+    const redirectUrl = 'http://localhost:3000/oauth'
+
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${redirectUrl}&response_type=code`;
     window.location.href = KAKAO_AUTH_URL;
   }
-
 
   return (
     <>
@@ -112,13 +115,18 @@ const Login = () => {
           </StForm>
           {/*소셜로그인*/}
           <StSocialButtonWrap>
-            <StSocialButton bc="#f7f7f7" onClick={()=>{alert('현재 구현중 입니다')}}>
+            <StSocialButton bc="#f7f7f7" onClick={onClickSocialLoginGoogle}>
               <FcGoogle />
             </StSocialButton>
             <StSocialButton bc="yellow" onClick={onClickSocialLoginKakao}>
               <RiKakaoTalkFill />
             </StSocialButton>
-            <StSocialButton bc="#f7f7f7" onClick={()=>{alert('현재 구현중 입니다')}}>
+            <StSocialButton
+              bc="#f7f7f7"
+              onClick={() => {
+                alert("현재 구현중 입니다");
+              }}
+            >
               <AiFillApple />
             </StSocialButton>
           </StSocialButtonWrap>
