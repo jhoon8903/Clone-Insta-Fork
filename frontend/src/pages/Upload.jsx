@@ -18,87 +18,61 @@ const Upload = () => {
 
   // const [files, setFiles] = useState("");
   const token = localStorage.getItem("token");
-  const nickName = localStorage.getItem("nickName");
+  const nickName = localStorage.getItem("nickname");
   // console.log(token);
 
   //이미지 미리보기와 파일첨부 기능
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [imgFile, setImgFile] = useState(null); //파일
-  const [fileImage, setFileImage] = useState();
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState();
   // console.log("content", content);
-  let test;
 
-  //미리보기
-  const handleChangeFile = (event) => {
-    test = event.target.files[0];
+  //let imageGlobalFormData;
 
-    console.log("event.target", event.target);
-    const newImage = event.target.files[0];
-    setFileImage(newImage);
-    const formData = new FormData();
-    formData.append("image", event.target.files[0]);
-    console.log("졸려", fileImage === event.target.files[0]);
-    console.log("fileImage", fileImage);
-    console.log("event.target.files[0]", event.target.files[0]);
+ //미리보기
+ const [imageSrc, setImageSrc] = useState();
+ const encodeFileToBase64 = async (fileBlob) => {
+   const reader = new FileReader();
+   reader.readAsDataURL(fileBlob);
+   return new Promise((resolve) => {
+     reader.onload = () => {
+       setImageSrc(reader.result);
+       resolve();
+     };
+   });
+ };
 
-    // formData.append("content",content)
-    dispatch(__addPostThunk(formData));
-    setImgBase64([]);
-    // const formImage = event.target.files;
-    // setFileImage(formImage);
 
-    for (var i = 0; i < event.target.files.length; i++) {
-      if (event.target.files[i]) {
-        let reader = new FileReader();
-        reader.readAsDataURL(event.target.files[i]);
-        reader.onloadend = () => {
-          const base64 = reader.result;
-          if (base64) {
-            var base64Sub = base64.toString();
-            setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
-          }
-        };
-      }
-    }
+
+  const [fileImg, setFileImg] = useState();
+
+  // let formData;
+  const formData = new FormData();
+  const onChangeFile = (e) => {
+    encodeFileToBase64(e.target.files[0]);
+    const formImg = e.target.files[0];
+    setFileImg(formImg);
+    formData.append("file", formImg);
   };
 
-  const onWriteHandler = async (e) => {
+
+  //디스패치
+  const onWriteHandler = (e) => {
     e.preventDefault();
-    const formdata = new FormData();
-    // Object.values(imgFile).forEach((file) => fd.append("image", file));
-    // formdata.append("image", imgFile);
-    // formdata.append("content", content);
-    console.log("e.target:", e.target);
-    formData.append("image", test);
-    // console.log("image:", imgFile);
-    // console.log("content:", content);
-    const postData = {
-      image: formdata,
-      content: content,
-    };
-    dispatch(__addPostThunk(formdata));
+    formData.append("image", fileImg);
+    formData.append("content", content);
 
-    //여기서 보내준다.
-    // await axios
-    //   .post(`https://f1rstweb.shop/posts`, formdata, {
-    //     headers: {
-    //       // Authorization: token,
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     navigate("/main");
-    //     console.log(response);
-    //     if (response.data) {
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     alert("error");
+    console.log("dispatch formdata", formData);
+    for (const form of formData) {
+      console.log("form 최종", form);
+    }
 
-    //     navigate("/main");
-    //   });
+    dispatch(__addPostThunk(formData));
+    navigate("/main");
   };
+
+
+  
 
   return (
     <>
@@ -125,7 +99,11 @@ const Upload = () => {
                 {/* <RiImageAddFill className="iconUpload" /> */}
                 <div>
                   {/* <span>사진을 올려보세요</span> */}
-                  <StInnerBox>
+                  <StPrivew>
+                    {imageSrc && <Stimg src={imageSrc} alt="preview-img" />}
+                  </StPrivew>
+                  {/* <StInnerBox>
+                  
                     {imgBase64.map((item) => {
                       return (
                         <img
@@ -142,7 +120,7 @@ const Upload = () => {
                         />
                       );
                     })}
-                  </StInnerBox>
+                  </StInnerBox> */}
                 </div>
               </StLeftBox>
 
@@ -181,7 +159,7 @@ const Upload = () => {
                       type="file"
                       id="image"
                       accept="image/*"
-                      onChange={handleChangeFile}
+                      onChange={onChangeFile}
                       multiple="multiple"
                     />
                     <StLabel htmlFor="image">사진선택</StLabel>
@@ -196,6 +174,22 @@ const Upload = () => {
     </>
   );
 };
+
+
+const Stimg = styled.img`
+  width: auto;
+  height: auto;
+  max-width: 400px;
+  max-height: 400px;
+`;
+
+const StPrivew = styled.div`
+  object-fit: cover;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const StContainer = styled.div`
   display: flex;

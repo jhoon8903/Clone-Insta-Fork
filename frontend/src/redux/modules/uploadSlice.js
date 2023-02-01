@@ -19,15 +19,18 @@ export const __addPostThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       console.log("upload payload:payload", payload);
-      const data = await api.post(`posts`, payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("게시글 작성", data);
-      return thunkAPI.fulfillWithValue(data);
+      await api.post(
+        `posts`, 
+        payload, 
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
-      return thunkAPI.rejectWithValue(e.code);
+      return thunkAPI.rejectWithValue(e);
     }
   }
 );
