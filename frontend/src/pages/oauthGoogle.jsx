@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { __userOauthKakao } from '../redux/modules/user';
+import { __userOauthGoogle } from '../redux/modules/user';
 
-const KakaoAuthHandler = (props) => {
+const GoogleAuthHandler = (props) => {
 
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
@@ -12,7 +12,7 @@ const KakaoAuthHandler = (props) => {
   //console.log('❗❗❗ oauth 페이지 code : ', code)
 
   useEffect(()=>{ //백엔드로 쿠키 토큰 전송
-    dispatch(__userOauthKakao(code))
+    dispatch(__userOauthGoogle(code));
   },[])
 
 
@@ -55,4 +55,4 @@ const StInfiniteRotatingLogo=styled.div`
 
 
 
-export default KakaoAuthHandler;
+export default GoogleAuthHandler;

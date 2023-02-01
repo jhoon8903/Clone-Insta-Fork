@@ -21,6 +21,7 @@ const SignUp = () => {
   const [valueName, onChangeInputValueName, setValueName] = useInput("");
   const [valuePw, onChangeInputValuePw, setValuePw] = useInput("");
 
+  //이전 코드⭐️
   const onSubmitSignUp = (e) => {
     e.preventDefault();
     // console.log(idCheck, nickCheck, nameCheck, pwCheck);
@@ -63,6 +64,7 @@ const SignUp = () => {
                   idCheck(valueId);
                 }}
               />
+
               <StInput
                 placeholder="성명"
                 value={valueName}
@@ -81,6 +83,7 @@ const SignUp = () => {
                   nickCheck(valueNickname);
                 }}
               />
+
               <StInput
                 placeholder="비밀번호"
                 value={valuePw}

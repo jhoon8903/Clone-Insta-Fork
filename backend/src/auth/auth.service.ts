@@ -71,6 +71,7 @@ export class AuthService {
         throw new UnauthorizedException();
       }
     } catch (error) {
+      console.log(error);
       throw new UnauthorizedException();
     }
   }
@@ -97,13 +98,13 @@ export class AuthService {
     if (!existUser) {
       const newKakao = await this.userRepository.insert(kakaoUser);
       const tokenId: number = newKakao.identifiers[0].id;
-      const nickname: string = newKakao.identifiers[0].nickaname;
-      const token = await this.createToken({ tokenId });
+      const nickname: string = newKakao.identifiers[0].nickname;
+      const token = await this.createToken({ id: tokenId });
       return { token, nickname };
     } else {
       const tokenId: number = existUser.id;
       const nickname: string = existUser.nickname;
-      const token = await this.createToken({ tokenId });
+      const token = await this.createToken({ id: tokenId });
       return { token, nickname };
     }
   }
@@ -116,7 +117,7 @@ export class AuthService {
     const google_client_id = process.env.GOOGLE_CLIENT_ID;
     const google_client_secret = process.env.GOOGLE_CLIENT_SECRET; //'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';
     const google_grant_type = 'authorization_code';
-    const google_redirect_uri = 'http://localhost:3000/oauth';
+    const google_redirect_uri = 'http://localhost:3000/oauthGoogle';
     const google_url = `https://oauth2.googleapis.com/token?code=${code}&client_id=${google_client_id}&client_secret=${google_client_secret}&redirect_uri=${google_redirect_uri}&grant_type=${google_grant_type}`;
 
     try {
@@ -176,12 +177,12 @@ export class AuthService {
       const newGoogle = await this.userRepository.insert(googleUser);
       const tokenId: number = newGoogle.identifiers[0].id;
       const nickname: string = newGoogle.identifiers[0].nickname;
-      const token = await this.createToken({ tokenId });
+      const token = await this.createToken({ id: tokenId });
       return { token, nickname };
     } else {
       const tokenId: number = existUser.id;
       const nickname: string = existUser.nickname;
-      const token = await this.createToken({ tokenId });
+      const token = await this.createToken({ id: tokenId });
       return { token, nickname };
     }
   }
@@ -217,11 +218,13 @@ export class AuthService {
   //////////////////////////////////////////////////////////////////
   // 토큰생성 ///
   /////////////////////////////////////////////////////////////////
-  async createToken(req: string | object): Promise<tokenType> {
+  async createToken(req): Promise<tokenType> {
     const payload = req;
 
+    Logger.log(req, 'CreateToken');
+
     const accessToken = this.jwtService.sign(
-      { payload },
+      { id: payload.id },
       {
         expiresIn: '10m',
         secret: process.env.JWT_SECRET,

@@ -1,5 +1,5 @@
 export const idCheck = (id) => {
-  let regExp = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+  let regExp = /^[a-z0-9]+@[a-z]+\.[a-z]{2,20}$/;
   // 대문자 포함
   console.log("id", regExp.test(id));
   return regExp.test(id);

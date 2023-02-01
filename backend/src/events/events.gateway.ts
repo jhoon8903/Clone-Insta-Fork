@@ -20,7 +20,6 @@ export class EventsGateway
 
   @SubscribeMessage('test')
   handleTest(@MessageBody() data: string) {
-    console.log('test', data);
   }
 
   @SubscribeMessage('login')
@@ -34,17 +33,14 @@ export class EventsGateway
     newNamespace.emit('onlineList', Object.values(onlineMap[socket.nsp.name]));
     data.channels.forEach((channel) => {
       Logger.log(socket.nsp.name, channel, 'Join');
-      console.log('join', socket.nsp.name, channel);
       socket.join(`${socket.nsp.name}-${channel}`);
     });
   }
 
   afterInit(server: Server): any {
-    console.log('init');
   }
 
   handleConnection(@ConnectedSocket() socket: Socket) {
-    console.log('connected', socket.nsp.name);
     if (!onlineMap[socket.nsp.name]) {
       onlineMap[socket.nsp.name] = {};
     }
@@ -53,7 +49,6 @@ export class EventsGateway
   }
 
   handleDisconnect(@ConnectedSocket() socket: Socket) {
-    console.log('disconnected', socket.nsp.name);
     const newNamespace = socket.nsp;
     delete onlineMap[socket.nsp.name][socket.id];
     newNamespace.emit('onlineList', Object.values(onlineMap[socket.nsp.name]));

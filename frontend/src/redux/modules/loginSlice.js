@@ -18,13 +18,16 @@ export const __loginUser = createAsyncThunk(
       const data = await api.post(`auth/local`, payload);
       // console.log("확인:", data.status);
       if (data.status === 201) {
-        console.log("😂😂😂로그인 res.status : ", data);
-        const accessToken = data.data.AccessToken;
-        const refreshToken = data.data.RefreshToken;
-        // console.log("accessToken", accessToken);
-        // console.log("refreshToken", refreshToken);
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+        //console.log("😂😂😂로그인 res.status : ", data);
+        const accessToken = data.data.token.AccessToken;
+        const refreshToken = data.data.token.RefreshToken;
+        const nickName = data.data.nickname;
+
+        if(accessToken && refreshToken && nickName){
+          localStorage.setItem("token", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          localStorage.setItem("nickName", nickName);
+        }
         alert("로그인 성공!!!");
         window.location.assign("/main");
       }
@@ -48,14 +51,14 @@ const loginSlice = createSlice({
     [__loginUser.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.users = action.payload;
-      console.log("로그인 state.users", state.users);
-      console.log("로그인 action payload", action.payload);
+      //console.log("로그인 state.users", state.users);
+      //console.log("로그인 action payload", action.payload);
       state.isLoginOk = true;
     },
     [__loginUser.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-      console.log("state err", state.error);
+      //console.log("state err", state.error);
       state.isLoginOk = false;
       state.users = null;
     },

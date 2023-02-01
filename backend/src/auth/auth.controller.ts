@@ -56,7 +56,7 @@ export class AuthController {
     try {
       const { payload } = body;
       if (!payload) {
-        throw new BadRequestException('카카오정보가 없습니다.');
+        throw new BadRequestException('구글 정보가 없습니다.');
       }
       const google = await this.authService.googleLogin(payload);
       console.log('구글 컨트롤러', google);
@@ -68,7 +68,7 @@ export class AuthController {
       if (!google.id) {
         throw new BadRequestException('구글 정보가 없습니다.');
       }
-      res.send(token, nickname);
+      res.send({ token, nickname });
     } catch (e) {
       console.log(e);
       throw new UnauthorizedException();

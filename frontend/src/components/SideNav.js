@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
-
 import { COLORS } from "../style/styleGlobal";
 import { HiHome } from "react-icons/hi";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
@@ -9,18 +8,28 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiPlusSquare } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { HiOutlineLogout } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { isUploadModalGlobalAction } from "../redux/modules/uploadSlice";
 
 const SideNav = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onClickModalOpen = () => {
+    dispatch(isUploadModalGlobalAction(true));
+  };
 
   const onClickLogout = () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) {
     } else {
+      localStorage.clear('token')
+      localStorage.clear('refreshToken')
+      localStorage.clear('nickname')
       alert("로그아웃 되었습니다!");
       navigate("/");
       //window.location.href='/'
-      // localStorage.clear('token')
-      // localStorage.clear('refreshToken')
+      
     }
   };
   // 로그인, 회원가입 페이지에서 공통 사이드 메뉴바 숨김처리
@@ -54,8 +63,9 @@ const SideNav = () => {
             <StNavMenuItemSpan>알림</StNavMenuItemSpan>
           </Link>
         </StNavMenuItem>
-        <StNavMenuItem>
-          <Link to="/main" className="linkSideNav">
+        <StNavMenuItem onClick={onClickModalOpen}>
+          {/* <Link to="/main" className="linkSideNav"> */}
+          <Link className="linkSideNav">
             <FiPlusSquare />
             <StNavMenuItemSpan>만들기</StNavMenuItemSpan>
           </Link>
@@ -74,7 +84,6 @@ const SideNav = () => {
     </StSideNavWrap>
   );
 };
-
 const StNavMenuItemSpan = styled.span`
   margin-left: 10px;
 `;
@@ -121,5 +130,4 @@ const StSideNavWrap = styled.nav`
   padding: 20px;
   background-color: #eee;
 `;
-
 export default SideNav;
