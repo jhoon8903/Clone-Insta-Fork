@@ -1,7 +1,8 @@
 import { CommentEntity } from 'src/Comments/comments.entity';
+import { CommonEntity } from 'src/common/entity/common.entity';
 import { UserEntity } from 'src/Users/users.entity';
 import {
-  BaseEntity,
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -9,9 +10,15 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'UserCommentLike' })
-export class UserCommentLikeEntity extends BaseEntity {
+export class UserCommentLikeEntity extends CommonEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column({ type: 'int' })
+  userId: number;
+
+  @Column({ type: 'int' })
+  commentId: number;
 
   //*   Relation    */
 

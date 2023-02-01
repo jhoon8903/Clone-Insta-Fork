@@ -1,13 +1,9 @@
-import { Module } from '@nestjs/common';
+import { DMEntity } from './dms/dms.entity';
+import { LoggerMiddleware } from './common/middleware/logger.middeware';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import {
-  TypeOrmModule,
-  TypeOrmModuleAsyncOptions,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserEntity } from './Users/users.entity';
 import { UserPostTagEntity } from './UserPostTags/userPostTags.entity';
 import { UserPostLikeEntity } from './UserPostLikes/userPostLikes.entity';
@@ -19,6 +15,11 @@ import { ImageEntity } from './Images/Images.entity';
 import { HashTagEntity } from './HashTags/hashTags.entity';
 import { FollowEntity } from './Follows/follows.entity';
 import { CommentEntity } from './Comments/comments.entity';
+import { UsersModule } from './Users/users.module';
+import { CommentsModule } from './Comments/comments.module';
+import { PostsModule } from './Posts/posts.module';
+import { DmsModule } from './dms/dms.module';
+import { EventsModule } from './events/events.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -29,7 +30,7 @@ const typeOrmModuleOptions = {
     port: 3306,
     username: configService.get('DB_USER_NAME'),
     password: configService.get('DB_USER_PASSWORD'),
-    database: configService.get('DB_NAME'),
+    database: configService.get('DB_NAME') + '_' + process.env.NODE_ENV,
     entities: [
       UserEntity,
       UserPostTagEntity,
@@ -42,10 +43,11 @@ const typeOrmModuleOptions = {
       HashTagEntity,
       FollowEntity,
       CommentEntity,
+      DMEntity,
     ],
-    synchronize: true,
+    synchronize: false,
     autoLoadEntities: true,
-    logging: true,
+    logging: configService.get('SERVER_MODE') === 'local' ? true : false,
     keepConnectionAlive: true,
   }),
   inject: [ConfigService],
@@ -56,10 +58,25 @@ const typeOrmModuleOptions = {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
+
+    /**
+     * Authmodule, 중복 호출로 인한 error 발생 app.modules에서 비활성화
+     */
+    // AuthModule,
+
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    UsersModule,
+    CommentsModule,
+    AuthModule,
+    PostsModule,
+    DmsModule,
+    EventsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

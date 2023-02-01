@@ -1,1 +1,1 @@
-create database instagram_test
+create database instagram_dev
