@@ -4,27 +4,37 @@ import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { COLORS } from '../style/styleGlobal';
-
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
-
-
 import ButtonDefault from './ButtonDefault';
+import { __commentsGet, } from '../redux/modules/commentsSlice';
+import { __commentsAdd } from '../redux/modules/postDetailSlice';
 
 
-function PostDetailCommentBox({likes, createAt}) {
+function PostDetailCommentBox({id, likes, createAt}) {
 
 
   const commentRef=useRef()
   const dispatch=useDispatch()
 
+  //모달 상태
   const isGlobalModalPostDetail=useSelector((state)=>state.postDetailSlice.isGlobalModalPostDetail)
-
+  
+  //댓글 인풋
+  const [commentValue, setCommentValue]=useState("")
 
   const onSubmitPostCommnet=(e)=>{ //댓글 게시
     e.preventDefault()
-    alert('댓글 게시!')
+    alert('댓글 작성 완료')
+    const newComment={
+      id,
+      comment: commentValue,
+    }
+    dispatch(__commentsAdd(newComment))
+    setCommentValue("")
   }
+
+  
 
   useEffect(()=>{ //모달 오픈시 댓글 입력 인풋 포커스
     isGlobalModalPostDetail && commentRef.current.focus()
@@ -41,7 +51,10 @@ function PostDetailCommentBox({likes, createAt}) {
             <StMainPostItemDateBlock>{createAt}</StMainPostItemDateBlock>
           </StPostDetailCommentBoxTop>
           <StPostDetailCommentInputBox onSubmit={onSubmitPostCommnet}>
-            <StPostDetailCommentInput ref={commentRef} required />
+            <StPostDetailCommentInput 
+            value={commentValue}
+            onChange={(e)=>{setCommentValue(e.target.value)}}
+            ref={commentRef} required />
             <ButtonDefault width="100px" bgColor={COLORS.defaultLemon} hoverBgColor={COLORS.defaultBold}>입력</ButtonDefault>
           </StPostDetailCommentInputBox>
         </StPostDetailCommentBox>

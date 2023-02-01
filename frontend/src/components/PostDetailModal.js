@@ -15,11 +15,12 @@ import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice'
 import PostDetailCommentBox from './PostDetailCommentBox';
 import PostDetailContent from './PostDetailContent'
 import PostDetailContentAll from './PostDetailContentAll';
+import { __commentsGet } from '../redux/modules/commentsSlice';
 
 
 
 
-function PostDetailModal({id, content, nickname, image, createAt, likes, updateAt}) {
+function PostDetailModal({id, content, nickname, image, createAt, likes, updateAt, myPost, comment}) {
 
   const dispatch=useDispatch()
 
@@ -29,12 +30,17 @@ function PostDetailModal({id, content, nickname, image, createAt, likes, updateA
     dispatch(isGlobalModalPostDetailAction(false))
   }
 
-  const createAtSlice = createAt?.slice(0, 10)
-  console.log('모달 상세 id : ', id)  
-  console.log('모달 상세 nickname : ', nickname)  
-  console.log('모달 상세 content : ', content)  
-  console.log('모달 상세 createAt : ', createAt)
-  console.log('모달 상세 image : ', image)  
+  const createAtSlice = createAt?.slice(0, 10) //날짜 형식 가공
+
+  //댓글 전체 조회
+  //const commnets=useSelector((state)=>state.commentsSlice.comments)
+  //console.log('댓글 조회 : ', commnets)
+
+  const commnets=comment
+
+  //useEffect(()=>{ //댓글 전체 조회
+  //  dispatch(__commentsGet(id))
+  //},[dispatch])
   
 
 
@@ -60,17 +66,27 @@ function PostDetailModal({id, content, nickname, image, createAt, likes, updateA
               id={id}
               nickname={nickname} 
               content={content} 
-              createAt={createAtSlice} />
+              createAt={createAtSlice} 
+              myPost={myPost}
+              />
               {/* 전체 댓글 */}
-              <PostDetailContentAll/>
-              <PostDetailContentAll/>
-              <PostDetailContentAll/>
-              <PostDetailContentAll/>
-              <PostDetailContentAll/>
+              {commnets?.map((comment)=>{
+                console.log('댓글 조회 comment ', comment)  
+                return (
+                  <PostDetailContentAll 
+                  key={comment.id} 
+                  id={comment.id}
+                  nickname={comment.nickname} 
+                  content={comment.comment}
+                  createAt={comment.createdAt || "날짜 구현 중"}
+                  myComment={comment.myComment}
+                  />
+                )
+              })}
 
             </StPostDetailContentCommentBox>
 
-            <PostDetailCommentBox likes={likes} createAt={createAtSlice}/>
+            <PostDetailCommentBox id={id} likes={likes} createAt={createAtSlice}/>
           </StPostDetailInfoBoxSection>
         </StPostDetailInfoBox>
       </StPostDetailContentBox>

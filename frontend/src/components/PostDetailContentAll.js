@@ -10,18 +10,22 @@ import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
 import ButtonDefault from './ButtonDefault';
 import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
+import { __commentsDelete } from '../redux/modules/postDetailSlice';
 
+function PostDetailContent({id, nickname, content, createAt, myComment}) {
 
-function PostDetailContent({nickname, content, createAt}) {
+  const dispatch=useDispatch()
 
   const onClickPostDelete=()=>{ //글 삭제
     if(window.confirm('삭제하시겠습니까?')){
+      dispatch(__commentsDelete(id))
       alert('삭제완료!')
     }else{
       alert('삭제취소')
     }
   }
 
+  const createAtSlice = createAt.slice(0, 10)
 
   return (
       <StPostDetailContent>
@@ -30,14 +34,14 @@ function PostDetailContent({nickname, content, createAt}) {
         </Link>
         <StPostDetailUserCommentBox>
           <Link to="/main" title="피드 방문하기" className="linkPostDetailUserInfo inline-flex">
-            <StPostDetailNick>nickname</StPostDetailNick>
+            <StPostDetailNick>{nickname}</StPostDetailNick>
           </Link>
           <StMainPostItemDescContent>
-              content
+              {content}
           </StMainPostItemDescContent>
-          <StMainPostItemDateBlock>createAt</StMainPostItemDateBlock>
+          <StMainPostItemDateBlock>{createAtSlice}</StMainPostItemDateBlock>
         </StPostDetailUserCommentBox>
-        <BiTrash onClick={onClickPostDelete} className="position-right"/>
+        {myComment && <BiTrash onClick={onClickPostDelete} className="position-right"/>}
       </StPostDetailContent>
   )
 }

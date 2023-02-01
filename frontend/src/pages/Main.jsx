@@ -20,11 +20,15 @@ const Main = () => {
 
   useEffect(()=>{
     dispatch(__postsMain()) //게시글 전체 조회
-  },[])
+  },[dispatch])
 
-    //글 상세 내용 조회
+    //글 상세 내용 조회 가공데이터
     const postDetailObj=useSelector((state)=>state.postDetailSlice.postDetailObj)
     console.log('✔ postDetailObj : ', postDetailObj)
+
+    //글 상세 내용 조회
+    const postDetail=useSelector((state)=>state.postDetailSlice.postDetail)
+    console.log('✔✔ postDetail2 : ', postDetail)
 
   return (
     <StMainWrap
@@ -45,18 +49,21 @@ const Main = () => {
             updateAt={post.updateAt}
             likes={post.likes}
             commentCount={post.commentCount}
+            myPost={post.myPost}
             />
           )
           })}
       </StMainPostItemBox>
       <PostDetailModal 
-      key={postDetailObj.key}
-      id={postDetailObj.id}
-      content={postDetailObj.content}
-      nickname={postDetailObj.nickname}
-      image={postDetailObj.image}
-      createAt={postDetailObj.createAt}
-      likes={postDetailObj.likes}
+      //key={postDetailObj.key}
+      id={postDetail?.id}
+      content={postDetail?.content}
+      nickname={postDetail?.nickname}
+      image={postDetail?.imageUrl}
+      createAt={postDetail?.createAt}
+      likes={postDetail?.likes}
+      myPost={postDetailObj.myPost}
+      comment={postDetail?.comment}
       />
     </StMainWrap>
   )
