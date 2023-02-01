@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as AWS from 'aws-sdk';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PromiseResult } from 'aws-sdk/lib/request';
 
@@ -42,6 +42,9 @@ export class AwsService {
           ContentType: file.mimetype,
         })
         .promise();
+      Logger.log(key, 'key');
+      Logger.log(s3Object, 's3Object');
+      Logger.log(typeof s3Object, 'type s3Object');
       return { key, s3Object, contentType: file.mimetype };
     } catch (error) {
       throw new BadRequestException(`File upload failed : ${error}`);

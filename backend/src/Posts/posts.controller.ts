@@ -54,15 +54,18 @@ export class PostsController {
     description: '로그인 하지 않은 사용자일 경우',
   })
   @ApiCreatedResponse({ description: '게시글 작성에 성공한 경우' })
-  @UseInterceptors()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
   @Post()
   async createPost(
     @getUser() payload: JwtPayload,
-    @Body() body: PostDto,
+    @Body() body, //: PostDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    Logger.log(payload, 'Payload');
+    Logger.log(body, 'content');
+    Logger.log(typeof file, 'file');
+
     const result = await this.awsService.uploadFileToS3('myimg', file);
     const imgUrl = this.awsService.getAwsS3FileUrl(result.key);
     return this.postsService.createPost(payload.id, body, imgUrl);
