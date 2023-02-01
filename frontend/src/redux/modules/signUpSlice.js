@@ -31,7 +31,7 @@ export const __signUp = createAsyncThunk(
           alert("다시 확인해주세요.");
           return err;
         });
-      console.log("sign up data", data);
+      //console.log("sign up data", data);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       alert("다시 확인해주세요.");
@@ -51,14 +51,14 @@ const signUpSlice = createSlice({
     [__signUp.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.users = action.payload;
-      console.log("회원가입 state.users", state.users);
-      console.log("회원가입 action payload", action.payload);
+      //console.log("회원가입 state.users", state.users);
+      //console.log("회원가입 action payload", action.payload);
       state.isLoginOk = true;
     },
     [__signUp.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-      console.log("state err", state.error);
+      //console.log("state err", state.error);
       state.isLoginOk = false;
       state.users = null;
     },

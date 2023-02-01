@@ -26,9 +26,9 @@ export const __commentsAdd = createAsyncThunk(
   "posts/COMMENTS_ADD",
   async (payload, thunkAPI) => {
     try{
-      console.log('댓글 payload ', payload)
+      //console.log('댓글 payload ', payload)
       const {data} = await api.post(`comments/${payload.id}`, {comment : payload.comment})
-      console.log('댓글 작성 후 data ', data)
+      //console.log('댓글 작성 후 data ', data)
       return thunkAPI.fulfillWithValue(data)
     }catch(error){
       return thunkAPI.rejectWithValue(error)
@@ -42,7 +42,7 @@ export const __commentsDelete = createAsyncThunk(
   "posts/COMMENTS_DELETE",
   async (payload, thunkAPI) => {
     try{
-      console.log('댓글 COMMENTS_DELETE ', payload)
+      //console.log('댓글 COMMENTS_DELETE ', payload)
       await api.delete(`comments/${payload}`)
       return thunkAPI.fulfillWithValue(payload)
     }catch(error){
@@ -70,7 +70,7 @@ const postDetailSlice = createSlice({
     [__postDetail.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
       state.postDetail = action.payload; // Store에 있는 state.data에 서버에서 가져온 action.payload 추가
-      console.log('state.postDetail : ' , state.postDetail)
+      //console.log('state.postDetail : ' , state.postDetail)
     },
     [__postDetail.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
@@ -82,8 +82,8 @@ const postDetailSlice = createSlice({
     },
     [__commentsAdd.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
-      console.log('댓글 작성 후 조회 state.postDetail.comment : ', state.postDetail.comment)
-      console.log('댓글 작성 후 조회 action.payload : ', action.payload)
+      //console.log('댓글 작성 후 조회 state.postDetail.comment : ', state.postDetail.comment)
+      //console.log('댓글 작성 후 조회 action.payload : ', action.payload)
       state.postDetail.comment = [
         ...state.postDetail.comment, 
         action.payload
@@ -99,7 +99,7 @@ const postDetailSlice = createSlice({
     },
     [__commentsDelete.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
-      console.log('삭제 state.postDetail.comment : ', state.postDetail.comment)
+      //console.log('삭제 state.postDetail.comment : ', state.postDetail.comment)
       state.postDetail.comment = state.postDetail.comment.filter((comment)=>comment.id !== action.payload)
 
     },

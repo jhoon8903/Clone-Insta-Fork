@@ -14,14 +14,14 @@ export const __userOauthGoogle = createAsyncThunk(
     try{
       const data = await api.post(`auth/google`, { payload })
       .then((res)=>{
-        console.log('🔒 구글 로그인 res : ', res)
-        console.log('🔒 구글 로그인 res.headers : ', res.headers)
-        console.log('🔒 구글 로그인 res.headers.authorization : ', res.headers.authorization)
-        console.log('🔒 구글 로그인 res.data.nickname : ', res.data.nickname)
+        //console.log('🔒 구글 로그인 res : ', res)
+        //console.log('🔒 구글 로그인 res.headers : ', res.headers)
+        //console.log('🔒 구글 로그인 res.headers.authorization : ', res.headers.authorization)
+        //console.log('🔒 구글 로그인 res.data.nickname : ', res.data.nickname)
         const accessToken = res.headers.authorization;
         const refreshToken = res.headers.refreshtoken;
         const nickname = res.data.nickname;
-        console.log('🔒 구글 로그인 res.headers.authorization : ', res.headers.authorization)
+        //console.log('🔒 구글 로그인 res.headers.authorization : ', res.headers.authorization)
         //유저 토큰 + 닉네임이 있다면 가져온 후 세팅
         if(accessToken && refreshToken && nickname){
           localStorage.setItem("token", accessToken);
@@ -62,10 +62,10 @@ export const __userOauthKakao = createAsyncThunk(
     try{
       const data = await api.post(`auth/kakao`, {payload})
       .then((res)=>{
-        console.log('🔒 카카오 로그인 res : ', res)
-        console.log('🔒 카카오 로그인 res.headers : ', res.headers)
-        console.log('🔒 카카오 로그인 res.headers.authorization : ', res.headers.authorization)
-        console.log('🔒 카카오 로그인 res.data.nickname : ', res.data.nickname)
+        //console.log('🔒 카카오 로그인 res : ', res)
+        //console.log('🔒 카카오 로그인 res.headers : ', res.headers)
+        //console.log('🔒 카카오 로그인 res.headers.authorization : ', res.headers.authorization)
+        //console.log('🔒 카카오 로그인 res.data.nickname : ', res.data.nickname)
         const accessToken = res.headers.authorization;
         const refreshToken = res.headers.refreshtoken;
         const nickname = res.data.nickname;
@@ -76,7 +76,7 @@ export const __userOauthKakao = createAsyncThunk(
            localStorage.setItem("refreshToken", refreshToken);
            localStorage.setItem("nickname", nickname);
          }else{
-           console.log('🔒 카카오 로그인 res 2 : ', res)
+           //console.log('🔒 카카오 로그인 res 2 : ', res)
            alert('인증 오류! 다시 시도해주세요!')
             return window.location.assign("/");
          }
@@ -117,7 +117,7 @@ const userOauth = createSlice({
     [__userOauthKakao.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
       state.kakao = action.payload; // Store에 있는 state.data에 서버에서 가져온 action.payload 추가
-      console.log('state.kakao : ' , state.kakao)
+      //console.log('state.kakao : ' , state.kakao)
     },
     [__userOauthKakao.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경
@@ -130,7 +130,7 @@ const userOauth = createSlice({
     [__userOauthGoogle.fulfilled]: (state, action) => {
       state.isLoading = false; // 네트워크 요청이 끝났으니, false로 변경
       state.google = action.payload; // Store에 있는 state.data에 서버에서 가져온 action.payload 추가
-      console.log('state.kakao : ' , state.kakao)
+      //console.log('state.kakao : ' , state.kakao)
     },
     [__userOauthGoogle.rejected]: (state, action) => {
       state.isLoading = false; // 에러가 발생했지만, 네트워크 요청이 끝났으니, false로 변경

@@ -18,7 +18,7 @@ export const __addPostThunk = createAsyncThunk(
   "ADD_POST",
   async (payload, thunkAPI) => {
     try {
-      console.log("upload payload:payload", payload);
+      //console.log("upload payload:payload", payload);
       await api.post(
         `posts`, 
         payload, 
@@ -27,7 +27,10 @@ export const __addPostThunk = createAsyncThunk(
             "Content-Type": "multipart/form-data",
           },
         }
-      );
+      )
+      // .then(()=>{
+      //   //window.location.reload()
+      // })
       return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -57,6 +60,7 @@ const initialState = {
   error: null,
   isLoading: false,
   isUploadModal: false,
+  isUploadSuccess: false
 };
 
 export const uploadSlice = createSlice({
@@ -65,6 +69,9 @@ export const uploadSlice = createSlice({
   reducers: {
     isUploadModalGlobalAction: (state, action) => {
       state.isUploadModal = action.payload;
+    },
+    isUploadSuccessAction: (state, action) => {
+      state.isUploadSuccess = action.payload;
     },
   },
 
@@ -105,5 +112,5 @@ export const uploadSlice = createSlice({
   },
 });
 
-export const { isUploadModalGlobalAction } = uploadSlice.actions;
+export const { isUploadModalGlobalAction, isUploadSuccessAction } = uploadSlice.actions;
 export default uploadSlice.reducer;

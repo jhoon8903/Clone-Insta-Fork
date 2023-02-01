@@ -9,7 +9,10 @@ import {
   __addPostThunk,
   __getPostThunk,
   isUploadModalGlobalAction,
+  isUploadSuccessAction
 } from "../redux/modules/uploadSlice";
+
+import { __postsMain } from '../redux/modules/postsMainSlice';
 import { BsPersonCircle } from "react-icons/bs";
 
 const Upload = () => {
@@ -56,22 +59,28 @@ const Upload = () => {
   };
 
 
+  const modalState = useSelector((state) => state.uploadSlice.isUploadModal);
+  const uploadSuccess=useSelector((state)=>state.uploadSlice.isUploadSuccess)
+
   //디스패치
-  const onWriteHandler = (e) => {
+  const onWriteHandler = async (e) => {
     e.preventDefault();
     formData.append("image", fileImg);
     formData.append("content", content);
-
-    console.log("dispatch formdata", formData);
+    //console.log("dispatch formdata", formData);
     for (const form of formData) {
-      console.log("form 최종", form);
+      //console.log("form 최종", form);
     }
-
-    dispatch(__addPostThunk(formData));
-    navigate("/main");
+    await dispatch(__addPostThunk(formData))
+    .then((res)=>{
+      dispatch(isUploadModalGlobalAction(false))
+      dispatch(__postsMain())
+      //dispatch(isUploadSuccessAction(true))
+      //dispatch(isUploadSuccessAction(false))
+      //console.log('메인 글 포스트 res : ', res)
+      //console.log('메인 글 조회 uploadSuccess : ', uploadSuccess)
+    })
   };
-
-
   
 
   return (
@@ -185,10 +194,11 @@ const Stimg = styled.img`
 
 const StPrivew = styled.div`
   object-fit: cover;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 const StContainer = styled.div`
@@ -227,7 +237,6 @@ const StBox = styled.div`
   height: 500px;
   & span {
     font-size: 20px;
-    margin-top: 12px;
     font-weight: 500;
   }
 `;
@@ -244,6 +253,10 @@ const StLeftBox = styled.div`
   width: 500px;
   height: 520px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
 `;
 
 const StInnerBox = styled.div`
@@ -265,6 +278,7 @@ const StRightBoxTop = styled.div`
   height: 20px;
   padding: 15px 0 0 15px;
   display: flex;
+  align-items: center;
   gap: 12px;
   padding: 14px;
   border-bottom: 1px solid gray;
