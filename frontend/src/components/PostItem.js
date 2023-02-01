@@ -10,12 +10,11 @@ import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
 import ButtonDefault from '../components/ButtonDefault';
 import { isGlobalModalPostDetailAction, postDetailAction } from '../redux/modules/postDetailSlice';
-import { __commentsGet } from '../redux/modules/commentsSlice';
 import { __postDetail } from '../redux/modules/postDetailSlice';
 import { __EditPostMain, __deletePostMain } from '../redux/modules/postsMainSlice';
 
 
-function PostItem({id, content, nickname, image, createAt, likes, updateAt, commentCount}) {
+function PostItem({id, content, nickname, image, createAt, likes, updateAt, commentCount, myPost}) {
   
   const dispatch=useDispatch()
 
@@ -23,15 +22,6 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt, comm
   const isGlobalModalPostDetail=useSelector((state)=>
   state.postDetailSlice.isGlobalModalPostDetail)
 
-
-  //댓글 전체 조회
-  const commnets=useSelector((state)=>state.commentsSlice.commnets)
-  const commnetsLength = commnets === undefined ? 0 : commnets.length
-  console.log('댓글 조회 : ', commnets)
-
-  useEffect(()=>{ //댓글 전체 조회
-    dispatch(__commentsGet(id))
-  },[dispatch])
   
 
   //수정 영역
@@ -51,6 +41,7 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt, comm
       createAt,
       likes,
       updateAt,
+      myPost,
       content:editPostContent
     }
     console.log('EditPost : ', EditPost)
@@ -77,10 +68,12 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt, comm
 
     dispatch(__postDetail(id))
     .then((res)=>{
+      /*
       console.log("res : ", res)
       console.log("res.payload.id: ", res.payload.id)
       console.log("res.payload.content: ", res.payload.content)
       console.log('!!! modalDetailContent : ', modalDetailContent)
+      */
       dispatch(isGlobalModalPostDetailAction(true))
       const newPostDetail={ //글 상세 내용 스토어 저장
         key : res.payload.id,
@@ -90,13 +83,13 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt, comm
         image : res.payload.imageUrl,
         createAt : res.payload.createAt,
         likes : res.payload.likes,
+        myPost : myPost,
+        comment:res.payload.comment,
       }
       dispatch(postDetailAction(newPostDetail))
     })
-    return console.log('모달 내용 modalDetailContent : ', modalDetailContent)
+    
   }
-
-
   const createAtSlice = createAt.slice(0, 10)
 
   return (
@@ -111,8 +104,13 @@ function PostItem({id, content, nickname, image, createAt, likes, updateAt, comm
           </Link>
         </StMainPostItemUserInfo>
         <StMainPostItemPostFunction>
-          <BsPencilFill onClick={onClickPostEdit} className="iconEdit"/>
-          <BiTrash onClick={onClickPostDelete}/>
+          {myPost 
+          &&
+            <>
+              <BsPencilFill onClick={onClickPostEdit} className="iconEdit"/>
+              <BiTrash onClick={onClickPostDelete}/>
+            </> 
+          }
         </StMainPostItemPostFunction>
       </StMainPostItemTopInfo>
       <StMainPostItemImageBox>

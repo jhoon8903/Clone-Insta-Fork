@@ -8,35 +8,40 @@ import { BsPencilFill } from "react-icons/bs";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 import { FaRegHeart } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import ButtonDefault from "../components/ButtonDefault";
-import { isGlobalModalPostDetailAction } from "../redux/modules/postDetailSlice";
-import PostDetailCommentBox from "./PostDetailCommentBox";
-import PostDetailContent from "./PostDetailContent";
-import PostDetailContentAll from "./PostDetailContentAll";
 
-function PostDetailModal({
-  id,
-  content,
-  nickname,
-  image,
-  createAt,
-  likes,
-  updateAt,
-}) {
-  const dispatch = useDispatch();
-  const isGlobalModalPostDetail = useSelector(
-    (state) => state.postDetailSlice.isGlobalModalPostDetail
-  );
-  const onClickModalClose = () => {
-    //모달 닫기
-    dispatch(isGlobalModalPostDetailAction(false));
-  };
-  const createAtSlice = createAt?.slice(0, 10);
-  console.log("모달 상세 id : ", id);
-  console.log("모달 상세 nickname : ", nickname);
-  console.log("모달 상세 content : ", content);
-  console.log("모달 상세 createAt : ", createAt);
-  console.log("모달 상세 image : ", image);
+import ButtonDefault from '../components/ButtonDefault';
+import { isGlobalModalPostDetailAction } from '../redux/modules/postDetailSlice';
+import PostDetailCommentBox from './PostDetailCommentBox';
+import PostDetailContent from './PostDetailContent'
+import PostDetailContentAll from './PostDetailContentAll';
+import { __commentsGet } from '../redux/modules/commentsSlice';
+
+
+
+
+function PostDetailModal({id, content, nickname, image, createAt, likes, updateAt, myPost, comment}) {
+
+  const dispatch=useDispatch()
+
+  const isGlobalModalPostDetail=useSelector((state)=>state.postDetailSlice.isGlobalModalPostDetail)
+
+  const onClickModalClose=()=>{ //모달 닫기
+    dispatch(isGlobalModalPostDetailAction(false))
+  }
+
+  const createAtSlice = createAt?.slice(0, 10) //날짜 형식 가공
+
+  //댓글 전체 조회
+  //const commnets=useSelector((state)=>state.commentsSlice.comments)
+  //console.log('댓글 조회 : ', commnets)
+
+  const commnets=comment
+
+  //useEffect(()=>{ //댓글 전체 조회
+  //  dispatch(__commentsGet(id))
+  //},[dispatch])
+  
+
   return (
     <StPostDetailModalWrap display={!isGlobalModalPostDetail ? "none" : "flex"}>
       <StPostDetailContentBox>
@@ -59,20 +64,31 @@ function PostDetailModal({
             <StPostDetailContentCommentBox>
               {/* 작성자 */}
               <PostDetailContent
-                key={id}
-                id={id}
-                nickname={nickname}
-                content={content}
-                createAt={createAtSlice}
+              key={id}
+              id={id}
+              nickname={nickname} 
+              content={content} 
+              createAt={createAtSlice} 
+              myPost={myPost}
               />
               {/* 전체 댓글 */}
-              <PostDetailContentAll />
-              <PostDetailContentAll />
-              <PostDetailContentAll />
-              <PostDetailContentAll />
-              <PostDetailContentAll />
+              {commnets?.map((comment)=>{
+                console.log('댓글 조회 comment ', comment)  
+                return (
+                  <PostDetailContentAll 
+                  key={comment.id} 
+                  id={comment.id}
+                  nickname={comment.nickname} 
+                  content={comment.comment}
+                  createAt={comment.createdAt || "날짜 구현 중"}
+                  myComment={comment.myComment}
+                  />
+                )
+              })}
+
             </StPostDetailContentCommentBox>
-            <PostDetailCommentBox likes={likes} createAt={createAtSlice} />
+
+            <PostDetailCommentBox id={id} likes={likes} createAt={createAtSlice}/>
           </StPostDetailInfoBoxSection>
         </StPostDetailInfoBox>
       </StPostDetailContentBox>

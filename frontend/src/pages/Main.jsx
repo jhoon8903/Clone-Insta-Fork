@@ -13,16 +13,21 @@ const Main = () => {
     (state) => state.postDetailSlice.isGlobalModalPostDetail
   );
   //게시글 전체 조회
-  const posts = useSelector((state) => state.postsMainSlice.posts);
-  console.log("메인 게시글 data", posts);
-  useEffect(() => {
-    dispatch(__postsMain()); //게시글 전체 조회
-  }, []);
-  //글 상세 내용 조회
-  const postDetailObj = useSelector(
-    (state) => state.postDetailSlice.postDetailObj
-  );
-  console.log(":두꺼운_확인_표시: postDetailObj : ", postDetailObj);
+  const posts=useSelector((state)=>state.postsMainSlice.posts)
+  console.log('메인 게시글 data',posts)
+
+  useEffect(()=>{
+    dispatch(__postsMain()) //게시글 전체 조회
+  },[dispatch])
+
+    //글 상세 내용 조회 가공데이터
+    const postDetailObj=useSelector((state)=>state.postDetailSlice.postDetailObj)
+    console.log('✔ postDetailObj : ', postDetailObj)
+
+    //글 상세 내용 조회
+    const postDetail=useSelector((state)=>state.postDetailSlice.postDetail)
+    console.log('✔✔ postDetail2 : ', postDetail)
+
   return (
     <StMainWrap
       //모달 창 오픈시 뒷 배경 스크롤 막기
@@ -32,30 +37,33 @@ const Main = () => {
       <UploadModal />
 
       <StMainPostItemBox>
-        {posts?.map((post) => {
-          return (
-            <PostItem
-              key={post.id}
-              id={post.id}
-              content={post.content}
-              nickname={post.nickname}
-              image={post.imageUrl}
-              createAt={post.createAt}
-              updateAt={post.updateAt}
-              likes={post.likes}
-              commentCount={post.commentCount}
+        {posts?.map((post)=>{
+          return(
+            <PostItem 
+            key={post.id}
+            id={post.id}
+            content={post.content}
+            nickname={post.nickname}
+            image={post.imageUrl}
+            createAt={post.createAt}
+            updateAt={post.updateAt}
+            likes={post.likes}
+            commentCount={post.commentCount}
+            myPost={post.myPost}
             />
           );
         })}
       </StMainPostItemBox>
-      <PostDetailModal
-        key={postDetailObj.key}
-        id={postDetailObj.id}
-        content={postDetailObj.content}
-        nickname={postDetailObj.nickname}
-        image={postDetailObj.image}
-        createAt={postDetailObj.createAt}
-        likes={postDetailObj.likes}
+      <PostDetailModal 
+      //key={postDetailObj.key}
+      id={postDetail?.id}
+      content={postDetail?.content}
+      nickname={postDetail?.nickname}
+      image={postDetail?.imageUrl}
+      createAt={postDetail?.createAt}
+      likes={postDetail?.likes}
+      myPost={postDetailObj.myPost}
+      comment={postDetail?.comment}
       />
     </StMainWrap>
   );
