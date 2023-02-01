@@ -2,7 +2,6 @@ import { DMEntity } from './dms/dms.entity';
 import { LoggerMiddleware } from './common/middleware/logger.middeware';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserEntity } from './Users/users.entity';
 import { UserPostTagEntity } from './UserPostTags/userPostTags.entity';
@@ -19,6 +18,8 @@ import { UsersModule } from './Users/users.module';
 import { CommentsModule } from './Comments/comments.module';
 import { PostsModule } from './Posts/posts.module';
 import { DmsModule } from './dms/dms.module';
+
+import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 
 const typeOrmModuleOptions = {
@@ -58,12 +59,6 @@ const typeOrmModuleOptions = {
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
-    /**
-     * Authmodule, 중복 호출로 인한 error 발생 app.modules에서 비활성화
-     */
-    // AuthModule,
-
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
     UsersModule,
     CommentsModule,

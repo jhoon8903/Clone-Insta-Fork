@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserEntity } from 'src/Users/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { KakaoStrategy } from './strategy/kakao.strategy';
 @Module({
   imports: [
     JwtModule,
@@ -17,7 +18,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy, NaverStrategy, JwtStrategy],
-  exports: [AuthModule, JwtStrategy, PassportModule],
+  providers: [
+    AuthService,
+    GoogleStrategy,
+    NaverStrategy,
+    KakaoStrategy,
+    JwtStrategy,
+  ],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}
