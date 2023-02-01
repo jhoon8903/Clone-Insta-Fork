@@ -27,11 +27,12 @@ export class PostsService {
   async createPost(userId, body, imgUrl) {
     const { content } = body;
     const newPost = await this.postRepository.save({ userId, content });
-    const newPostImage = await this.imageRepository.save({
+    await this.imageRepository.save({
       imgUrl,
       postId: newPost.id,
     });
-    return newPost;
+
+    return await this.findOnePost(newPost.id, newPost.userId);
   }
 
   async changePost(postId, body, userId) {
